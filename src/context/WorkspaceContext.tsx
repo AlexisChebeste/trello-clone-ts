@@ -1,11 +1,13 @@
 import { createContext, useState,  ReactNode } from 'react';
 
-import { Workspace,Board} from '../types';
+import { Workspace,Board, List, Card} from '../types';
 
 interface WorkspaceContextType {
   workspaces: Workspace[]
   createWorkspace: (name: string) => void
   createBoard: (workspaceId: string, name: string) => void
+  createCard: (listId: string, title: string) => void
+  createList: (boardId: string, title: string) => void
 }
 
 export const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined)
@@ -33,6 +35,49 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       ],
     },
   ])
+
+  const [lists, setLists] = useState<List[]>([])
+  
+  const createCard = (listId: string, title: string) => {
+    const newCard: Card = {
+      id: crypto.randomUUID(),
+      title,
+    }
+    setLists(lists.map(list => {
+      if (list.id === listId) {
+        return {
+          ...list,
+          cards: [...list.cards, newCard],
+        }
+      }
+      return list
+    }))
+  }
+
+  const createList = (boardId: string, title: string) => {
+
+    const newList: List = {
+      id: crypto.randomUUID(),
+      title,
+      cards: [],
+    }
+    setWorkspaces(workspaces.map(workspace => {
+      return {
+        ...workspace,
+        boards: workspace.boards.map(board => {
+          if (board.id === boardId) {
+            return {
+              ...board,
+              lists: [...board.lists, newList],
+            }
+          }
+          return board
+        })
+      }
+    }))
+    setLists([...lists, newList])
+  }
+
   const createWorkspace = (name: string) => {
     const newWorkspace: Workspace = {
       id: crypto.randomUUID(),
@@ -64,7 +109,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     <WorkspaceContext.Provider value={{ 
       workspaces, 
       createWorkspace, 
-      createBoard 
+      createBoard,
+      createCard,
+      createList,
     }}>
       {children}
     </WorkspaceContext.Provider>

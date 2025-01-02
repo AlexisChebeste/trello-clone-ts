@@ -24,7 +24,7 @@ export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspac
     }
 
     return(
-        <div className={`hidden p-6 bg-white lg:flex flex-col rounded-lg shadow-md ${className} max-w-72 w-full`}>
+        <div className={`p-6 bg-white flex flex-col rounded-lg shadow-md max-w-72 w-full ${className}`}>
             <div className='flex w-full gap-4 sm:justify-between flex-col items-center'>
                 <h1 className="text-2xl font-bold  my-auto">Espacios de trabajo</h1>
                 <div className="flex gap-3 items-center  flex-col w-full ">

@@ -1,6 +1,4 @@
 import {useState} from 'react';
-import { Plus } from 'lucide-react';
-import Button from '../components/ui/Button';
 import ModalBoard from '../components/modals/ModalBoard';
 import CardBoard from '../components/ui/CardBoard';
 import { useWorkspace } from '../hooks/useWorkspace';

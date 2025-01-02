@@ -1,15 +1,12 @@
 interface CardProps {
-    name: string,
-    children?: React.ReactNode,
-    onClick?: () => void
+    title: string,
     className?: string
 }
 
-export function Card({name, children, onClick ,className}: CardProps) {
+export function Card({title, className}: CardProps) {
     return (
-        <button onClick={onClick} className={`w-full rounded-lg shadow-md p-6 hover:scale-105 transition-all ease-in-out duration-200 h-full ${className}`} >
-            <h2 className="text-lg font-semibold">{name}</h2>
-            {children}
+        <button className={`w-full items-start bg-slate-100 rounded-lg h-14 ${className}`} >
+            <h3 className="text-sm font-semibold text-start ml-4">{title}</h3>
         </button>
     )
 }

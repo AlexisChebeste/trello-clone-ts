@@ -2,10 +2,8 @@ import { Routes, Route} from "react-router";
 import Navbar from "./components/Navbar";
 import {Home} from "./pages/Home";
 import BoardPage from "./pages/BoardPage";
-import { useWorkspace } from "./hooks/useWorkspace";
 
 export default function App() {
-  const {workspaces} = useWorkspace();
 
   return (
       
@@ -13,7 +11,7 @@ export default function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home  />} />
-            <Route path="/:workspaceId/board/:id" element={<BoardPage workspace={workspaces} />} />
+            <Route path="/:workspaceId/board/:id" element={<BoardPage />} />
           </Routes>
         </div>
   )

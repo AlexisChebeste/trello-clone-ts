@@ -36,21 +36,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     },
   ])
 
-  const [lists, setLists] = useState<List[]>([])
   
   const createCard = (listId: string, title: string) => {
     const newCard: Card = {
       id: crypto.randomUUID(),
       title,
     }
-    setLists(lists.map(list => {
-      if (list.id === listId) {
-        return {
-          ...list,
-          cards: [...list.cards, newCard],
-        }
+    setWorkspaces(workspaces.map(workspace => {
+      return {
+        ...workspace,
+        boards: workspace.boards.map(board => {
+          return {
+            ...board,
+            lists: board.lists.map(list => {
+              if (list.id === listId) {
+                return {
+                  ...list,
+                  cards: [...list.cards, newCard],
+                }
+              }
+              return list
+            })
+          }
+        })
       }
-      return list
     }))
   }
 
@@ -75,7 +84,6 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         })
       }
     }))
-    setLists([...lists, newList])
   }
 
   const createWorkspace = (name: string) => {

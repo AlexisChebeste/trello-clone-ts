@@ -10,7 +10,7 @@ export default function CardBoard({ board, workspace }: CardBoardProps) {
   return (
     <Link 
       to={`${workspace.id}/board/${board.id}`} 
-      className="w-full  bg-zinc-500 rounded-lg hover:bg-zinc-800 text-white p-4 h-28 hover:scale-105 transition-all ease-in-out duration-200"
+      className="w-full bg-gradient-to-br from-sky-400 via-sky-600 to-blue-900 hover:opacity-85 rounded-lg text-white p-4 h-28 hover:scale-105 transition-all ease-in-out duration-200"
     >
       <h2 className="text-lg font-semibold">
         {board.name}

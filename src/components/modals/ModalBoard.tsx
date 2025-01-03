@@ -22,7 +22,7 @@ export default function ModalBoard({isOpen, onClose, workspaceId}: ModalBoardPro
     }
 
     return (
-        <div id="modal-board" className=" fixed inset-0 bg-black bg-opacity-50 flex  items-center justify-center">
+        <div id="modal-board" className=" fixed inset-0 bg-black bg-opacity-50 flex  items-center justify-center z-50">
             <div className="bg-white w-96 h-72 flex flex-col justify-between  rounded-lg shadow-lg p-6">
                 <h2 className="text-2xl font-bold mb-4 text-center">Nuevo Tablero</h2>
                 <div className="flex flex-col gap-2">

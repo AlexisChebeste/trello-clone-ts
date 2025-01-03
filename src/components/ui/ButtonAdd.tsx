@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+
 
 export interface ButtonAddProps {
     onClick: () => void;
@@ -9,9 +9,8 @@ export interface ButtonAddProps {
 
 export default function ButtonAdd({onClick, children, className, title}: ButtonAddProps) {
     return (
-        <button onClick={onClick} className={`flex items-center justify-center gap-4 hover:bg-slate-200 w-full rounded-lg hover:shadow-md p-5 transition-shadow ease-in-out duration-300 border border-gray-300  font-bold  ${className}`}>
-            <Plus className='size-5'/>
-            <h2 className="text-lg font-semibold">Añadir {title}</h2>
+        <button onClick={onClick} className={`flex items-center justify-center gap-3 bg-slate-200 hover:bg-slate-300 w-full rounded-xl hover:shadow-md p-5 transition-all ease-in-out duration-300 border hover:border-gray-400  ${className}`}>
+            <h2 className="text-lg text-gray-700 font-semibold">Añadir {title}</h2>
             {children}
         </button>
     )

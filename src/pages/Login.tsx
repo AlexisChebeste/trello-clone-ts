@@ -32,7 +32,7 @@ export default function Login(){
 
     return (
         <div className="flex flex-col justify-center py-6 sm:py-12 min-h-screen px-4 sm:px-6 lg:px-8 bg-slate-3">
-            <div className="bg-white mx-auto w-full max-w-md rounded-lg p-6 shadow-md sm:p-8">
+            <div className="bg-white mx-auto w-full max-w-md rounded-lg p-6 shadow-lg sm:p-8 ">
                 
                 <h2 className="text-center text-2xl font-bold sm:text-3xl text-gray-900">{isLogin ? 'Iniciar sesión' : 'Registrar usuario' }</h2>
                 <div className="mt-8 sm:mx-auto  w-full sm:max-w-md">

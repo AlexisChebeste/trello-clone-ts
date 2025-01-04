@@ -26,12 +26,12 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       id: '2',
       name: 'Espacio de trabajo 2',
       boards: [
-        { id: '3', name: 'Tablero 3' , lists: []},
-        { id: '4', name: 'Tablero 4' , lists: []},
+        { id: '3', name: 'Tablero 1' , lists: []},
+        { id: '4', name: 'Tablero 2' , lists: []},
         { id: '5', name: 'Tablero 3' , lists: []},
         { id: '6', name: 'Tablero 4' , lists: []},
-        { id: '7', name: 'Tablero 3' , lists: []},
-        { id: '8', name: 'Tablero 4' , lists: []},
+        { id: '7', name: 'Tablero 5' , lists: []},
+        { id: '8', name: 'Tablero 6' , lists: []},
       ],
     },
   ])

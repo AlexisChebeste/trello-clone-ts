@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../ui/Button";
+import { useColor } from "../../hooks/useColor";
 
 interface ModalBoardProps {
   workspaceId: string;
@@ -24,15 +25,13 @@ export default function ModalBoard({
   workspaceId,
 }: ModalBoardProps) {
   const { createBoard } = useWorkspace();
+  const {color, setColor} = useColor();
   const [boardName, setBoardName] = useState<string>("");
-  const [selectedColor, setSelectedColor] = useState<string>(COLORS[0]);
 
   const addBoard = () => {
-    /* createBoard(workspaceId, boardName, selectedColor);  */// Incluye el color seleccionado
-    createBoard(workspaceId, boardName); 
+    createBoard(workspaceId, boardName, color);  // Incluye el color seleccionado 
     onClose();
-    setBoardName("");
-    setSelectedColor(COLORS[0]); // Reinicia el color seleccionado
+    setBoardName("");; // Reinicia el color seleccionado
   };
 
   if (!isOpen) {
@@ -71,12 +70,12 @@ export default function ModalBoard({
               Color de fondo:
             </label>
             <div className="flex gap-2">
-              {COLORS.map((color) => (
+              {COLORS.map((colorOption) => (
                 <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`w-10 h-10 rounded-full cursor-pointer ${color} ${
-                    selectedColor === color ? "ring-4 ring-offset-2 ring-gray-500" : ""
+                  key={colorOption}
+                  onClick={() => setColor(colorOption)}
+                  className={`w-10 h-10 rounded-full cursor-pointer ${colorOption} ${
+                    color === colorOption ? "ring-4 ring-offset-2 ring-gray-500" : ""
                   }`}
                 />
               ))}

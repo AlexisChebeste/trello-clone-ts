@@ -1,17 +1,18 @@
 import { NavLink, useLocation } from "react-router";
 import {LogOut, Menu} from "lucide-react";
+import { useColor } from "../hooks/useColor";
 
 interface NavbarProps {
     onMenuToggle: () => void;
 }
 
 export default function Navbar({onMenuToggle}: NavbarProps) {
-
+    const {color} = useColor();
     const location = useLocation();
     const isBoardPage = location.pathname.includes("board");
 
     return(
-        <header className="bg-white shadow-sm border-b border-b-slate-300 h-16 w-full z-10 ">
+        <header className={`${isBoardPage && color} shadow-sm border-b border-b-slate-300 h-16 w-full z-10 `}>
             <nav className=" px-6  ">
                 <div className="flex justify-between h-16">
                     <div className='flex gap-4 '>
@@ -23,7 +24,7 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
                         </button>
                         
                         <NavLink to="/" className="flex-shrink-0 flex items-center">
-                            <span className="text-xl font-bold text-slate-600">TrelloClone</span>
+                            <span className={`text-xl font-bold ${isBoardPage ?'text-white' :'text-slate-600'}`}>TrelloClone</span>
                         </NavLink>
                         
                     </div>

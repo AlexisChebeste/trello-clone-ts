@@ -3,9 +3,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SidebarProps {
   children: React.ReactNode; // Contenido del sidebar
+  className?: string; // Clases adicionales
 }
 
-const Sidebar = ({ children }:SidebarProps) => {
+const Sidebar = ({ children, className }:SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -16,7 +17,7 @@ const Sidebar = ({ children }:SidebarProps) => {
     <div
       className={`flex ${
         isCollapsed ? "min-w-7" : "min-w-64"
-      } transition-all duration-500  bg-[#303ac7] h-auto  relative border-r border-slate-300/60`}
+      } transition-all duration-500  ${className} h-auto  relative border-r border-slate-300/60`}
     >
       {/* Contenido del Sidebar */}
       {!isCollapsed && <div className="flex-1 h-full ">

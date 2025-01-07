@@ -5,6 +5,7 @@ import CardBoardAside from './ui/CardBoardAside';
 import Sidebar from './Siderbar';
 import ModalBoard from './modals/ModalBoard';
 import { useParams } from 'react-router';
+import { useColor } from '../hooks/useColor';
 interface AsideBoardsProps {
     setIdBoard: (id:string) => void;
 }
@@ -14,7 +15,7 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
     const {workspaces} = useWorkspace();
     const workspace = workspaces.find((workspace) => workspace.id === workspaceId);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const {color, setColor} = useColor();
     const handleOpenModal = () => {
         setIsModalOpen(true);
       };
@@ -25,16 +26,17 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
 
 
 
-    const onClick = (id: string) => {
+    const onClick = (id: string, color:string) => {
         setIdBoard(id);
+        setColor(color)
     }
 
 
     return(
-        <Sidebar>
+        <Sidebar className={`${color || 'bg-blue-600'}`}>
             
             <div className='flex  gap-2 text-start border-b border-slate-300/60 py-5 px-4 items-center '>
-                <div className='flex  justify-center items-center h-9 w-11 bg-gradient-to-br from-sky-400 via-sky-600 to-blue-900 rounded-md text-white font-bold text-xl'>E</div>
+                <div className={`flex  justify-center items-center h-9 w-11  rounded-md bg-indigo-500 text-white font-bold text-xl`}>E</div>
                 <div className="flex flex-col   w-full ">
                     <h2 className="text-md  text-white font-semibold">{workspace?.name}</h2>
                     <p className='text-white text-xs '>Grautita</p>
@@ -55,8 +57,9 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
                         return(
                             <CardBoardAside 
                                 key={board.id} 
-                                name={board.name} 
-                                onClick={()=> onClick(board.id)}
+                                name={board.name}
+                                color={board.color || 'bg-blue-500'}
+                                onClick={()=> onClick(board.id, ( board.color || 'bg-indigo-500'))}
                             />
                         )
                     })}

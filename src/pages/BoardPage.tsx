@@ -9,8 +9,8 @@ export default function BoardPage() {
 
     return(
         <div className="flex-1  flex overflow-hidden max-h-[calc(100vh-4rem)] h-full">
-            <AsideBoards setIdBoard={setIdBoard}/>
-            <BoardSection idBoard={idBoard}/>
+            <AsideBoards setIdBoard={setIdBoard} />
+            <BoardSection idBoard={idBoard} />
         </div>
     )
 }

@@ -15,6 +15,7 @@ export interface User {
   export interface Board {
     id: string
     name: string
+    color?: string
     description?: string
     lists: List[]
   }

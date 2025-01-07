@@ -5,7 +5,7 @@ import { Workspace,Board, List, Card} from '../types';
 interface WorkspaceContextType {
   workspaces: Workspace[]
   createWorkspace: (name: string) => void
-  createBoard: (workspaceId: string, name: string) => void
+  createBoard: (workspaceId: string, name: string, color:string) => void
   createCard: (listId: string, title: string) => void
   createList: (boardId: string, title: string) => void
 }
@@ -95,10 +95,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     setWorkspaces([...workspaces, newWorkspace])
   }
 
-  const createBoard = (workspaceId: string, name: string) => {
+  const createBoard = (workspaceId: string, name: string, color: string) => {
     const newBoard: Board = {
       id: crypto.randomUUID(),
       name,
+      color,
       lists: [],
     }
     setWorkspaces(workspaces.map(workspace => {

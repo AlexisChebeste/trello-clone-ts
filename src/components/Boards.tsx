@@ -2,7 +2,6 @@ import {useState} from 'react';
 import ModalBoard from '../components/modals/ModalBoard';
 import CardBoard from '../components/ui/CardBoard';
 import { useWorkspace } from '../hooks/useWorkspace';
-import ButtonAdd from './ui/ButtonAdd';
 import { FolderLock, UserRound } from 'lucide-react';
 
 interface BoardsProps {

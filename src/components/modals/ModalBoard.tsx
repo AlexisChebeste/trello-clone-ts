@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../ui/Button";
-import { useColor } from "../../hooks/useColor";
 
 interface ModalBoardProps {
   workspaceId: string;
@@ -10,7 +9,7 @@ interface ModalBoardProps {
 }
 
 const COLORS = [
-  "bg-blue-500",
+  "bg-[#0078bd]",
   "bg-green-500",
   "bg-purple-500",
   "bg-orange-500",
@@ -19,19 +18,21 @@ const COLORS = [
   "bg-yellow-500",
 ];
 
+
 export default function ModalBoard({
   isOpen,
   onClose,
   workspaceId,
 }: ModalBoardProps) {
   const { createBoard } = useWorkspace();
-  const {color, setColor} = useColor();
-  const [boardName, setBoardName] = useState<string>("");
+  const [boardName, setBoardName] = useState<string>("");// Color por defecto
+  const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
+
 
   const addBoard = () => {
     createBoard(workspaceId, boardName, color);  // Incluye el color seleccionado 
     onClose();
-    setBoardName("");; // Reinicia el color seleccionado
+    setBoardName(""); // Reinicia el color seleccionado
   };
 
   if (!isOpen) {
@@ -73,7 +74,7 @@ export default function ModalBoard({
               {COLORS.map((colorOption) => (
                 <button
                   key={colorOption}
-                  onClick={() => setColor(colorOption)}
+                  onClick={() =>setColor(colorOption)}
                   className={`w-10 h-10 rounded-full cursor-pointer ${colorOption} ${
                     color === colorOption ? "ring-4 ring-offset-2 ring-gray-500" : ""
                   }`}

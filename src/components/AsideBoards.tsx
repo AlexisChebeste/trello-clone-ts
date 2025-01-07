@@ -15,7 +15,7 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
     const {workspaces} = useWorkspace();
     const workspace = workspaces.find((workspace) => workspace.id === workspaceId);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const {color, setColor} = useColor();
+    const {setColor} = useColor();
     const handleOpenModal = () => {
         setIsModalOpen(true);
       };
@@ -33,9 +33,9 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
 
 
     return(
-        <Sidebar className={`${color || 'bg-blue-600'}`}>
+        <Sidebar className={`bg-black/10 drop-shadow-md backdrop-blur-sm z-50`}>
             
-            <div className='flex  gap-2 text-start border-b border-slate-300/60 py-5 px-4 items-center '>
+            <div className='flex  gap-2 text-start border-b border-slate-300/30 py-5 px-4 items-center '>
                 <div className={`flex  justify-center items-center h-9 w-11  rounded-md bg-indigo-500 text-white font-bold text-xl`}>E</div>
                 <div className="flex flex-col   w-full ">
                     <h2 className="text-md  text-white font-semibold">{workspace?.name}</h2>

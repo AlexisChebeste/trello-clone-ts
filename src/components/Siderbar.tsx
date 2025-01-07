@@ -17,7 +17,7 @@ const Sidebar = ({ children, className }:SidebarProps) => {
     <div
       className={`flex ${
         isCollapsed ? "min-w-7" : "min-w-64"
-      } transition-all duration-500  ${className} h-auto  relative border-r border-slate-300/60`}
+      } transition-all duration-500  ${className} h-auto  relative border-r border-slate-300/30 `}
     >
       {/* Contenido del Sidebar */}
       {!isCollapsed && <div className="flex-1 h-full ">

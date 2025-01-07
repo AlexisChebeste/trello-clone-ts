@@ -4,7 +4,6 @@ import ButtonAdd from "./ui/ButtonAdd"
 import { X } from "lucide-react"
 import { useParams } from "react-router"
 import { useWorkspace } from "../hooks/useWorkspace"
-import { useColor } from "../hooks/useColor"
 
 interface BoardSectionProps {
   idBoard: string 
@@ -13,7 +12,6 @@ interface BoardSectionProps {
 export default function BoardSection({ idBoard }: BoardSectionProps ) {
   const {workspaces, createList} = useWorkspace()
   const {workspaceId} = useParams()
-  const {color} = useColor()
   const [isModalOpen, setIsModalOpen] = useState(true)
   const [listName, setListName] = useState('')
 
@@ -29,8 +27,8 @@ export default function BoardSection({ idBoard }: BoardSectionProps ) {
     }
 
   return(
-      <div className={`flex-1 overflow-hidden flex flex-col h-auto ${color} `}>
-        <div className={`h-16 px-8 ${color}/10 items-center  flex `}>
+      <div className={`flex-1 overflow-hidden flex flex-col h-auto  `}>
+        <div className={`h-16 px-8  bg-black/20 drop-shadow-md backdrop-blur-sm items-center  flex  `}>
             <h2 className="text-white text-lg font-bold">{board?.name}</h2>
         </div>
         <div className="board flex-1 flex overflow-x-auto overflow-y-hidden ">

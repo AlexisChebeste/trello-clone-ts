@@ -5,6 +5,7 @@ import BoardPage from "./pages/BoardPage";
 import { useState } from "react";
 import { auth } from "./lib/auth";
 import Login from "./pages/Login";
+import { useColor } from "./hooks/useColor";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const user = auth.getCurrentUser();
@@ -13,6 +14,7 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const location = useLocation();
+  const {color} = useColor();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -23,7 +25,7 @@ export default function App() {
 
   return (
       
-        <div className="min-h-screen w-screen flex flex-col overflow-hidden">
+        <div className={`min-h-screen w-screen ${color} flex flex-col overflow-hidden`}>
           {location.pathname !== "/login" && <Navbar onMenuToggle={toggleMenu}/>}
           <Routes>
             <Route path="/login" element={<Login />} />

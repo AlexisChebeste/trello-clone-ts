@@ -18,7 +18,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       id: '1',
       name: 'Espacio de trabajo 1',
       boards: [
-        { id: '1', name: 'Tablero 1' , lists: []},
+        { id: '1', name: 'Tablero 1' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
         { id: '2', name: 'Tablero 2' , lists: []},
       ],
     },

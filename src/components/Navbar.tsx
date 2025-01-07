@@ -11,7 +11,7 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
     const isBoardPage = location.pathname.includes("board");
 
     return(
-        <header className="bg-white shadow-sm border-b border-b-slate-300 max-h-16 w-full z-10 ">
+        <header className="bg-white shadow-sm border-b border-b-slate-300 h-16 w-full z-10 ">
             <nav className=" px-6  ">
                 <div className="flex justify-between h-16">
                     <div className='flex gap-4 '>

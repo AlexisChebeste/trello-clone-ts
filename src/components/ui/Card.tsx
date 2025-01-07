@@ -1,12 +1,13 @@
 interface CardProps {
-    title: string,
-    className?: string
-}
-
-export function Card({title, className}: CardProps) {
+    title: string
+  }
+  
+  export default function Card({ title }: CardProps) {
     return (
-        <button className={`w-full items-start bg-white rounded-xl h-12 drop-shadow-md ${className}`} >
-            <h3 className="text-sm font-semibold text-start text-blue-950 ml-4">{title}</h3>
-        </button>
+      <div className="bg-white p-2 rounded-xl pl-3 mr-1 mb-2 shadow  flex items-center">
+        <p className="text-sm">{title}</p>
+      </div>
     )
-}
+  }
+  
+  

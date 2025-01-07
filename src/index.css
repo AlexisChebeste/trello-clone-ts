@@ -2,3 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+.board-page {
+    @apply flex w-full h-[calc(100vh-4rem)];
+  }
+  
+  .board-section {
+    @apply flex-1 min-w-[calc(100vw-16rem)] max-h-[calc(100vh-4rem)] flex flex-col bg-gradient-to-br from-blue-aside to-blue-900;
+  }
+  
+  .aside-container {
+    @apply flex w-full gap-2 text-start border-b border-slate-300/60 py-5 px-4 items-center;
+  }
+
+
+.board::-webkit-scrollbar-thumb {
+  background-color: #474a4e;
+  border-radius: 8px;
+}
+
+.board::-webkit-scrollbar-track {
+  background-color: #1f2a41;
+}
+
+.board::-webkit-scrollbar {
+  height: 10px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #7e7f80;
+  border-radius: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #b9b9b9;
+}
+
+.list::-webkit-scrollbar {
+  width: 10px;
+}

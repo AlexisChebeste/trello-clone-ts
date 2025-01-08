@@ -31,10 +31,10 @@ export default function Login(){
     
 
     return (
-        <div className="flex flex-col justify-center py-6 sm:py-12 min-h-screen px-4 sm:px-6 lg:px-8 bg-slate-3">
-            <div className="bg-white mx-auto w-full max-w-md rounded-lg p-6 shadow-lg sm:p-8 ">
+        <div className="my-auto px-2 min-w-96  w-full max-w-lg bg-slate-3">
+            <div className="bg-white rounded-lg max-h-[800px] h-full  p-6 shadow-lg sm:p-8 ">
                 
-                <h2 className="text-center text-2xl font-bold sm:text-3xl text-gray-900">{isLogin ? 'Iniciar sesión' : 'Registrar usuario' }</h2>
+                <h2 className="text-center md:mb-12 text-2xl font-bold sm:text-3xl text-gray-900">{isLogin ? 'Iniciar sesión' : 'Registrar usuario' }</h2>
                 <div className="mt-8 sm:mx-auto  w-full sm:max-w-md">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="mb-6">

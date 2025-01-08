@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import Button from "../ui/Button";
 import {colors} from "../../lib/colors";
 import { Check } from "lucide-react";
+import ReactDOM from "react-dom";
 
 interface ModalBoardProps {
   workspaceId: string;
   isOpen: boolean;
   onClose: () => void;
-  anchorRef: React.RefObject<HTMLButtonElement>;
+  position: { top: number; left: number } | null;
+  updatePosition: () => void;
 }
 
 
@@ -18,12 +20,12 @@ export default function ModalBoard({
   isOpen,
   onClose,
   workspaceId,
-  anchorRef,
+  position,
+  updatePosition,
 }: ModalBoardProps) {
   const { createBoard } = useWorkspace();
   const [boardName, setBoardName] = useState<string>("");// Color por defecto
   const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const addBoard = () => {
       
@@ -31,72 +33,40 @@ export default function ModalBoard({
     onClose();
     setBoardName(""); // Reinicia el color seleccionado
   };
-  // Calcular la posición del modal según el botón
-  const [position, setPosition] = useState<{ top: number; left: number }>({
-    top: 0,
-    left: 0,
-  });
-
-  const updatePosition = () => {
-    if (isOpen && anchorRef.current) {
-      const buttonRect = anchorRef.current.getBoundingClientRect();
-      const modalWidth = modalRef.current?.offsetWidth || 0;
-      const modalHeight = modalRef.current?.offsetHeight || 0;
-
-      let left = buttonRect.right + 8; // Modal a la derecha del botón
-      let top = buttonRect.top;
-
-      // Si el modal se sale por la derecha, moverlo a la izquierda del botón
-      if (left + modalWidth > window.innerWidth) {
-        left = buttonRect.left - modalWidth - 8; // Modal a la izquierda
-      }
-
-      // Si se sale por el borde superior o inferior, ajustamos la posición
-      if (top + modalHeight > window.innerHeight) {
-        top = Math.max(8, window.innerHeight - modalHeight - 8); // Ajustar hacia arriba
-      } else if (top < 0) {
-        top = 8; // Ajustar hacia abajo
-      }
-
-      setPosition({ top, left });
-    }
-  };
-
+  
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
     if (isOpen) {
-      window.addEventListener("keydown", handleEscape);
-      return () => window.removeEventListener("keydown", handleEscape);
+      // Escucha el evento resize y actualiza la posición del modal
+      window.addEventListener("resize", updatePosition);
+
+      // Limpia el listener al desmontar
+      return () => {
+        window.removeEventListener("resize", updatePosition);
+      };
     }
-    if (isOpen) {
-      updatePosition();
-      window.addEventListener("resize", updatePosition); // Recalcular en resize
-      return () => window.removeEventListener("resize", updatePosition);
-    }
-  }, [isOpen]);
+  }, [isOpen, updatePosition]);
+  
 
   if (!isOpen) {
     return null;
   }
 
-  return (
+  return ReactDOM.createPortal(
     <div
       id="modal-board"
-      className=" w-80 flex items-center justify-center "
-      ref={modalRef}
+      role="dialog" 
+      aria-labelledby="modal-title" 
+      aria-describedby="modal-description"
+      aria-hidden={!isOpen ? "true" : "false"}
+      className="fixed  z-50 "
       style={{
-        position: "absolute",
-        top: position.top,
-        left: position.left,
-        zIndex: 50,
+        top: position?.top  ,
+        left: position?.left,
+        width: "300px",
       }}
     >
       <div className="bg-white  flex flex-col justify-between rounded-lg shadow-lg p-4 text-slate-600">
-        <h2 className="text-xl font-bold mb-4 text-slate-600 text-center">Nuevo Tablero</h2>
+        <h2 id="modal-title" className="text-lg font-bold mb-4 text-slate-600 text-center">Nuevo Tablero</h2>
         <div className="flex flex-col gap-4">
           {/* Input para el nombre del tablero */}
           <div>
@@ -127,6 +97,9 @@ export default function ModalBoard({
                   <button
                     key={colorOption}
                     onClick={() =>setColor(colorOption)}
+                    aria-label="Seleccionar color"
+                    aria-labelledby="modal-title"
+                    aria-describedby="modal-description"
                     className={`w-full h-full rounded-md cursor-pointer hover:bg-black/20 transition-colors flex  justify-center items-center ${
                       color === colorOption ? "bg-black/20" : ""
                     } `}
@@ -157,6 +130,7 @@ export default function ModalBoard({
           
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

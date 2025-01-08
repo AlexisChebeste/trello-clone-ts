@@ -65,9 +65,9 @@ export default function CardList({ title , list}: ListProps) {
   return (
     <div className="bg-slate-200 mt-2 p-4 rounded-xl shadow-list w-72 shrink-0 flex flex-col gap-4 text-slate-900 max-h-[80vh] justify-between">
       <h3 
-        className="bg-transparent font-medium overflow-hidden cursor-pointer py-1 px-3  w-full rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white" 
+        className="font-medium overflow-hidden cursor-pointer py-1 px-3  w-full rounded-md  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white" 
         contentEditable='true'
-        role="textbox" 
+        role="heading" 
         aria-label="Editar título"
         spellCheck="false"
         onBlur={(e) => setListName(e.currentTarget.textContent || '')}

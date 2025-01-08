@@ -16,17 +16,42 @@ export default function Boards({idWorkspace}: BoardsProps) {
 
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
 
-    const buttonRef = useRef<HTMLButtonElement>(null); // Referencia al botón
+    const buttonRef = useRef<HTMLButtonElement>(null); 
+    const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
+
+    
+
+    const handleResize = () => {
+        if (buttonRef.current) {
+          const buttonRect = buttonRef.current.getBoundingClientRect();
+          const modalWidth = 300;
+          const screenWidth = window.innerWidth;
+      
+          let left = buttonRect.right;
+          let top = buttonRect.top;
+      
+          if (left + modalWidth > screenWidth) {
+            left = screenWidth - modalWidth;
+          }
+      
+          if (left < 0) {
+            left = 0;
+          }
+      
+          setModalPosition({ top, left });
+        }
+      };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
 
-
+    const handleOpenModal = () => {
+        handleResize();
+        setIsModalOpen(!isModalOpen);
+        
+    };
 
     return(
         <div className="w-full flex flex-col gap-8">
@@ -41,7 +66,7 @@ export default function Boards({idWorkspace}: BoardsProps) {
             <article className='flex flex-col gap-4'>
                 <div className='flex gap-2 items-center'>
                     <UserRound className='size-6 text-slate-500'/>
-                    <h3 className='text-slate-800 font-semibold'>Tus tableros</h3>
+                    <h2 className='text-slate-800 font-semibold'>Tus tableros</h2>
                 </div>
                 
                 <div className="relative w-full grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 justify-items-stretch gap-2 lg:gap-4 ">
@@ -49,8 +74,11 @@ export default function Boards({idWorkspace}: BoardsProps) {
                         <CardBoard key={board.id} workspace={workspace} board={board} />
                     ))}
                     <button 
-                    ref={buttonRef}
-                    onClick={handleOpenModal} className='flex h-24 items-center justify-center gap-3 bg-slate-200 hover:bg-slate-300 w-full  p-5 transition-all rounded ease-in-out duration-300 border hover:border-gray-400 hover:scale-105 hover:shadow-none'>
+                        ref={buttonRef}
+                        onClick={handleOpenModal} 
+                        aria-label='Añadir nuevo tablero'
+                        className='flex h-24 items-center justify-center gap-3 bg-slate-200 hover:bg-slate-300 w-full  p-5 transition-all rounded ease-in-out duration-300 border hover:border-gray-400 hover:scale-105 hover:shadow-none'
+                    >
                         <h2 className="text-lg text-gray-700 font-semibold">Añadir tablero</h2>
                     </button>
                     
@@ -62,7 +90,10 @@ export default function Boards({idWorkspace}: BoardsProps) {
                 workspaceId={workspace.id}
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                anchorRef={buttonRef} // Pasar la referencia
+                position={modalPosition} // Pasar la referencia
+                updatePosition={handleResize} // Pasar la función
+                aria-labelledby="modal-title" // Asociar el modal con un título
+                aria-hidden={!isModalOpen ? "true" : "false"} // Asegúrate de que el contenido detrás del modal esté oculto
                 />
             )}
             

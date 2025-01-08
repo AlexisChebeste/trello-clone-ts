@@ -25,7 +25,7 @@ export default function App() {
 
   return (
       
-        <div className={`min-h-screen w-screen ${location.pathname.includes("board") && color} flex flex-col overflow-hidden items-center`}>
+        <div className={`min-h-screen w-screen  ${location.pathname.includes("board") ? color : location.pathname.includes("login") ? 'bg-slate-200' : ''} flex flex-col overflow-hidden items-center`}>
           {location.pathname !== "/login" && <Navbar onMenuToggle={toggleMenu}/>}
           <Routes>
             <Route path="/login" element={<Login />} />

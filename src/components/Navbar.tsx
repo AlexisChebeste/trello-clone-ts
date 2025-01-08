@@ -16,6 +16,9 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
                     <div className='flex gap-4 '>
                         <button
                             className={isBoardPage ? 'hidden' : "sm:hidden  "}
+                            aria-label="Menu"
+                            aria-describedby="menu"
+                            aria-labelledby="menu"
                             onClick={onMenuToggle}
                         >
                             <Menu size={24} className="hover:scale-110 text-slate-600"/>

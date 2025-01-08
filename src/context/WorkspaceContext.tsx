@@ -18,20 +18,20 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       id: '1',
       name: 'Espacio de trabajo 1',
       boards: [
-        { id: '1', name: 'Tablero 1' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
-        { id: '2', name: 'Tablero 2' , lists: []},
+        { id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
+        { id: '2', name: 'Tablero 2' ,color: 'bg-[#519839]' ,  lists: []},
       ],
     },
     {
       id: '2',
       name: 'Espacio de trabajo 2',
       boards: [
-        { id: '3', name: 'Tablero 1' , lists: []},
-        { id: '4', name: 'Tablero 2' , lists: []},
-        { id: '5', name: 'Tablero 3' , lists: []},
-        { id: '6', name: 'Tablero 4' , lists: []},
-        { id: '7', name: 'Tablero 5' , lists: []},
-        { id: '8', name: 'Tablero 6' , lists: []},
+        { id: '3', name: 'Tablero 1' ,color: 'bg-[#0079bf]' , lists: []},
+        { id: '4', name: 'Tablero 2' ,color: 'bg-[#0079bf]' , lists: []},
+        { id: '5', name: 'Tablero 3' ,color: 'bg-[#0079bf]' , lists: []},
+        { id: '6', name: 'Tablero 4' ,color: 'bg-[#0079bf]' , lists: []},
+        { id: '7', name: 'Tablero 5' ,color: 'bg-[#0079bf]' , lists: []},
+        { id: '8', name: 'Tablero 6' ,color: 'bg-[#0079bf]' , lists: []},
       ],
     },
   ])

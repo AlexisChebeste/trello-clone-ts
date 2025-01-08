@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {  Plus} from 'lucide-react';
 import  {useWorkspace}  from '../hooks/useWorkspace';
 import CardBoardAside from './ui/CardBoardAside';
@@ -16,6 +16,8 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
     const workspace = workspaces.find((workspace) => workspace.id === workspaceId);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {setColor} = useColor();
+    const buttonRef = useRef<HTMLButtonElement>(null); 
+
     const handleOpenModal = () => {
         setIsModalOpen(true);
       };
@@ -33,7 +35,7 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
 
 
     return(
-        <Sidebar className={`bg-black/10 drop-shadow-md backdrop-blur-sm z-50`}>
+        <Sidebar className={`bg-black/10 drop-shadow-md backdrop-blur-sm z-50 `}>
             
             <div className='flex  gap-2 text-start border-b border-slate-300/30 py-5 px-4 items-center '>
                 <div className={`flex  justify-center items-center h-9 w-11  rounded-md bg-indigo-500 text-white font-bold text-xl`}>E</div>
@@ -44,12 +46,23 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
             </div>
             <div >
                 <div className="flex gap-3 flex-col w-auto pt-4 pb-2 ">
-                    <div className='flex justify-between items-center px-4'>
+                    <div className=' relative flex justify-between items-center px-4'>
                         <h3 className='text-sm font-bold  text-white'>Sus tableros</h3>
-                        <button onClick={handleOpenModal} 
-                        className=' p-1 text-white hover:bg-white/30 rounded-md '>
+                        <button 
+                            ref={buttonRef}
+                            onClick={handleOpenModal} 
+                            className=' p-1 text-white hover:bg-white/30 rounded-md '
+                        >
                             <Plus className='size-4 '/>
                         </button>
+                        {workspace && (
+                            <ModalBoard
+                            workspaceId={workspace.id}
+                            isOpen={isModalOpen}
+                            onClose={handleCloseModal}
+                            anchorRef={buttonRef} // Pasar la referencia
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-col">
@@ -66,9 +79,7 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
                 </div>
             </div>
             
-            {workspace && (
-                <ModalBoard workspaceId={workspace.id} isOpen={isModalOpen} onClose={handleCloseModal} />
-            )}
+            
              
         </Sidebar> 
         

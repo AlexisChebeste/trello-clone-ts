@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { Board, Workspace } from "../../types";
+import { useColor } from "../../hooks/useColor";
 
 interface CardBoardProps {
   board: Board;
@@ -7,10 +8,12 @@ interface CardBoardProps {
 }
 
 export default function CardBoard({ board, workspace }: CardBoardProps) {
+  const {setColor} = useColor();
   return (
     <Link 
       to={`${workspace.id}/board/${board.id}`} 
-      className="w-full bg-gradient-to-br from-sky-400 via-sky-600 to-blue-900 hover:opacity-85 rounded-lg text-white p-4 h-28 hover:scale-105 transition-all ease-in-out duration-200"
+      onClick={() => setColor(board.color || '')}
+      className={`w-full ${board.color} hover:opacity-85 rounded-lg text-white p-4 h-28 hover:scale-105 transition-all ease-in-out duration-200`}
     >
       <h2 className="text-lg font-semibold">
         {board.name}

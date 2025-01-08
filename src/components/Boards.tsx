@@ -44,13 +44,13 @@ export default function Boards({idWorkspace}: BoardsProps) {
                     <h3 className='text-slate-800 font-semibold'>Tus tableros</h3>
                 </div>
                 
-                <div className="relative w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 xl:grid-cols-4 justify-items-stretch gap-4 ">
+                <div className="relative w-full grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 justify-items-stretch gap-2 lg:gap-4 ">
                     {workspace?.boards.map((board) => (
                         <CardBoard key={board.id} workspace={workspace} board={board} />
                     ))}
                     <button 
                     ref={buttonRef}
-                    onClick={handleOpenModal} className='flex h-28 items-center justify-center gap-3 bg-slate-200 hover:bg-slate-300 w-full rounded-lg  p-5 transition-all ease-in-out duration-300 border hover:border-gray-400 hover:scale-105 hover:shadow-none'>
+                    onClick={handleOpenModal} className='flex h-24 items-center justify-center gap-3 bg-slate-200 hover:bg-slate-300 w-full  p-5 transition-all rounded ease-in-out duration-300 border hover:border-gray-400 hover:scale-105 hover:shadow-none'>
                         <h2 className="text-lg text-gray-700 font-semibold">Añadir tablero</h2>
                     </button>
                     

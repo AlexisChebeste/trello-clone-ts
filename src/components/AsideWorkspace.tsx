@@ -24,9 +24,9 @@ export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspac
     }
 
     return(
-        <div className={`p-4 bg-white md:bg-transparent flex flex-col    w-full max-w-80  md:max-w-64 lg:max-w-72 transition-all ease-in-out ${className}`}>
+        <div className={`p-2 lg:p-4 bg-white sm:bg-transparent flex flex-col   w-full max-w-72 sm:max-w-56  lg:max-w-64  transition-all ease-in-out ${className}`}>
             <div className='flex w-full gap-4 sm:justify-between flex-col text-start border-b pb-8'>
-                <h2 className="text-lg font-semibold mt-8  md:my-auto text-gray-700 ">Espacios de trabajo</h2>
+                <h2 className="text-lg font-semibold mt-8  sm:my-auto text-gray-700 ">Espacios de trabajo</h2>
                 <div className="flex gap-3 flex-col w-auto ">
                     <input 
                         type="text" 

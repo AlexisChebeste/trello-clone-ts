@@ -24,7 +24,6 @@ export default function ModalBoard({
   const { createBoard } = useWorkspace();
   const [boardName, setBoardName] = useState<string>("");// Color por defecto
   const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
-  
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
   const addBoard = () => {
       
@@ -32,6 +31,7 @@ export default function ModalBoard({
     onClose();
     setBoardName(""); // Reinicia el color seleccionado
   };
+
   
   const handleResize = () => {
     if (buttonRef.current) {
@@ -62,10 +62,13 @@ export default function ModalBoard({
       setModalPosition({ top, left });
     }
   };
-  
-  /* useEffect(() => {
+
+  useEffect(() => {
+    handleResize();
+  }, [isOpen]);
+
+  useEffect(() => {
     if (isOpen) {
-      handleResize();
       const close = (e: { key: string; }) =>{
         if (e.key === "Escape") onClose();
       }
@@ -79,7 +82,7 @@ export default function ModalBoard({
         window.removeEventListener("resize", handleResize);
       };
     }
-  }, [isOpen, handleResize]); */
+  }, [handleResize]);
   
 
   if (!isOpen) {

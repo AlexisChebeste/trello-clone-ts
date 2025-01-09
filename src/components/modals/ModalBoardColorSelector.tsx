@@ -12,10 +12,10 @@ export default function ModalBoardColorSelector({setColor,color, listColor}:Moda
 
     return(
         <div className="grid grid-cols-3 items-center   gap-2">
-            {Object.values(listColor).map((colorOption) => (
-                <div className={`${colorOption} w-21 h-12   rounded flex justify-center items-center`}>
+            {Object.values(listColor).map((colorOption, idx) => (
+                <div className={`${colorOption} w-21 h-12   rounded flex justify-center items-center`} key={idx}>
                     <button
-                        key={colorOption}
+                        
                         onClick={() =>setColor(colorOption)}
                         aria-label="Seleccionar color"
                         aria-labelledby="modal-title"

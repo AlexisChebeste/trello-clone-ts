@@ -76,7 +76,7 @@ export default function CardList({ title , list}: ListProps) {
         {listName}
       </h3>
       
-      <div className="list flex-1 overflow-y-auto " ref={listRef}>
+      <div className="list flex-1 overflow-y-auto  px-1" ref={listRef}>
         {list.cards.map((card) => (
             <Card key={card.id} title={card.title} />
         ))}
@@ -85,14 +85,14 @@ export default function CardList({ title , list}: ListProps) {
             type="text"  
             value={cardName}
             onChange={(e) => setCardName(e.target.value)}
-            className="p-2  drop-shadow-sm rounded-lg text-sm mb-2 ml-1 mr-1 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 " 
+            className="p-2 pl-4  drop-shadow-sm rounded-xl text-sm mb-2  mr-1 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600 " 
             placeholder="Ingrese un titulo"
           />
           <div className="flex gap-3 items-center ">
             <button
               onClick={addCard} 
               title="tarjeta" 
-              className="bg-blue-600 rounded-md py-2 mt-auto text-sm hover:bg-blue-700 p-2 text-white"
+              className="bg-blue-600 rounded-lg py-2 mt-auto text-sm hover:bg-blue-700 p-2 text-white"
             >
               Añadir tarjeta
             </button>

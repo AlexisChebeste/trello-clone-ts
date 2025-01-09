@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
 import ReactDOM from "react-dom";
 import ModalBoardColorSelector from "./ModalBoardColorSelector";
@@ -12,9 +12,6 @@ interface ModalBoardProps {
   buttonRef: React.RefObject<HTMLButtonElement>;
 }
 
-
-
-
 export default function ModalBoard({
   isOpen,
   onClose,
@@ -25,6 +22,7 @@ export default function ModalBoard({
   const [boardName, setBoardName] = useState<string>("");// Color por defecto
   const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const addBoard = () => {
       
     if (boardName.trim() !== '') createBoard(workspaceId, boardName, color);  // Incluye el color seleccionado 
@@ -37,7 +35,7 @@ export default function ModalBoard({
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       const modalWidth = 300;
-      const modalHeight = 650;
+      const modalHeight = 700;
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
   
@@ -72,7 +70,17 @@ export default function ModalBoard({
       const close = (e: { key: string; }) =>{
         if (e.key === "Escape") onClose();
       }
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          modalRef.current &&
+          !modalRef.current.contains(event.target as Node) &&
+          isOpen
+        ) {
+          onClose() // Cerrar el modal
+        }
+      };
       // Escucha el evento resize y actualiza la posición del modal
+      document.addEventListener("mousedown", handleClickOutside);
       window.addEventListener("keydown", close);
       window.addEventListener("resize", handleResize);
 
@@ -92,6 +100,7 @@ export default function ModalBoard({
   return ReactDOM.createPortal(
     <div
       id="modal-board"
+      ref={modalRef}
       role="dialog" 
       aria-labelledby="modal-title" 
       aria-describedby="modal-description"

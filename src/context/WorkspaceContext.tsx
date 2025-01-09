@@ -1,5 +1,5 @@
 import { createContext, useState,  ReactNode } from 'react';
-
+import { gradients } from '../lib/colors';
 import { Workspace,Board, List, Card} from '../types';
 
 interface WorkspaceContextType {
@@ -17,6 +17,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     {
       id: '1',
       name: 'Espacio de trabajo 1',
+      logo: gradients.gradientceleste,
       boards: [
         { id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
         { id: '2', name: 'Tablero 2' ,color: 'bg-[#519839]' ,  lists: []},
@@ -25,6 +26,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     {
       id: '2',
       name: 'Espacio de trabajo 2',
+      logo: gradients.gradientvioleta,
       boards: [
         { id: '3', name: 'Tablero 1' ,color: 'bg-[#0079bf]' , lists: []},
         { id: '4', name: 'Tablero 2' ,color: 'bg-[#0079bf]' , lists: []},
@@ -90,6 +92,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const newWorkspace: Workspace = {
       id: crypto.randomUUID(),
       name,
+      logo: Object.values(gradients)[Math.floor(Math.random() * Object.values(gradients).length)],
       boards: [],
     }
     setWorkspaces([...workspaces, newWorkspace])

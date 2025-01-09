@@ -1,9 +1,13 @@
 export const gradients = {
-    primary: "bg-gradient-to-r from-blue-500 to-blue-600",
-    secondary: "bg-gradient-to-r from-green-500 to-green-600",
-    tertiary: "bg-gradient-to-r from-yellow-500 to-yellow-600",
-    quaternary: "bg-gradient-to-r from-red-500 to-red-600",
-    quinary: "bg-gradient-to-r from-purple-500 to-purple-600",
+    gradientceleste: "bg-gradient-to-br from-[#0C66E4] to-[#37B4C3]",
+    gradientazul: "bg-gradient-to-br from-[#0C66E4] to-[#09326C]",
+    gradientvioleta: "bg-gradient-to-br from-[#09326C] to-[#CD519D]",
+    gradientfucsia: "bg-gradient-to-br from-[#6E5DC6] to-[#E774BB]",
+    gradientnaranja: "bg-gradient-to-br from-[#E34935] to-[#FAA53D]",
+    gradientrosa: "bg-gradient-to-br from-[#E774BB] to-[#F87462]",
+    gradientverde: "bg-gradient-to-br from-[#1F845A] to-[#60C6D2]",
+    gradientgris: "bg-gradient-to-br from-[#505F79] to-[#172B4D]",
+    gradientmarron: "bg-gradient-to-br from-[#43290F] to-[#AE2A19]",
 }
 
 
@@ -16,5 +20,5 @@ export const colors = {
     rosa: "bg-[#cd5a91]",
     verde: "bg-[#4bbf6b]",
     celeste: "bg-[#00aecc]",
-    gray: "bg-[#838c91]",
+    gris: "bg-[#838c91]",
 }

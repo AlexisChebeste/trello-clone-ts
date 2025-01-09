@@ -47,9 +47,8 @@ export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspac
                     return(
                         <CardWorkspace 
                             key={workspace.id} 
-                            logo={workspace.logo}
+                            logo={workspace.logo || ''}
                             name={workspace.name} 
-                            cantBoards={workspace.boards.length}
                             onClick={() => onClick(workspace.id)}
                         />
                     )

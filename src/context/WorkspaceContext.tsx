@@ -8,6 +8,10 @@ interface WorkspaceContextType {
   createBoard: (workspaceId: string, name: string, color:string) => void
   createCard: (listId: string, title: string) => void
   createList: (boardId: string, title: string) => void
+  deleteCard: (listId: string, cardId: string) => void
+  deleteList: (boardId: string, listId: string) => void
+  deleteBoard: (workspaceId: string, boardId: string) => void
+  deleteWorkspace: (workspaceId: string) => void
 }
 
 export const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined)
@@ -116,6 +120,60 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     }))
   }
 
+  const deleteCard = (listId: string, cardId: string) => {
+    setWorkspaces(workspaces.map(workspace => {
+      return {
+        ...workspace,
+        boards: workspace.boards.map(board => {
+          return {
+            ...board,
+            lists: board.lists.map(list => {
+              if (list.id === listId) {
+                return {
+                  ...list,
+                  cards: list.cards.filter(card => card.id !== cardId),
+                }
+              }
+              return list
+            })
+          }
+        })
+      }
+    }))
+  }
+
+  const deleteList = (boardId: string, listId: string) => {
+    setWorkspaces(workspaces.map(workspace => {
+      return {
+        ...workspace,
+        boards: workspace.boards.map(board => {
+          if (board.id === boardId) {
+            return {
+              ...board,
+              lists: board.lists.filter(list => list.id !== listId)
+            }
+          }
+          return board
+        })
+      }
+    }))
+  }
+
+  const deleteBoard = (workspaceId: string, boardId: string) => {
+    setWorkspaces(workspaces.map(workspace => {
+      if (workspace.id === workspaceId) {
+        return {
+          ...workspace,
+          boards: workspace.boards.filter(board => board.id !== boardId)
+        }
+      }
+      return workspace
+    }))
+  }
+
+  const deleteWorkspace = (workspaceId: string) => {
+    setWorkspaces(workspaces.filter(workspace => workspace.id !== workspaceId))
+  }
 
   return (
     <WorkspaceContext.Provider value={{ 
@@ -124,6 +182,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       createBoard,
       createCard,
       createList,
+      deleteCard,
+      deleteList,
+      deleteBoard,
+      deleteWorkspace,
     }}>
       {children}
     </WorkspaceContext.Provider>

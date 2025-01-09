@@ -17,38 +17,12 @@ export default function Boards({idWorkspace}: BoardsProps) {
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
 
     const buttonRef = useRef<HTMLButtonElement>(null); 
-    const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
-
-
-    
-
-    const handleResize = () => {
-        if (buttonRef.current) {
-          const buttonRect = buttonRef.current.getBoundingClientRect();
-          const modalWidth = 300;
-          const screenWidth = window.innerWidth;
-      
-          let left = buttonRect.right;
-          let top = buttonRect.top;
-      
-          if (left + modalWidth > screenWidth) {
-            left = screenWidth - modalWidth;
-          }
-      
-          if (left < 0) {
-            left = 0;
-          }
-      
-          setModalPosition({ top, left });
-        }
-      };
 
     const handleCloseModal = () => {
-        setIsModalOpen(false);
+        setIsModalOpen(!isModalOpen);
     };
 
     const handleOpenModal = () => {
-        handleResize();
         setIsModalOpen(!isModalOpen);
         
     };
@@ -90,8 +64,7 @@ export default function Boards({idWorkspace}: BoardsProps) {
                 workspaceId={workspace.id}
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
-                position={modalPosition} // Pasar la referencia
-                updatePosition={handleResize} // Pasar la función
+                buttonRef={buttonRef}
                 aria-labelledby="modal-title" // Asociar el modal con un título
                 aria-hidden={!isModalOpen ? "true" : "false"} // Asegúrate de que el contenido detrás del modal esté oculto
                 />

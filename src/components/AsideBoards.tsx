@@ -17,48 +17,19 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {setColor} = useColor();
     const buttonRef = useRef<HTMLButtonElement>(null); 
-    const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
-
-    
-      
-    const handleResize = () => {
-      if (buttonRef.current) {
-        const buttonRect = buttonRef.current.getBoundingClientRect();
-        const modalWidth = 300;
-        const screenWidth = window.innerWidth;
-    
-        let left = buttonRect.right+18;
-        let top = buttonRect.top;
-    
-        if (left + modalWidth > screenWidth) {
-          left = screenWidth - modalWidth;
-        }
-    
-        if (left < 0) {
-          left = 0;
-        }
-    
-        setModalPosition({ top, left });
-      }
-    };
 
     const handleOpenModal = () => {
-      handleResize();
       setIsModalOpen(true);
-      
     };
     
     const handleCloseModal = () => {
       setIsModalOpen(false);
     };
 
-
-
     const onClick = (id: string, color:string) => {
         setIdBoard(id);
         setColor(color)
     }
-
 
     return(
       <Sidebar className={`bg-black/10 drop-shadow-md backdrop-blur-sm z-50 `}>
@@ -105,8 +76,7 @@ export default function AsideBoards({setIdBoard}: AsideBoardsProps) {
             workspaceId={workspace.id}
             isOpen={isModalOpen}
             onClose={handleCloseModal}
-            position={modalPosition}
-            updatePosition={handleResize} // Pasar la posición
+            buttonRef={buttonRef}
           />
         )}
           

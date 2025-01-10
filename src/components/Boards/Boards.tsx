@@ -1,9 +1,10 @@
 import {useRef, useState} from 'react';
 import ModalBoard from '../modals/ModalBoard';
-import CardBoard from './CardBoard';
+import CardBoard from '../Home/CardBoard';
 import { useWorkspace } from '../../hooks/useWorkspace';
-import { FolderLock, UserRound } from 'lucide-react';
+import { UserRound } from 'lucide-react';
 import { useParams } from 'react-router';
+import { WorkspaceInfo } from './WorkspaceInfo';
 
 export default function Boards() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
@@ -26,13 +27,9 @@ export default function Boards() {
 
     return(
         <div className="w-full flex flex-col gap-8">
-            <div className='flex gap-4 items-center border-b pb-8 border-b-slate-300'>
-                <div className={`py-3 px-6 ${workspace?.logo} rounded-lg text-white font-bold text-4xl`}>{workspace?.name[0].toUpperCase()}</div>
-                <div className='flex flex-col text-gray-700 gap-1'>
-                    <h1 className='text-xl font-semibold'>{workspace?.name }</h1>
-                    <p className='text-gray-500 text-xs flex gap-1 items-center'><FolderLock className='size-4'/>Publica</p>
-                </div>
-            </div>
+            {workspace &&
+                <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description}/>
+            }
             
             <article className='flex flex-col gap-4'>
                 <div className='flex gap-2 items-center'>

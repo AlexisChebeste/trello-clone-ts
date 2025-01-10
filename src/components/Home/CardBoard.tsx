@@ -10,7 +10,7 @@ export default function CardBoard({ board}: CardBoardProps) {
   const {setColor} = useColor();
   return (
     <Link 
-      to={`/b/${board.id}/${board.name}`} 
+      to={`/b/${board.id}/${board.name.replace(/ /g,'-')}`} 
       onClick={() => setColor(board.color || '')}
       className={`w-full ${board.color}   text-white rounded p-4 h-24 hover:scale-105 transition-all ease-in-out duration-200 mb-5`}
     >

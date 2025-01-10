@@ -1,5 +1,5 @@
 import AsideWorkspace from "../../components/Home/AsideWorkspace";
-import Boards from "../../components/Home/Boards";
+import Boards from "../../components/Boards/Boards";
 import { X } from "lucide-react";
 
 interface HomeProps {

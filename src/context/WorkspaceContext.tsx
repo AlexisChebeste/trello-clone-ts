@@ -1,6 +1,6 @@
 import { createContext, useState,  ReactNode } from 'react';
 import { gradients } from '../lib/colors';
-import { Workspace,Board, List, Card} from '../types';
+import { Workspace,Board, List } from '../types';
 
 interface WorkspaceContextType {
   workspaces: Workspace[]
@@ -44,30 +44,24 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   
   const createCard = (listId: string, title: string) => {
-    const newCard: Card = {
-      id: crypto.randomUUID(),
-      title,
-    }
-    setWorkspaces(workspaces.map(workspace => {
-      return {
+    setWorkspaces((prev) =>
+      prev.map((workspace) => ({
         ...workspace,
-        boards: workspace.boards.map(board => {
-          return {
-            ...board,
-            lists: board.lists.map(list => {
-              if (list.id === listId) {
-                return {
-                  ...list,
-                  cards: [...list.cards, newCard],
-                }
-              }
-              return list
-            })
-          }
-        })
-      }
-    }))
-  }
+        boards: workspace.boards.map((board) => ({
+          ...board,
+          lists: board.lists.map((list) => {
+            if (list.id === listId) {
+              return {
+                ...list,
+                cards: [...list.cards, { id: crypto.randomUUID(), title }],
+              };
+            }
+            return list;
+          }),
+        })),
+      }))
+    );
+  };
 
   const createList = (boardId: string, title: string) => {
 

@@ -1,15 +1,12 @@
 import {useRef, useState} from 'react';
-import ModalBoard from '../components/modals/ModalBoard';
-import CardBoard from '../components/ui/CardBoard';
-import { useWorkspace } from '../hooks/useWorkspace';
+import ModalBoard from '../modals/ModalBoard';
+import CardBoard from './CardBoard';
+import { useWorkspace } from '../../hooks/useWorkspace';
 import { FolderLock, UserRound } from 'lucide-react';
+import { useParams } from 'react-router';
 
-interface BoardsProps {
-    idWorkspace: string;
-}
-
-export default function Boards({idWorkspace}: BoardsProps) {
-
+export default function Boards() {
+    const {idWorkspace} = useParams<{idWorkspace: string}>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {workspaces} = useWorkspace();
@@ -30,7 +27,7 @@ export default function Boards({idWorkspace}: BoardsProps) {
     return(
         <div className="w-full flex flex-col gap-8">
             <div className='flex gap-4 items-center border-b pb-8 border-b-slate-300'>
-                <div className='py-3 px-6 bg-gradient-to-br from-sky-400 via-sky-600 to-blue-900 rounded-lg text-white font-bold text-4xl'>E</div>
+                <div className={`py-3 px-6 ${workspace?.logo} rounded-lg text-white font-bold text-4xl`}>{workspace?.name[0].toUpperCase()}</div>
                 <div className='flex flex-col text-gray-700 gap-1'>
                     <h1 className='text-xl font-semibold'>{workspace?.name }</h1>
                     <p className='text-gray-500 text-xs flex gap-1 items-center'><FolderLock className='size-4'/>Publica</p>
@@ -45,7 +42,7 @@ export default function Boards({idWorkspace}: BoardsProps) {
                 
                 <div className="relative w-full grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 justify-items-stretch gap-2 lg:gap-4 ">
                     {workspace?.boards.map((board) => (
-                        <CardBoard key={board.id} workspace={workspace} board={board} />
+                        <CardBoard key={board.id} board={board} />
                     ))}
                     <button 
                         ref={buttonRef}

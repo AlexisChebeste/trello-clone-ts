@@ -1,25 +1,22 @@
 import { useState } from "react"
-import CardList from "./ui/List"
-import ButtonAdd from "./ui/ButtonAdd"
+import CardList from "./List"
+import ButtonAdd from "./ButtonAdd"
 import { X } from "lucide-react"
 import { useParams } from "react-router"
-import { useWorkspace } from "../hooks/useWorkspace"
+import { useWorkspace } from "../../hooks/useWorkspace"
 
-interface BoardSectionProps {
-  idBoard: string 
-}
 
-export default function BoardSection({ idBoard }: BoardSectionProps ) {
+export default function BoardSection() {
   const {workspaces, createList} = useWorkspace()
-  const {workspaceId} = useParams()
+  const {idBoard} = useParams()
   const [isModalOpen, setIsModalOpen] = useState(true)
   const [listName, setListName] = useState('')
 
-  const workspace = workspaces.find(workspace => workspace.id === workspaceId)
+  const workspace = workspaces.find(workspace => workspace.id === '1')
   const board = workspace?.boards.find(board => board.id === idBoard)
   const lists = board?.lists
     const addList = () => {
-      if(listName !== ''){
+      if(listName !== '' && idBoard){
         createList(idBoard, listName)
       }
       setListName('')

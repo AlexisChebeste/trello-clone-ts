@@ -1,15 +1,14 @@
 import {useState} from 'react';
-import Button from '../components/ui/Button';
+import Button from '../Button';
 import { Plus} from 'lucide-react';
-import CardWorkspace from '../components/ui/CardWorkspace';
-import  {useWorkspace}  from '../hooks/useWorkspace';
+import CardWorkspace from './CardWorkspace';
+import  {useWorkspace}  from '../../hooks/useWorkspace';
 
 interface AsideWorkspaceProps {
     className?: string;
-    setIdWorkspace: (id: string) => void;
 }
 
-export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspaceProps) {
+export default function AsideWorkspace({className}: AsideWorkspaceProps) {
 
     const {workspaces, createWorkspace} = useWorkspace();
     const [workspaceName, setWorkspaceName] = useState<string>('');
@@ -17,10 +16,6 @@ export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspac
     const createWorkspaceSubmit = () => {
         createWorkspace(workspaceName);
         setWorkspaceName('');
-    }
-
-    const onClick = (id: string) => {
-        setIdWorkspace(id);
     }
 
     return(
@@ -43,13 +38,13 @@ export default function AsideWorkspace({className,setIdWorkspace}: AsideWorkspac
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-4 mt-8">
-                {workspaces && workspaces.map((workspace) => {
+                {workspaces.map((workspace) => {
                     return(
                         <CardWorkspace 
                             key={workspace.id} 
+                            id={workspace.id}
                             logo={workspace.logo || ''}
                             name={workspace.name} 
-                            onClick={() => onClick(workspace.id)}
                         />
                     )
                 })}

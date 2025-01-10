@@ -7,7 +7,7 @@ interface ColorContextProps {
 
 export const ColorContext = createContext<ColorContextProps | undefined>(undefined);
 
-export function ColorProvider({ children }: { children: React.ReactNode }) {
+export default function ColorProvider({ children }: { children: React.ReactNode }) {
     const [color, setColor] = useState("bg-blue-500");
 
     return (

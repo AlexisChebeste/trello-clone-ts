@@ -1,17 +1,16 @@
 import { Link } from "react-router";
-import { Board, Workspace } from "../../types";
+import { Board} from "../../types";
 import { useColor } from "../../hooks/useColor";
 
 interface CardBoardProps {
   board: Board;
-  workspace: Workspace;
 }
 
-export default function CardBoard({ board, workspace }: CardBoardProps) {
+export default function CardBoard({ board}: CardBoardProps) {
   const {setColor} = useColor();
   return (
     <Link 
-      to={`${workspace.id}/board/${board.id}`} 
+      to={`/b/${board.id}/${board.name}`} 
       onClick={() => setColor(board.color || '')}
       className={`w-full ${board.color}   text-white rounded p-4 h-24 hover:scale-105 transition-all ease-in-out duration-200 mb-5`}
     >

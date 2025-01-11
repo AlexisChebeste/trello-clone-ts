@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route,  BrowserRouter as Router} from "react-router";
+import { Routes, Route,  BrowserRouter as Router, Navigate} from "react-router";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import Home from "./pages/Workspace/Home";
@@ -25,6 +25,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
         {/* Rutas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -39,6 +41,8 @@ export default function App() {
           </Route>
           {/* Rutas para ver un board especifico */}
           <Route path="b/:idBoard/:nameBoard" element={<BoardPage />} />
+
+          <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
       </Routes>
     </Router>

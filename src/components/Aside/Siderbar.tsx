@@ -16,7 +16,7 @@ const Sidebar = ({ children, className }:SidebarProps) => {
   return (
     <div
       className={`flex ${
-        isCollapsed ? "w-7" : "w-64"
+        isCollapsed ? "w-7" : `w-64 max-w-max `
       } transition-all duration-500 ${className} h-full border-r border-slate-300/30 `}
     >
       {/* Contenido del Sidebar */}

@@ -19,6 +19,7 @@ export interface User {
     color?: string
     description?: string
     lists: List[]
+    lastActive?:Date
   }
   
   export interface List {

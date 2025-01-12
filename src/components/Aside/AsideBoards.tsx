@@ -31,7 +31,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
 
     return(
       <Sidebar className={`backdrop-blur-md z-50 ${className}`}>
-        <div className='flex  gap-2 border-b border-slate-300/30 py-5 px-4 items-center '>
+        <div className='flex  gap-2 border-b border-slate-300/30 py-5 px-4 items-center w-max'>
           <div className={`flex  justify-center items-center h-9 w-11  rounded-md ${workspace?.logo} text-white font-bold text-xl`}>
             {workspace?.name[0].toUpperCase()}
           </div>

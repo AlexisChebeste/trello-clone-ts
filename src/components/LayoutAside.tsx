@@ -6,12 +6,12 @@ export default function LayoutAside(){
     const {idWorkspace} = useParams()
 
     return(
-        <div className="flex h-full ">
+        <div className="flex-1 w-full flex h-full  overflow-hidden">
             <AsideBoards 
                 idWorkspace={idWorkspace || ''} 
                 className="text-slate-600" 
             />
-            <main className="flex-1 h-full">
+            <main className="flex-1 flex h-full">
                 {/* Aquí va el contenido de la página */}
                 <Outlet/>
             </main>

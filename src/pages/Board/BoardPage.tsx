@@ -8,7 +8,7 @@ export default function BoardPage() {
     const {color} = useColor()
 
     return(
-        <div className={`flex-1 w-full flex max-h-[calc(100vh-4rem)] h-full ${color}`}>
+        <div className={`flex-1 w-full flex  h-full ${color}`}>
             <AsideBoards  
                 idWorkspace={idWorkspace || '1'} 
                 className={`bg-black/20 drop-shadow-md  text-white `}

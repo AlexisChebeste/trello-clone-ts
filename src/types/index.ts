@@ -3,6 +3,7 @@ export interface User {
     email: string;
     password: string;
     name: string;
+    avatar?: string;
   }
   
   export interface Workspace {
@@ -11,6 +12,7 @@ export interface User {
     logo: string;
     description?: string;
     boards: Board[];
+    members?: User[];
   }
   
   export interface Board {

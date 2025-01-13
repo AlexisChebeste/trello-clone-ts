@@ -22,6 +22,10 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       id: '1',
       name: 'Espacio de trabajo 1',
       logo: gradients.gradientceleste,
+      members: [
+        { id: '1', name: 'Juan', avatar: 'https://randomuser.me/api' , email: '@alexischebeste', password: '' }, 
+        { id: '2', name: 'Pedro', avatar: 'https://randomuser.me/api' , email: '@alexischebeste', password: ''},
+      ],      
       boards: [
         { id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
         { id: '2', name: 'Tablero 2' ,color: 'bg-[#519839]' ,  lists: []},

@@ -4,6 +4,7 @@ export interface User {
     password: string;
     name: string;
     avatar?: string;
+    boards?: Board[];
   }
   
   export interface Workspace {

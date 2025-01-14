@@ -6,6 +6,7 @@ import Sidebar from './Siderbar';
 import ModalBoard from '../modals/ModalBoard';
 import { useColor } from '../../hooks/useColor';
 import WorkspaceLink from './WorkspaceLink';
+import { ModalAccount } from './ModalAccount';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -41,17 +42,13 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
           </div>
         </div>
         <div className='flex flex-col  py-3'>
-            <ul className='flex flex-col '>
-              <li className='flex w-full'>
+              <div className='flex w-full'>
                 <WorkspaceLink idWorkspace={idWorkspace} title='Tableros'/>
-              </li>
-              <li className='flex w-full'>
+              </div>
+              <div className='flex w-full'>
                 <WorkspaceLink idWorkspace={idWorkspace} dir='/members' title='Miembros'/>
-              </li>
-              <li className='flex w-full'>
-                <WorkspaceLink idWorkspace={idWorkspace} dir='/account' title='Ajustes del Espacio de trabajo'/>
-              </li>
-            </ul>
+              </div>
+              <ModalAccount idWorkspace={idWorkspace}/>
         </div>
         <div className="flex flex-col w-auto  pb-2 ">
           <div className='  flex justify-between items-center pl-4'>

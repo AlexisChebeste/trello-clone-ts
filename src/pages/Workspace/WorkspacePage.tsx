@@ -7,6 +7,8 @@ import  BoardsHeader  from "../../components/WorkspacePage/BoardsHeader";
 import Addbutton from "../../components/Boards/Addbutton";
 import ModalBoard from "../../components/modals/ModalBoard";
 import ButtonWorkspace from "../../components/ButtonWorkspace";
+import { WorkspaceInfo } from "../../components/Boards/WorkspaceInfo";
+import { UserRoundPlus } from "lucide-react";
 
 
 
@@ -70,7 +72,16 @@ export default function WorkspacePage() {
         return <div>El espacio de trabajo no existe</div>
     }
     return(
-      <>
+      <div className=" flex-1 h-full flex flex-col py-4 px-4 md:px-8 max-w-7xl mx-auto w-full  text-gray-500 overflow-y-auto">
+        <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description}>
+            <button className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md flex items-center font-semibold max-w-max gap-2  hover:bg-blue-700 transition-colors duration-200">
+                <UserRoundPlus  />
+                Invitar a miembros del espacio de trabajo
+            </button>
+        </WorkspaceInfo>
+                
+                    
+                
         <div className="mt-6 flex flex-col gap-4">
           <BoardsHeader 
             sortBy={sortBy}
@@ -97,7 +108,10 @@ export default function WorkspacePage() {
             </p>
           )}
         </div>
-        <ButtonWorkspace className="mt-4 max-w-">Ver los tableros cerrados</ButtonWorkspace>
+        <div className="w-full flex justify-center">
+          <ButtonWorkspace className="mt-4">Ver los tableros cerrados</ButtonWorkspace>
+        </div>
+        
         <ModalBoard
           workspaceId={workspace.id}
           isOpen={isModalOpen}
@@ -106,7 +120,7 @@ export default function WorkspacePage() {
           aria-labelledby="modal-title" // Asociar el modal con un título
           aria-hidden={!isModalOpen ? "true" : "false"} // Asegúrate de que el contenido detrás del modal esté oculto
         />
-      </>
+      </div> 
                  
     )
 }

@@ -9,6 +9,7 @@ interface NavbarProps {
 export default function Navbar({onMenuToggle}: NavbarProps) {
     const location = useLocation();
     const isBoardPage = location.pathname.includes("b/");
+    const isHomePage = location.pathname.includes("home");
     const {color} = useColor()
 
     return(
@@ -17,7 +18,7 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
                 <div className="flex justify-between h-16 px-6">
                     <div className='flex gap-4 '>
                         <button
-                            className={isBoardPage ? 'hidden' : "sm:hidden  "}
+                            className={isHomePage ? 'sm:hidden' : "hidden  "}
                             aria-label="Menu"
                             aria-describedby="menu"
                             aria-labelledby="menu"

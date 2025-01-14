@@ -21,14 +21,14 @@ export default function SidebarLinks({membersLength} : SidebarLinksProps) {
                 <div className="flex flex-col gap-2">
                     <Link 
                         to={`/w/${idWorkspace}/members`} 
-                        className={`text-sm px-4 py-2 rounded-md flex items-center font-semibold w-full gap-2   transition-colors duration-200  
+                        className={`text-sm px-4 py-2 rounded-md flex items-center font-semibold  w-56 sm:w-full gap-2   transition-colors duration-200  
                             ${isActive(`/w/${idWorkspace}/members`) ? 'bg-blue-100 text-blue-600 ' : 'text-gray-800 hover:bg-slate-200'}
                         `}
                     >
                         Miembros del espacio de trabajo ({membersLength}) 
                     </ Link>
                     <Link 
-                        to={`/workspace/${idWorkspace}/members/invite`} className={`text-sm  px-4 py-2 rounded-md flex items-center font-semibold w-full gap-2   transition-colors duration-200
+                        to={`/workspace/${idWorkspace}/members/invite`} className={`text-sm  px-4 py-2 rounded-md flex items-center font-semibold w-56 sm:w-full gap-2   transition-colors duration-200
                             ${isActive(`/w/${idWorkspace}/members/invite`) ? 'bg-blue-100 text-blue-600  ' : 'text-gray-800 hover:bg-slate-200'}
                         `}>
                         Invitados ({membersLength}) 
@@ -38,7 +38,7 @@ export default function SidebarLinks({membersLength} : SidebarLinksProps) {
                 <div className="py-4 border-t border-t-gray-200 ">
                     <Link 
                         to={`/workspace/${idWorkspace}/members/request`} 
-                        className={`text-sm px-4 py-2 rounded-md flex items-center font-semibold w-full gap-2  transition-colors duration-200
+                        className={`text-sm px-4 py-2 rounded-md flex items-center font-semibold w-56 sm:w-full gap-2  transition-colors duration-200
                             ${isActive(`/w/${idWorkspace}/members/request`) ? 'bg-blue-100 text-blue-600  ' : 'text-gray-800 hover:bg-slate-200'}
                         `}>
                         Solicitudes de unión ({membersLength}) 

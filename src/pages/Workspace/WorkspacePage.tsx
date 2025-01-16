@@ -9,6 +9,7 @@ import ModalBoard from "../../components/modals/ModalBoard";
 import ButtonWorkspace from "../../components/ButtonWorkspace";
 import { WorkspaceInfo } from "../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
+import ModalArchived from "../../components/WorkspacePage/ModalArchived";
 
 
 
@@ -17,6 +18,7 @@ export default function WorkspacePage() {
     const {workspaces} = useWorkspace();
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isArchivedModalOpen, setIsArchivedModalOpen] = useState(false);
     const [boards, setBoards] = useState<Board[]>([])
     const [sortBy, setSortBy] = useState<string>('most-recent')
     const [searchQuery, setSearchQuery] = useState('')
@@ -30,6 +32,11 @@ export default function WorkspacePage() {
         setIsModalOpen(!isModalOpen);
         
     };
+
+    const handleModalArchived = () => {
+      setIsArchivedModalOpen(!isArchivedModalOpen);
+    }
+
     async function getBoards(sortBy: string = 'most-recent'): Promise<Board[]> {
         // Simulate DB delay
         await new Promise(resolve => setTimeout(resolve, 500))
@@ -64,10 +71,17 @@ export default function WorkspacePage() {
       useEffect(() => {
         fetchBoards()
       }, [fetchBoards])
+      
     const filteredBoards = boards.filter(board => 
-        board.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+      (board.isArchived === false) && 
+           board.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
     
+    const boardsArchived = boards.filter(board => 
+      board.isArchived === true
+    )
+
     if(!workspace) {
         return <div>El espacio de trabajo no existe</div>
     }
@@ -108,8 +122,14 @@ export default function WorkspacePage() {
             </p>
           )}
         </div>
-        <div className="w-full flex justify-center">
-          <ButtonWorkspace className="mt-4">Ver los tableros cerrados</ButtonWorkspace>
+        <div className={`w-full flex justify-center ${boardsArchived.length === 0   ? 'hidden' : 'block'}`}>
+          <ButtonWorkspace 
+            className="mt-4"
+            onClick={handleModalArchived}
+          >
+            Ver los tableros cerrados
+          </ButtonWorkspace>
+          <ModalArchived isModalOpen={isArchivedModalOpen} setIsModalOpen={setIsArchivedModalOpen} boardsArchived={boardsArchived} workName={workspace.name}/>
         </div>
         
         <ModalBoard

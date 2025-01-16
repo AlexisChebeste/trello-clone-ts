@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import { Plus} from 'lucide-react';
 import  {useWorkspace}  from '../../hooks/useWorkspace';
 import CardBoardAside from './CardBoardAside';
@@ -7,6 +7,7 @@ import ModalBoard from '../modals/ModalBoard';
 import { useColor } from '../../hooks/useColor';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';
+import { Board } from '../../types';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -19,6 +20,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {setColor} = useColor();
     const buttonRef = useRef<HTMLButtonElement>(null); 
+    const [boards, setBoards] = useState<Board[] | []>([]);
 
     const handleOpenModal = () => {
       setIsModalOpen(true);
@@ -29,6 +31,18 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     };
     
     const isBoardPage = location.pathname.includes("b/");
+    const handleArchiveBoard = (boardId: string) => {
+        setBoards((prevBoards) =>
+            prevBoards.map((board) =>
+                board.id === boardId ? { ...board, isArchived: true } : board
+            )
+        );
+    };
+  
+    useEffect(() => {
+      if (workspace) setBoards(workspace.boards.filter(board => board.isArchived === false));
+    }, [workspace?.boards]);
+
 
     return(
       <Sidebar className={`backdrop-blur-md z-50 ${className}`}>
@@ -66,17 +80,16 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
           </div>
           
           <div className="flex flex-col">
-            {workspaces && workspace?.boards.map((board) => {
-              return(
+            {boards.filter((board) => !board.isArchived).map((board) => (
+              
                 <CardBoardAside 
                   key={board.id} 
-                  id={board.id}
-                  name={board.name}
-                  color={board.color || 'bg-blue-500'}
+                  board={board}
                   onClick={() => setColor(board.color || 'bg-blue-500')}
+                  onArchive={() => handleArchiveBoard(board.id)}
                 />
               )
-            })}
+            )}
           </div>
         </div>
         {workspace && (

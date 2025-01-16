@@ -14,6 +14,7 @@ export interface User {
     description?: string;
     boards: Board[];
     members?: User[];
+    archivedBoards?: Board[];
   }
   
   export interface Board {
@@ -23,12 +24,14 @@ export interface User {
     description?: string
     lists: List[]
     lastActive?:Date
+    isArchived: boolean
   }
   
   export interface List {
     id: string;
     title: string;
     cards: Card[];
+    position?: number
   }
   
   export interface Card {
@@ -37,4 +40,5 @@ export interface User {
     description?: string;
     labels?: string[];
     dueDate?: string;
+    position?: number
   }

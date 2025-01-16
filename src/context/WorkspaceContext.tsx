@@ -27,8 +27,14 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         { id: '2', name: 'Pedro', avatar: 'https://randomuser.me/api' , email: '@alexischebeste', password: ''},
       ],      
       boards: [
-        { id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]' , lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }] },
-        { id: '2', name: 'Tablero 2' ,color: 'bg-[#519839]' ,  lists: []},
+        {
+          id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }],
+          isArchived: false
+        },
+        {
+          id: '2', name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
+          isArchived: true
+        },
       ],
     },
     {
@@ -36,12 +42,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       name: 'Espacio de trabajo 2',
       logo: gradients.gradientvioleta,
       boards: [
-        { id: '3', name: 'Tablero 1' ,color: 'bg-[#0079bf]' , lists: []},
-        { id: '4', name: 'Tablero 2' ,color: 'bg-[#0079bf]' , lists: []},
-        { id: '5', name: 'Tablero 3' ,color: 'bg-[#0079bf]' , lists: []},
-        { id: '6', name: 'Tablero 4' ,color: 'bg-[#0079bf]' , lists: []},
-        { id: '7', name: 'Tablero 5' ,color: 'bg-[#0079bf]' , lists: []},
-        { id: '8', name: 'Tablero 6' ,color: 'bg-[#0079bf]' , lists: []},
+        {
+          id: '3', name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
+        {
+          id: '4', name: 'Tablero 2', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
+        {
+          id: '5', name: 'Tablero 3', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
+        {
+          id: '6', name: 'Tablero 4', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
+        {
+          id: '7', name: 'Tablero 5', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
+        {
+          id: '8', name: 'Tablero 6', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false
+        },
       ],
     },
   ])
@@ -106,6 +130,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       name,
       color,
       lists: [],
+      isArchived: false
     }
     setWorkspaces(workspaces.map(workspace => {
       if (workspace.id === workspaceId) {

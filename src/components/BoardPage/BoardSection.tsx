@@ -8,12 +8,16 @@ import { useWorkspace } from "../../hooks/useWorkspace"
 
 export default function BoardSection() {
   const {workspaces, createList} = useWorkspace()
-  const {idBoard} = useParams()
+  const {idBoard} = useParams<{idBoard: string}>()
   const [isModalOpen, setIsModalOpen] = useState(true)
   const [listName, setListName] = useState('')
 
-  const workspace = workspaces.find(workspace => workspace.id === '1')
-  const board = workspace?.boards.find(board => board.id === idBoard)
+  const board = workspaces
+    .flatMap(workspace => workspace.boards)
+    .find(board => board.id === idBoard);
+
+  
+
   const lists = board?.lists
     const addList = () => {
       if(listName !== '' && idBoard){
@@ -21,7 +25,10 @@ export default function BoardSection() {
       }
       setListName('')
       setIsModalOpen(!isModalOpen)
-    }
+  }
+
+  
+  if(idBoard === undefined) return <h1>404</h1>;
 
   return(
       <div className={`flex-1 overflow-hidden flex flex-col h-auto  `}>

@@ -8,15 +8,17 @@ interface ModalBoardProps {
     children: React.ReactNode;
     height: number;
     className?: string;
+    leftAdd?: number;
 }
 
-export default function ModalVisibility({
+export default function ModalFlexLeft({
   isOpen,
   onClose,
   buttonRef,
   children,
   height,
   className,
+  leftAdd,
 }: ModalBoardProps) {
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -30,7 +32,7 @@ export default function ModalVisibility({
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
   
-      let left = buttonRect.right;
+      let left = buttonRect.left + (leftAdd ?? 0);
       let top = buttonRect.top;
   
       if (left + modalWidth > screenWidth) {

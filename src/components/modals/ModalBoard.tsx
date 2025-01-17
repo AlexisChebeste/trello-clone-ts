@@ -3,7 +3,7 @@ import { useWorkspace } from "../../hooks/useWorkspace";
 import ModalBoardColorSelector from "./ModalBoardColorSelector";
 import ModalBoardButtons from "./ModalBoardButtons";
 import { colors, gradients } from "../../lib/colors";
-import ModalFlex from "../ModalFlex";
+import ModalFlex from "../ModalFlexLeft";
 
 interface ModalBoardProps {
   workspaceId: string;
@@ -34,7 +34,7 @@ export default function ModalBoard({
   }
 
   return (
-    <ModalFlex buttonRef={buttonRef} onClose={onClose} height={700} isOpen={isOpen} className="p-4">
+    <ModalFlex buttonRef={buttonRef} onClose={onClose} height={700} isOpen={isOpen} className="p-4" leftAdd={40}>
       <h2 id="modal-title" className="text-lg font-bold mb-4 text-slate-600 text-center">Nuevo Tablero</h2>
       <label
         htmlFor="board-name"

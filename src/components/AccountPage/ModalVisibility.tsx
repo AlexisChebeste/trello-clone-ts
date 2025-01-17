@@ -1,6 +1,6 @@
 
 import { Globe, LockKeyhole, X } from "lucide-react";
-import ModalFlex from "../ModalFlex";
+import ModalFlex from "../ModalFlexLeft";
 
 interface ModalBoardProps {
   isOpen: boolean;

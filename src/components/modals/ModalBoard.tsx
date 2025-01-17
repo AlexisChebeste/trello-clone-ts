@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useWorkspace } from "../../hooks/useWorkspace";
-import ReactDOM from "react-dom";
 import ModalBoardColorSelector from "./ModalBoardColorSelector";
 import ModalBoardButtons from "./ModalBoardButtons";
 import { colors, gradients } from "../../lib/colors";
+import ModalFlex from "../ModalFlex";
 
 interface ModalBoardProps {
   workspaceId: string;
@@ -21,8 +21,6 @@ export default function ModalBoard({
   const { createBoard } = useWorkspace();
   const [boardName, setBoardName] = useState<string>("");// Color por defecto
   const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
-  const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
   const addBoard = () => {
       
     if (boardName.trim() !== '') createBoard(workspaceId, boardName, color);  // Incluye el color seleccionado 
@@ -30,88 +28,13 @@ export default function ModalBoard({
     setBoardName(""); // Reinicia el color seleccionado
   };
 
-  
-  const handleResize = () => {
-    if (buttonRef.current) {
-      const buttonRect = buttonRef.current.getBoundingClientRect();
-      const modalWidth = 300;
-      const modalHeight = 700;
-      const screenWidth = window.innerWidth;
-      const screenHeight = window.innerHeight;
-  
-      let left = buttonRect.right;
-      let top = buttonRect.top;
-  
-      if (left + modalWidth > screenWidth) {
-        left = screenWidth - modalWidth;
-      }
-      if (top + modalHeight > screenHeight) {
-        top = screenHeight - modalHeight ;
-      }
-      
-      if (top < 0) {
-        top = 0;
-      }
-
-      if (left < 0) {
-        left = 0;
-      }
-  
-      setModalPosition({ top, left });
-    }
-  };
-
-  useEffect(() => {
-    handleResize();
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen) {
-      const close = (e: { key: string; }) =>{
-        if (e.key === "Escape") onClose();
-      }
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          modalRef.current &&
-          !modalRef.current.contains(event.target as Node) &&
-          isOpen
-        ) {
-          onClose() // Cerrar el modal
-        }
-      };
-      // Escucha el evento resize y actualiza la posición del modal
-      document.addEventListener("mousedown", handleClickOutside);
-      window.addEventListener("keydown", close);
-      window.addEventListener("resize", handleResize);
-
-      // Limpia el listener al desmontar
-      return () => {
-        window.removeEventListener("keydown", close);
-        window.removeEventListener("resize", handleResize);
-      };
-    }
-  }, [handleResize]);
-  
 
   if (!isOpen) {
     return null;
   }
 
-  return ReactDOM.createPortal(
-    <div
-      id="modal-board"
-      ref={modalRef}
-      role="dialog" 
-      aria-labelledby="modal-title" 
-      aria-describedby="modal-description"
-      aria-hidden={!isOpen ? "true" : "false"}
-      className="fixed bg-white  flex flex-col justify-between rounded-lg shadow-lg p-4 border border-slate-200 gap-2 text-slate-600 z-50 "
-      style={{
-        top: modalPosition?.top ,
-        left: modalPosition?.left ,
-        width: "300px",
-      }}
-    >
+  return (
+    <ModalFlex buttonRef={buttonRef} onClose={onClose} height={700} isOpen={isOpen} className="p-4">
       <h2 id="modal-title" className="text-lg font-bold mb-4 text-slate-600 text-center">Nuevo Tablero</h2>
       <label
         htmlFor="board-name"
@@ -142,7 +65,6 @@ export default function ModalBoard({
 
       {/* Botones del modal */}
       <ModalBoardButtons addBoard={addBoard} onClose={onClose} />
-    </div>,
-    document.body
+    </ModalFlex>
   );
 }

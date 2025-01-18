@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react';
-import { Plus} from 'lucide-react';
+import { Plus, Trello, UserRound} from 'lucide-react';
 import  {useWorkspace}  from '../../hooks/useWorkspace';
 import CardBoardAside from './CardBoardAside';
 import Sidebar from './Siderbar';
@@ -57,10 +57,14 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
         </div>
         <div className='flex flex-col  py-3'>
               <div className='flex w-full'>
-                <WorkspaceLink idWorkspace={idWorkspace} title='Tableros'/>
+                <WorkspaceLink idWorkspace={idWorkspace} title='Tableros'>
+                  <Trello className="size-4"/>
+                </WorkspaceLink>
               </div>
               <div className='flex w-full'>
-                <WorkspaceLink idWorkspace={idWorkspace} dir='/members' title='Miembros'/>
+                <WorkspaceLink idWorkspace={idWorkspace} dir='/members' title='Miembros'>
+                  <UserRound className="size-4"/>
+                </WorkspaceLink>
               </div>
               <ModalAccount idWorkspace={idWorkspace}/>
         </div>

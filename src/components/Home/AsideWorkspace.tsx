@@ -37,7 +37,7 @@ export default function AsideWorkspace({className}: AsideWorkspaceProps) {
                     </Button>
                 </div>
             </div>
-            <div className="grid grid-cols-1 gap-4 mt-8">
+            <ul className="flex flex-col gap-4 mt-8 list-none">
                 {workspaces.map((workspace) => {
                     return(
                         <CardWorkspace 
@@ -48,7 +48,7 @@ export default function AsideWorkspace({className}: AsideWorkspaceProps) {
                         />
                     )
                 })}
-            </div>
+            </ul>
         </div>
     );
 }

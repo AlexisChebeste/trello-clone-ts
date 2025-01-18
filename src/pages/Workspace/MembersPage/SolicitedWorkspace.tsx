@@ -25,7 +25,7 @@ export default function SolicitedWorkspace() {
             </div>
             <div className="flex flex-col ">
                         
-                {workspace.members?.map((member) => (
+                {workspace.members?.length ?? 0 > 0 ? workspace.members?.map((member) => (
                     <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4">
                     <div className="flex items-center gap-4 ">
                         <div  className="size-10 rounded-full bg-sky-400" />
@@ -48,7 +48,10 @@ export default function SolicitedWorkspace() {
                     
                     
                 </div>
-                ))}
+                )):
+                    <div className="py-8 text-gray-700 border-b border-b-slate-300 flex items-center justify-center text-sm italic">No hay solicitudes para unirse.</div>
+                
+                }
             </div>
         </div>
     )

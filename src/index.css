@@ -41,3 +41,12 @@
   width: 10px;
 }
 
+
+.table th, .table td {
+  @apply border border-gray-300 p-3 text-slate-700 text-sm; 
+}
+
+.table th {
+  @apply text-slate-600;
+}
+

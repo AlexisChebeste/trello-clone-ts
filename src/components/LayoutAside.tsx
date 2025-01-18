@@ -10,7 +10,7 @@ export default function LayoutAside(){
                 idWorkspace={idWorkspace || ''} 
                 className="text-slate-600" 
             />
-            <main className="flex-1 flex h-full">
+            <main className="flex-1 flex h-full overflow-y-auto">
                 {/* Aquí va el contenido de la página */}
                 
                 <Outlet/>

@@ -12,7 +12,7 @@ export default function BoardPage() {
     const idWorkspace = workspaces.find(workspace => workspace.boards.find(board => board.id === idBoard))?.id
 
     return(
-        <div className={`flex-1 w-full flex  h-full ${color}`}>
+        <div className={`flex-1 w-full flex  h-full overflow-y-auto  ${color}`}>
             <AsideBoards  
                 idWorkspace={idWorkspace || '1'} 
                 className={`bg-black/20 drop-shadow-md  text-white `}

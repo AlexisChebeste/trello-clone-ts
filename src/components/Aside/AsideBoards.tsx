@@ -4,7 +4,6 @@ import  {useWorkspace}  from '../../hooks/useWorkspace';
 import CardBoardAside from './CardBoardAside';
 import Sidebar from './Siderbar';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
-import { useColor } from '../../hooks/useColor';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';
 import { Board } from '../../types';
@@ -18,7 +17,6 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     const {workspaces} = useWorkspace();
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const {setColor} = useColor();
     const buttonRef = useRef<HTMLButtonElement>(null); 
     const [boards, setBoards] = useState<Board[] | []>([]);
 
@@ -89,7 +87,6 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
                 <CardBoardAside 
                   key={board.id} 
                   board={board}
-                  onClick={() => setColor(board.color || 'bg-blue-500')}
                   onArchive={() => handleArchiveBoard(board.id)}
                 />
               )

@@ -4,16 +4,15 @@ import { Board } from "../../types";
 
 interface CardBoardAsideProps {
     board: Board;
-    onClick: () => void;
     onArchive: (boardId: string) => void;
 }
 
-export default function CardBoardAside({board ,onClick, onArchive}: CardBoardAsideProps) {
+export default function CardBoardAside({board , onArchive}: CardBoardAsideProps) {
     const isBoardPage = location.pathname.includes("b/");
 
     return(
         <div className={`flex ${isBoardPage ? 'hover:bg-white/10' : 'hover:bg-gray-100'} justify-between items-center  transition-all ease-in-out duration-200 group `}>
-            <Link to={`/b/${board.id}/${board.name.replace(/ /g,'-')}`} onClick={onClick}
+            <Link to={`/b/${board.id}/${board.name.replace(/ /g,'-')}`} 
                 className='flex gap-2 py-2 items-center w-full px-4 cursor-pointer'
                 aria-label="Tablero"
                 aria-describedby="Tablero"

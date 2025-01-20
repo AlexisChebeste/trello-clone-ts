@@ -1,7 +1,7 @@
-import Members from "../../../components/MembersPage/Members";
+import Members from "../../../../components/MembersPage/Members";
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../hooks/useWorkspace";
-import { User } from "../../../types";
+import { useWorkspace } from "../../../../hooks/useWorkspace";
+import { User } from "../../../../types";
 
 
 export default function InvitedWorkspace() {

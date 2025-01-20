@@ -1,8 +1,8 @@
 import { Outlet, useParams } from "react-router";
-import { useWorkspace } from "../../../hooks/useWorkspace";
+import { useWorkspace } from "../../../../hooks/useWorkspace";
 import { UserRoundPlus} from "lucide-react";
-import SidebarLinks from "../../../components/MembersPage/SidebarLinks";
-import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
+import SidebarLinks from "../../../../components/MembersPage/SidebarLinks";
+import { WorkspaceInfo } from "../../../../components/Boards/WorkspaceInfo";
 
 export default function MembersPage() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();

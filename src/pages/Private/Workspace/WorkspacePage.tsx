@@ -1,15 +1,15 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../hooks/useWorkspace";
-import CardBoard from "../../components/Home/CardBoard";
+import { useWorkspace } from "../../../hooks/useWorkspace";
+import CardBoard from "../../../components/Home/CardBoard";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Board} from "../../types";
-import  BoardsHeader  from "../../components/WorkspacePage/BoardsHeader";
-import Addbutton from "../../components/Boards/Addbutton";
-import ModalBoard from "../../components/modals/AddBoard/ModalBoard";
-import ButtonWorkspace from "../../components/ButtonWorkspace";
-import { WorkspaceInfo } from "../../components/Boards/WorkspaceInfo";
+import { Board} from "../../../types";
+import  BoardsHeader  from "../../../components/WorkspacePage/BoardsHeader";
+import Addbutton from "../../../components/Boards/Addbutton";
+import ModalBoard from "../../../components/modals/AddBoard/ModalBoard";
+import ButtonWorkspace from "../../../components/ButtonWorkspace";
+import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
-import ModalArchived from "../../components/WorkspacePage/ModalArchived";
+import ModalArchived from "../../../components/WorkspacePage/ModalArchived";
 
 
 

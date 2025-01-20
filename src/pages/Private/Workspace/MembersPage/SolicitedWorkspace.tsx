@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../hooks/useWorkspace";
-import ButtonWorkspace from "../../../components/ButtonWorkspace";
+import { useWorkspace } from "../../../../hooks/useWorkspace";
+import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import { X } from "lucide-react";
 
 

@@ -1,11 +1,11 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../hooks/useWorkspace";
-import { WorkspaceInfo } from "../../components/Boards/WorkspaceInfo";
+import { useWorkspace } from "../../../hooks/useWorkspace";
+import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
-import SectionSubscription from "../../components/BillingPage/SectionSubscription";
-import SectionCategory from "../../components/BillingPage/SectionCategory";
-import TableSub from "../../components/BillingPage/TableSub";
+import SectionSubscription from "../../../components/BillingPage/SectionSubscription";
+import SectionCategory from "../../../components/BillingPage/SectionCategory";
+import TableSub from "../../../components/BillingPage/TableSub";
 
 export default function BillingPage(){
     const {workspaces} = useWorkspace();

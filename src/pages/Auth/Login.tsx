@@ -11,6 +11,7 @@ export default function Login(){
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const idWorkspace = '1';
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await auth.login(email,password);
@@ -26,7 +27,7 @@ export default function Login(){
         try{
             const result = await getMorty();
             dispatch(createUser(result));
-            navigate(`/w/1/${PrivateRoutes.HOME}`, {replace:true});
+            navigate(PrivateRoutes.HOME(idWorkspace), {replace:true});
 
         } catch(error){}
     }

@@ -1,5 +1,5 @@
-import AsideWorkspace from "../../components/Home/AsideWorkspace";
-import Boards from "../../components/Boards/Boards";
+import AsideWorkspace from "../../../components/Home/AsideWorkspace";
+import Boards from "../../../components/Boards/Boards";
 
 
 export default function Home() {

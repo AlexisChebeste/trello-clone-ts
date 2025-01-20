@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useWorkspace } from "../../hooks/useWorkspace";
+import { useWorkspace } from "../../../hooks/useWorkspace";
 import ModalBoardColorSelector from "./ModalBoardColorSelector";
 import ModalBoardButtons from "./ModalBoardButtons";
-import { colors, gradients } from "../../lib/colors";
-import ModalFlex from "../ModalFlexLeft";
+import { colors, gradients } from "../../../lib/colors";
+import ModalFlex from "../ModalGeneric";
 
 interface ModalBoardProps {
   workspaceId: string;

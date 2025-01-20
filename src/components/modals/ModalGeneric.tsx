@@ -11,7 +11,7 @@ interface ModalBoardProps {
     leftAdd?: number;
 }
 
-export default function ModalFlexLeft({
+export default function ModalGeneric({
   isOpen,
   onClose,
   buttonRef,

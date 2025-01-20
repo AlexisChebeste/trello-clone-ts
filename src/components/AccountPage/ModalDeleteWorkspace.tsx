@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import ModalFlex from "../ModalFlexLeft";
+import ModalFlex from "../modals/ModalGeneric";
 import { useState } from "react";
 
 interface ModalBoardProps {

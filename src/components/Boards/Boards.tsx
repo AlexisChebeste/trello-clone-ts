@@ -1,5 +1,5 @@
 import {useRef, useState} from 'react';
-import ModalBoard from '../modals/ModalBoard';
+import ModalBoard from '../modals/AddBoard/ModalBoard';
 import CardBoard from '../Home/CardBoard';
 import { useWorkspace } from '../../hooks/useWorkspace';
 import { UserRound } from 'lucide-react';

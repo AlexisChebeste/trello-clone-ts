@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Board} from "../../types";
 import  BoardsHeader  from "../../components/WorkspacePage/BoardsHeader";
 import Addbutton from "../../components/Boards/Addbutton";
-import ModalBoard from "../../components/modals/ModalBoard";
+import ModalBoard from "../../components/modals/AddBoard/ModalBoard";
 import ButtonWorkspace from "../../components/ButtonWorkspace";
 import { WorkspaceInfo } from "../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";

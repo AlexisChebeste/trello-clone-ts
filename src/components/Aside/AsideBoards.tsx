@@ -3,7 +3,7 @@ import { Plus, Trello, UserRound} from 'lucide-react';
 import  {useWorkspace}  from '../../hooks/useWorkspace';
 import CardBoardAside from './CardBoardAside';
 import Sidebar from './Siderbar';
-import ModalBoard from '../modals/ModalBoard';
+import ModalBoard from '../modals/AddBoard/ModalBoard';
 import { useColor } from '../../hooks/useColor';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';

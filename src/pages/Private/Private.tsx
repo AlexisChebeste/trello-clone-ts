@@ -10,7 +10,6 @@ const SolicitedWorkspace = lazy(() => import("./Workspace/MembersPage/SolicitedW
 const MembersWorkspace = lazy(() => import("./Workspace/MembersPage/MembersWorkspace"));
 const AccountPage = lazy(() => import("./Workspace/AccountPage"));
 const BillingPage = lazy(() => import("./Workspace/BillingPage"));
-const BoardPage = lazy(() => import("./Board/BoardPage"));
 const Layout = lazy(() => import("../Layout"));
 const LayoutAside = lazy(() => import("../../components/LayoutAside"));
 
@@ -23,6 +22,7 @@ function Private(){
 
                 <Route path=":idWorkspace" element={<LayoutAside />} >
                     <Route index element={<WorkspacePage />}/>
+
                     <Route path="members" element={<MembersPage />}>
                         <Route index element={<MembersWorkspace />}/>
                         <Route path="guests" element={<InvitedWorkspace />}/>
@@ -33,9 +33,8 @@ function Private(){
                 </Route>
                 
             </Route>
-            <Route path="/b/:idBoard/:nameBoard" element={<BoardPage />} />
+            
         </RoutesWithNotFound>
     )
 }
-
 export default Private;

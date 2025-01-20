@@ -1,15 +1,12 @@
 import { Outlet } from "react-router";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
-interface LayoutProps {
-    onMenuToggle: () => void;
-}
 
-export default function Layout({onMenuToggle}: LayoutProps) {
+export default function Layout() {
     
     return(
         <div className='flex flex-col h-screen'>
-            <Navbar onMenuToggle={onMenuToggle}  />
+            <Navbar />
             <div className='flex-1 overflow-y-auto'>
                 <Outlet />
             </div>

@@ -1,43 +1,15 @@
-import {useState} from 'react';
-import Button from '../Button';
-import { Plus} from 'lucide-react';
 import CardWorkspace from './CardWorkspace';
 import  {useWorkspace}  from '../../hooks/useWorkspace';
 
-interface AsideWorkspaceProps {
-    className?: string;
-}
 
-export default function AsideWorkspace({className}: AsideWorkspaceProps) {
+export default function AsideWorkspace() {
 
-    const {workspaces, createWorkspace} = useWorkspace();
-    const [workspaceName, setWorkspaceName] = useState<string>('');
-
-    const createWorkspaceSubmit = () => {
-        createWorkspace(workspaceName);
-        setWorkspaceName('');
-    }
+    const {workspaces} = useWorkspace();
 
     return(
-        <div className={`p-2 lg:p-4 bg-white sm:bg-transparent flex flex-col   w-full max-w-72 sm:max-w-56  lg:max-w-64  transition-all ease-in-out ${className}`}>
-            <div className='flex w-full gap-4 sm:justify-between flex-col text-start border-b pb-8'>
-                <h2 className="text-lg font-semibold mt-8  sm:my-auto text-gray-700 ">Espacios de trabajo</h2>
-                <div className="flex gap-3 flex-col w-auto ">
-                    <input 
-                        type="text" 
-                        placeholder='Nombre de espacio de trabajo' 
-                        value={workspaceName}
-                        onChange={(e) => setWorkspaceName(e.target.value)}
-                        className=' p-2 border border-gray-200 rounded-lg focus:border-zinc-600  focus:outline-none placeholder:text-sm'    
-                    />
-                    <Button onClick={createWorkspaceSubmit}
-                        className=' bg-zinc-800  px-3 text-white hover:bg-zinc-700 flex items-center justify-center gap-2 text-sm'>
-                        <Plus className='size-4 '/>
-                        Crear
-                    </Button>
-                </div>
-            </div>
-            <ul className="flex flex-col gap-4 mt-8 list-none">
+        <aside className='hidden h-full p-2 lg:p-4 bg-white sm:flex flex-col gap-4 w-full max-w-56  lg:max-w-64'>
+            <h2 className='text-sm text-slate-500 font-medium border-b border-b-gray-300 py-4 px-2'>Espacios de trabajo</h2>
+            <ul className="flex flex-col gap-4 list-none">
                 {workspaces.map((workspace) => {
                     return(
                         <CardWorkspace 
@@ -49,6 +21,6 @@ export default function AsideWorkspace({className}: AsideWorkspaceProps) {
                     )
                 })}
             </ul>
-        </div>
+        </aside>
     );
 }

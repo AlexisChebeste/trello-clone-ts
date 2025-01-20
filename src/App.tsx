@@ -1,4 +1,4 @@
-import { Suspense, useState , lazy} from "react";
+import { Suspense, lazy} from "react";
 import { Route,  BrowserRouter as Router, Navigate} from "react-router";
 import Register from "./pages/Auth/Register";
 import Home from "./pages/Workspace/Home";
@@ -23,11 +23,6 @@ const Private = lazy(() => import("./pages/Private/Private"));
 
 export default function App() {
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  }
-
   return (
     <div className="App">
 
@@ -44,9 +39,9 @@ export default function App() {
               <Route element={<AuthGuard privateValidation={true}/>}>
                 <Route path={`${PrivateRoutes.HOME}/*`} element={<Private/>} />
 
-                <Route element={<Layout onMenuToggle={toggleMenu}/>}>
+                <Route element={<Layout />}>
                   {/* Rutas del workspace */}
-                  <Route path="/w/:idWorkspace/home" element={<Home  isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />}/>
+                  <Route path="/w/:idWorkspace/home" element={<Home />}/>
 
                   <Route path="/w/:idWorkspace" element={<LayoutAside />} >
                     <Route index element={<WorkspacePage />}/>

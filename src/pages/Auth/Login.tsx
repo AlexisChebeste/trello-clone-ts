@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { auth } from "../../lib/auth";
+import { getMorty } from "../../services/auth.service";
+import { useDispatch } from "react-redux";
+import { createUser } from "../../redux/states/user";
+import { PrivateRoutes } from "../../models/routes";
 
 export default function Login(){
     const [email, setEmail] = useState('');
@@ -10,15 +14,22 @@ export default function Login(){
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await auth.login(email,password);
-        
-        navigate('/w/1/home');
+        login();
     }
 
     const handleGuest = async () => {
         await auth.invited('invited@gmail.com','12345')
-        navigate('/w/1/home');
+        login();
     }
+    const dispatch = useDispatch();
+    const login = async () => {
+        try{
+            const result = await getMorty();
+            dispatch(createUser(result));
+            navigate(`/w/1/${PrivateRoutes.HOME}`, {replace:true});
 
+        } catch(error){}
+    }
     
 
     return (

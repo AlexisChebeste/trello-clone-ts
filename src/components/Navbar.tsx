@@ -1,6 +1,9 @@
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import {LogOut, Menu, Trello} from "lucide-react";
 import { useColor } from "../hooks/useColor";
+import { clearLocalStorage } from "../utilities/localStorage.utility";
+import { UserKey } from "../redux/states/user";
+import { PublicRoutes } from "../models/routes";
 
 interface NavbarProps {
     onMenuToggle: () => void;
@@ -11,6 +14,12 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
     const isBoardPage = location.pathname.includes("b/");
     const isHomePage = location.pathname.includes("home");
     const {color} = useColor()
+    const navigate = useNavigate();
+
+    const logOut = () =>{
+        clearLocalStorage(UserKey);
+        navigate(PublicRoutes.LOGIN, {replace:true});
+    }
 
     return(
         <header className={` border-b ${isBoardPage ? `${color} border-b-slate-200/30 drop-shadow-md backdrop-blur-sm shadow-sm ` : ' border-b-slate-300/60'}  h-14 w-full z-10 `}>
@@ -35,14 +44,12 @@ export default function Navbar({onMenuToggle}: NavbarProps) {
                         </NavLink>
                         
                     </div>
-                    <div className="flex items-center" >
-                        <NavLink to="/login" className="border bg-white  text-gray-700 border-slate-500 hover:bg-slate-200   font-semibold p-2 rounded-md  transition-colors " onClick={() => console.log("New Board")}>
-                            <div className="flex items-center ">
-                                <LogOut  className="size-4 "/>
-                                <span className="ml-2 text-sm ">Cerrar sesión</span>
-                            </div>
-                        </NavLink>
-                    </div>
+                    <button onClick={logOut} className="border bg-white  text-gray-700 border-slate-500 hover:bg-slate-200   font-semibold p-2 h-max my-auto rounded-md  transition-colors " >
+                        <div className="flex items-center ">
+                            <LogOut  className="size-4 "/>
+                            <span className="ml-2 text-sm ">Cerrar sesión</span>
+                        </div>
+                    </button>
                 </div>
             </nav>
         </header>

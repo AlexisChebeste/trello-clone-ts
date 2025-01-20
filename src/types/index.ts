@@ -5,6 +5,7 @@ export interface User {
     name: string;
     avatar?: string;
     boards?: Board[];
+    role?: "admin" | "user";
   }
   
   export interface Workspace {
@@ -26,6 +27,7 @@ export interface User {
     lastActive?:Date
     isArchived: boolean
     idWorkspace: string
+    visibility?: "private" | "public" | "shared";
   }
   
   export interface List {
@@ -39,7 +41,17 @@ export interface User {
     id: string;
     title: string;
     description?: string;
-    labels?: string[];
-    dueDate?: string;
+    labels?: Label[];
+    dueDate?: Date;
     position?: number
+    assignedUsers?: User[]; // Usuarios asignados a la tarjeta
+    status?: "todo" | "in-progress" | "done"; // Estado de la tarjeta
+    createdAt?: Date;
+    updatedAt?: Date;
+  }
+
+  export interface Label {
+    id: string;
+    text: string;
+    color: string; // Hexadecimal o clase de Tailwind
   }

@@ -1,0 +1,9 @@
+export const PublicRoutes = {
+    LOGIN: 'login',
+    REGISTER: 'register',
+}
+
+export const PrivateRoutes = {
+    HOME: 'home',
+    PRIVATE: 'private',
+}

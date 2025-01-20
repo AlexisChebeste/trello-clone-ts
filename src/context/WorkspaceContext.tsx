@@ -12,6 +12,7 @@ interface WorkspaceContextType {
   deleteList: (boardId: string, listId: string) => void
   deleteBoard: (workspaceId: string, boardId: string) => void
   deleteWorkspace: (workspaceId: string) => void
+  reorderLists: (boardId: string, newListOrder: string[]) => void
 }
 
 export const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined)
@@ -28,11 +29,11 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       ],      
       boards: [
         {
-          id: '1', name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }],
+          id: '1', idWorkspace: '1'  ,name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [{ id: '1', title: 'Lista 1', cards: [{ id: '1', title: 'Card 1' }] }],
           isArchived: false
         },
         {
-          id: '2', name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
+          id: '2',  idWorkspace: '1', name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
           isArchived: true
         },
       ],
@@ -43,34 +44,54 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       logo: gradients.gradientvioleta,
       boards: [
         {
-          id: '3', name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
+          id: '3', idWorkspace: '2', name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
         {
-          id: '4', name: 'Tablero 2', color: 'bg-[#0079bf]', lists: [],
+          id: '4', idWorkspace: '2', name: 'Tablero 2', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
         {
-          id: '5', name: 'Tablero 3', color: 'bg-[#0079bf]', lists: [],
+          id: '5',idWorkspace: '2',  name: 'Tablero 3', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
         {
-          id: '6', name: 'Tablero 4', color: 'bg-[#0079bf]', lists: [],
+          id: '6', idWorkspace: '2',name: 'Tablero 4', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
         {
-          id: '7', name: 'Tablero 5', color: 'bg-[#0079bf]', lists: [],
+          id: '7',idWorkspace: '2',  name: 'Tablero 5', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
         {
-          id: '8', name: 'Tablero 6', color: 'bg-[#0079bf]', lists: [],
+          id: '8',idWorkspace: '2', name: 'Tablero 6', color: 'bg-[#0079bf]', lists: [],
           isArchived: false
         },
       ],
     },
   ])
 
-  
+  const reorderLists = (boardId: string, newListOrder: string[]) => {
+    setWorkspaces((prev) =>
+      prev.map((workspace) => ({
+        ...workspace,
+        boards: workspace.boards.map((board) => {
+          if (board.id === boardId) {
+            const reorderedLists = newListOrder.map((listId) =>
+              board.lists.find((list) => list.id === listId)!
+            );
+            return {
+              ...board,
+              lists: reorderedLists,
+            };
+          }
+          return board;
+        }),
+      }))
+    );
+  };
+
+
   const createCard = (listId: string, title: string) => {
     setWorkspaces((prev) =>
       prev.map((workspace) => ({
@@ -127,6 +148,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const createBoard = (workspaceId: string, name: string, color: string) => {
     const newBoard: Board = {
       id: crypto.randomUUID(),
+      idWorkspace: workspaceId,
       name,
       color,
       lists: [],
@@ -209,6 +231,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
       deleteList,
       deleteBoard,
       deleteWorkspace,
+      reorderLists,
     }}>
       {children}
     </WorkspaceContext.Provider>

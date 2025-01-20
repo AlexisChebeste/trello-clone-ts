@@ -25,6 +25,7 @@ export interface User {
     lists: List[]
     lastActive?:Date
     isArchived: boolean
+    idWorkspace: string
   }
   
   export interface List {

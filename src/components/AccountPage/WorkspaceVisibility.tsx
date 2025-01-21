@@ -2,9 +2,12 @@ import { Globe, LockKeyhole} from "lucide-react";
 import ButtonWorkspace from "../ButtonWorkspace";
 import { useState, useRef} from "react";
 import ModalVisibility from "./ModalVisibility";
+import { useDispatch } from "react-redux";
+import { updatePublicWorkspace } from "../../redux/states/workspaceSlices";
+import { IWorkspace } from "../../types";
 
-export default function WorkspaceVisibility() {
-  const [isPublic, setIsPublic] = useState(false);
+export default function WorkspaceVisibility({workspace}: {workspace: IWorkspace}) {
+  const dispatch= useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -16,22 +19,29 @@ export default function WorkspaceVisibility() {
     setIsOpen(false);
   };
 
+  const setIsPublic = (isPublic: boolean) => {
+    dispatch(updatePublicWorkspace({ id: workspace.id, isPublic }));
+    handleVisibility();
+  }
+
+
+
 
   return (
     <div className=" flex flex-col md:flex-row gap-4 md:space-between items-center py-4 border-t border-t-gray-300">
       <div className="flex flex-col items-start w-full">
         <div className="flex items-center gap-2">
-          {isPublic ? (
+          {workspace.isPublic ? (
             <Globe className="size-4 text-gray-700" />
           ) : (
             <LockKeyhole className="size-4 text-gray-700" />
           )}
           <h3 className="text-base font-semibold text-slate-800">
-            {isPublic ? "Público" : "Privado"}
+            {workspace.isPublic ? "Público" : "Privado"}
           </h3>
         </div>
         <p className="text-sm text-gray-700 text-wrap">
-          {isPublic
+          {workspace.isPublic
             ? "Este Espacio de trabajo es público. Lo puede ver cualquier persona que acceda al enlace y aparecerá en los resultados de buscadores como Google. Solo las personas invitadas al Espacio de trabajo pueden añadir o editar los tableros del Espacio de trabajo."
             : "Este Espacio de trabajo es privado. No está indexado para las personas que no pertenezcan al Espacio de trabajo, y no lo podrán ver."}
         </p>

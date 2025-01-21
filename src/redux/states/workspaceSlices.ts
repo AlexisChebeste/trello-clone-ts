@@ -39,6 +39,13 @@ const workspaceSlice = createSlice({
         state.workspaces[index] = action.payload;
       }
     },
+    updatePublicWorkspace: (state, action: PayloadAction<{ id: string, isPublic: boolean }>) => {
+      const index = state.workspaces.findIndex(workspace => workspace.id === action.payload.id);
+      if (index !== -1) {
+        state.workspaces[index].isPublic = action.payload.isPublic;
+      }
+    },
+
     deleteWorkspace: (state, action: PayloadAction<string>) => {
       state.workspaces = state.workspaces.filter(workspace => workspace.id !== action.payload);
     },
@@ -63,6 +70,7 @@ export const {
   updateWorkspace,
   deleteWorkspace,
   addBoardToWorkspace,
+  updatePublicWorkspace,
 } = workspaceSlice.actions;
 
 export default workspaceSlice.reducer;

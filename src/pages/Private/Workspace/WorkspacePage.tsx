@@ -1,8 +1,7 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../hooks/useWorkspace";
 import CardBoard from "../../../components/Home/CardBoard";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Board} from "../../../types";
+import { IBoard} from "../../../types";
 import  BoardsHeader  from "../../../components/WorkspacePage/BoardsHeader";
 import Addbutton from "../../../components/Boards/Addbutton";
 import ModalBoard from "../../../components/modals/AddBoard/ModalBoard";
@@ -10,16 +9,18 @@ import ButtonWorkspace from "../../../components/ButtonWorkspace";
 import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
 import ModalArchived from "../../../components/WorkspacePage/ModalArchived";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../../redux/store";
 
 
 
 export default function WorkspacePage() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isArchivedModalOpen, setIsArchivedModalOpen] = useState(false);
-    const [boards, setBoards] = useState<Board[]>([])
+    const [boards, setBoards] = useState<IBoard[]>([])
     const [sortBy, setSortBy] = useState<string>('most-recent')
     const [searchQuery, setSearchQuery] = useState('')
     const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +38,7 @@ export default function WorkspacePage() {
       setIsArchivedModalOpen(!isArchivedModalOpen);
     }
 
-    async function getBoards(sortBy: string = 'most-recent'): Promise<Board[]> {
+    async function getBoards(sortBy: string = 'most-recent'): Promise<IBoard[]> {
         // Simulate DB delay
         await new Promise(resolve => setTimeout(resolve, 500))
         
@@ -87,7 +88,7 @@ export default function WorkspacePage() {
     }
     return(
       <div className=" flex-1 h-full flex flex-col py-4 px-4 md:px-8 max-w-7xl mx-auto w-full  text-gray-500 overflow-y-auto">
-        <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description}>
+        <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description} isPublic={workspace.isPublic} >
             <button className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md flex items-center font-semibold max-w-max gap-2  hover:bg-blue-700 transition-colors duration-200">
                 <UserRoundPlus  />
                 Invitar a miembros del espacio de trabajo

@@ -2,12 +2,13 @@ import { Link } from "lucide-react";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import Members from "../../../../components/MembersPage/Members";
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../../hooks/useWorkspace";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../../../redux/store";
 
 
 export default function MembersWorkspace() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
 
     if(!workspace){

@@ -1,14 +1,15 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../hooks/useWorkspace";
 import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import SectionSubscription from "../../../components/BillingPage/SectionSubscription";
 import SectionCategory from "../../../components/BillingPage/SectionCategory";
 import TableSub from "../../../components/BillingPage/TableSub";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../../redux/store";
 
 export default function BillingPage(){
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
     const {idWorkspace} = useParams<{idWorkspace: string}>();
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isMensual, setIsMensual] = useState(true);
@@ -20,7 +21,7 @@ export default function BillingPage(){
     return(
         <div className=" flex-1 h-full flex flex-col py-4  max-w-7xl mx-auto w-full  text-gray-500">
             <div className="px-4 md:px-8">
-                <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description}>
+                <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description} isPublic={workspace.isPublic} >
                     <button className="text-sm bg-blue-600 text-white px-4 py-2 rounded-md flex items-center font-semibold max-w-max gap-2  hover:bg-blue-700 transition-colors duration-200 relative">
                         <UserRoundPlus  />
                         Invitar a miembros del espacio de trabajo

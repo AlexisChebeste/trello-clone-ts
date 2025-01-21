@@ -1,12 +1,13 @@
 import { useParams } from "react-router";
-import { useWorkspace } from "../../../../hooks/useWorkspace";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import { X } from "lucide-react";
+import { useSelector } from "react-redux";
+import { AppStore } from "../../../../redux/store";
 
 
 export default function SolicitedWorkspace() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces)
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
 
     if(!workspace){
@@ -15,12 +16,11 @@ export default function SolicitedWorkspace() {
 
     return (
         <div className="flex-1">
-            <h3 className="text-slate-700 font-semibold text-xl">Solicitudes de unión ({workspace.boards?.length})</h3>
+            <h3 className="text-slate-700 font-semibold text-xl">Solicitudes de unión ({workspace.members?.length})</h3>
             <p className="text-slate-600 text-sm mt-2 mb-4">
                 Estas personas han solicitado unirse a este Espacio de trabajo. Si añades nuevos miembros al Espacio de trabajo, la facturación se actualizará automáticamente. Los invitados del Espacio de trabajo ya cuentan para el límite de colaboradores del Espacio de trabajo gratuito.
             </p>
             <div className="flex flex-col gap-4 border-y border-slate-300 py-4">
-                <h4 className={`text-center text-sm italic ${workspace.boards.length === 0 ? '' : 'hidden'}`}>No hay solicitudes para unirse.</h4>
                 <input type="text" placeholder="Filtrar por nombre" className="text-sm text-slate-700 placeholder:text-slate-500 py-2 px-3 border border-slate-500 rounded-sm hover:bg-slate-100 w-max md:w-60"/>
             </div>
             <div className="flex flex-col ">

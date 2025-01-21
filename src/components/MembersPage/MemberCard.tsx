@@ -1,9 +1,9 @@
 import { CircleHelp, X } from "lucide-react";
-import { User } from "../../types";
+import { IUser } from "../../types";
 import ButtonWorkspace from "../ButtonWorkspace";
 
 interface MemberCardProps{
-    member: User
+    member: IUser
 }
 
 export default function MemberCard({member}:MemberCardProps){

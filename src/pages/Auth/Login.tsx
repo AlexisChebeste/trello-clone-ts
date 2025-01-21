@@ -1,35 +1,45 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { auth } from "../../lib/auth";
-import { getMorty } from "../../services/auth.service";
 import { useDispatch } from "react-redux";
-import { createUser } from "../../redux/states/user";
 import { PrivateRoutes } from "../../models/routes";
+import { loginFailure, loginStart, loginSuccess } from "../../redux/states/authSlice";
+import { mockLogin } from "../../mockApi";
 
 export default function Login(){
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const idWorkspace = '1';
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await auth.login(email,password);
-        login();
+        dispatch(loginStart());
+        try {
+            const response = mockLogin(email, password);
+            dispatch(loginSuccess({user: response.user, token: response.token}));
+            localStorage.setItem('token', response.token);
+            navigate(PrivateRoutes.HOME(idWorkspace), {replace:true});
+        }catch(error: any){
+            dispatch(loginFailure('Credenciales incorrectas'));
+            setError('Credenciales incorrectas');
+        }
     }
 
     const handleGuest = async () => {
-        await auth.invited('invited@gmail.com','12345')
-        login();
-    }
-    const dispatch = useDispatch();
-    const login = async () => {
-        try{
-            const result = await getMorty();
-            dispatch(createUser(result));
+        dispatch(loginStart());
+        await setEmail('test@example.com')
+        await setPassword('password123')
+        try {
+            const response = mockLogin(email, password);
+            dispatch(loginSuccess({user: response.user, token: response.token}));
+            localStorage.setItem('token', response.token);
             navigate(PrivateRoutes.HOME(idWorkspace), {replace:true});
-
-        } catch(error){}
+        }catch(error: any){
+            dispatch(loginFailure('Credenciales incorrectas'));
+            setError('Credenciales incorrectas');
+        }
     }
     
 
@@ -69,6 +79,7 @@ export default function Login(){
                         <div className="mb-6">
                             <button type="submit" className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Iniciar sesión</button>
                         </div>
+                        {error && <p>{error}</p>}
                     </form>
                 </div>
                 <div className="mt-6 text-center">

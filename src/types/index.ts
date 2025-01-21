@@ -7,6 +7,8 @@ export interface User {
     boards?: Board[];
     role?: "admin" | "user";
   }
+
+  
   
   export interface Workspace {
     id: string;
@@ -55,3 +57,25 @@ export interface User {
     text: string;
     color: string; // Hexadecimal o clase de Tailwind
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  export interface IUser {
+    id: string;
+    email: string;
+    name: string;
+    avatar?: string;
+    workspaces?: string[];
+    boards?: string[];
+  }
+  

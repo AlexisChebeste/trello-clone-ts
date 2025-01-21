@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { UserInfo } from "../models/user.model";
-import userSliceReducer from "./states/user";
+import authSliceReducer, { AuthState } from "./states/authSlice";
 
 export interface AppStore {
-    user: UserInfo;
+    auth: AuthState
 }
 
 export default configureStore<AppStore>({
     reducer: {
-        user: userSliceReducer,
+        auth: authSliceReducer,
     }
 })

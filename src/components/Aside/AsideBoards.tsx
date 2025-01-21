@@ -1,12 +1,13 @@
 import {useState, useRef, useEffect} from 'react';
 import { Plus, Trello, UserRound} from 'lucide-react';
-import  {useWorkspace}  from '../../hooks/useWorkspace';
 import CardBoardAside from './CardBoardAside';
 import Sidebar from './Siderbar';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';
-import { Board } from '../../types';
+import {IBoard } from '../../types';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../redux/store';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -14,11 +15,11 @@ interface AsideBoardsProps {
 }
 
 export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) {
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null); 
-    const [boards, setBoards] = useState<Board[] | []>([]);
+    const [boards, setBoards] = useState<IBoard[] | []>([]);
 
     const handleOpenModal = () => {
       setIsModalOpen(true);

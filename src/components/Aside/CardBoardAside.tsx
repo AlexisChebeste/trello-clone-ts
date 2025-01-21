@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 import { ModalCloseBoard } from "./ModalCloseBoard";
-import { Board } from "../../types";
+import { IBoard } from "../../types";
 
 interface CardBoardAsideProps {
-    board: Board;
+    board: IBoard;
     onArchive: (boardId: string) => void;
 }
 

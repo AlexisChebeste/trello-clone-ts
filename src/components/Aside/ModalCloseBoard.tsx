@@ -1,8 +1,8 @@
 import { Ellipsis, X } from "lucide-react";
 import { useState } from "react";
-import { Board } from "../../types";
+import { IBoard } from "../../types";
 
-export function ModalCloseBoard({board, onArchive}: {board: Board, onArchive: (id: string) => void}) {
+export function ModalCloseBoard({board, onArchive}: {board: IBoard, onArchive: (id: string) => void}) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => setIsOpen(!isOpen);

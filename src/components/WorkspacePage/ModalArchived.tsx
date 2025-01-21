@@ -1,6 +1,8 @@
 import { MoveUpRight, X } from "lucide-react";
 import { Board } from "../../types";
 import { Link } from "react-router";
+import { useDispatch } from "react-redux";
+import { archivedBoard } from "../../redux/states/workspaceSlices";
 
 interface ModalArchivedProps {
     isModalOpen: boolean;
@@ -10,9 +12,9 @@ interface ModalArchivedProps {
 }
 
 export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchived, workName}: ModalArchivedProps) {
-
-    const changeArchived = (board: Board) => {
-        board.isArchived = false;
+    const dispatch = useDispatch()
+    const changeArchived = (boardId: string) => {
+        dispatch(archivedBoard({boardId: boardId}))
         setIsModalOpen(!isModalOpen);
     }
 
@@ -47,7 +49,7 @@ export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchiv
                             
                             <div className="flex gap-4 items-center text-white">
                                 <button className="bg-blue-600 py-2 px-4 font-semibold rounded-md text-sm "
-                                onClick={() => changeArchived(board)}>Volver a abrir</button>
+                                onClick={() => changeArchived(board.id)}>Volver a abrir</button>
                                 <button className="bg-red-600 py-2 px-4 font-semibold rounded-md text-sm">Eliminar</button>
                             </div>
                         </div>

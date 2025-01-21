@@ -1,10 +1,10 @@
-import type { Card } from "../../types";
+import type { ICard } from "../../types";
 import {CSS} from "@dnd-kit/utilities"
 import { useSortable } from "@dnd-kit/sortable"
 
 
 interface CardProps {
-    card: Card
+    card: ICard
   }
   
 

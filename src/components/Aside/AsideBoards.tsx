@@ -8,6 +8,8 @@ import { ModalAccount } from './ModalAccount';
 import {IBoard } from '../../types';
 import { useSelector } from 'react-redux';
 import { AppStore } from '../../redux/store';
+import { useDispatch } from 'react-redux';
+import { archivedBoard } from '../../redux/states/workspaceSlices';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -20,7 +22,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null); 
     const [boards, setBoards] = useState<IBoard[] | []>([]);
-
+    const dispatch = useDispatch()
     const handleOpenModal = () => {
       setIsModalOpen(true);
     };
@@ -31,11 +33,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     
     const isBoardPage = location.pathname.includes("b/");
     const handleArchiveBoard = (boardId: string) => {
-        setBoards((prevBoards) =>
-            prevBoards.map((board) =>
-                board.id === boardId ? { ...board, isArchived: true } : board
-            )
-        );
+      dispatch(archivedBoard({boardId: boardId}))
     };
   
     useEffect(() => {

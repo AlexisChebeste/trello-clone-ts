@@ -3,20 +3,24 @@ import CardList from "./List"
 import ButtonAdd from "./ButtonAdd"
 import { X } from "lucide-react"
 import { useParams } from "react-router"
-import { useWorkspace } from "../../hooks/useWorkspace"
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { arrayMove, SortableContext } from "@dnd-kit/sortable"
-import { Card, List } from "../../types"
+import {IList } from "../../types"
 import { createPortal } from "react-dom"
+import { useSelector } from "react-redux"
+import { AppStore } from "../../redux/store"
+import { useDispatch } from "react-redux"
+import { addListToBoard, reorderListsInBoard } from "../../redux/states/workspaceSlices"
 
 
 export default function BoardSection() {
-  const {workspaces, createList, reorderLists} = useWorkspace()
+  const workspaces = useSelector((store: AppStore)=> store.workspace.workspaces)
+  const dispatch = useDispatch()
   const {idBoard} = useParams<{idBoard: string}>()
   const [isModalOpen, setIsModalOpen] = useState(true)
   const [listName, setListName] = useState('')
-  const [activeColumn, setActiveColumn] = useState<List | null>(null);
-  const [activeCard, setActiveCard] = useState<Card | null>(null);
+  const [activeColumn, setActiveColumn] = useState<IList | null>(null);
+  
   const board = workspaces
     .flatMap(workspace => workspace.boards)
     .find(board => board.id === idBoard);
@@ -52,18 +56,18 @@ export default function BoardSection() {
 
     )
 
-    if (board) {
-      reorderLists(board.id, newOrderList)
+    if (board && idBoard) {
+      dispatch(reorderListsInBoard({boardId: idBoard, newOrder: newOrderList}))
     }
     
   }
 
-  const [columns, setColumns] = useState<List[]>(board?.lists || [])
+  const [columns, setColumns] = useState<IList[]>(board?.lists || [])
   
 
   const addList = () => {
       if(listName !== '' && idBoard){
-        createList(idBoard, listName)
+        dispatch(addListToBoard({boardId: idBoard, title:listName}))
       }
       setListName('')
       setIsModalOpen(!isModalOpen)

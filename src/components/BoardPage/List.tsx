@@ -2,22 +2,26 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import Card from "./Card"
 import ButtonAdd from "./ButtonAdd"
 import { X } from "lucide-react"
-import { List } from "../../types"
-import { useWorkspace } from "../../hooks/useWorkspace"
+import { ICard, IList } from "../../types"
 import {CSS} from "@dnd-kit/utilities"
-import { SortableContext, useSortable } from "@dnd-kit/sortable"
+import { arrayMove, SortableContext, useSortable } from "@dnd-kit/sortable"
+import { useDispatch} from "react-redux"
+import { addCardToList, reorderCardInBoard } from "../../redux/states/workspaceSlices"
+import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core"
+import { createPortal } from "react-dom"
 
 interface ListProps {
   title: string,
-  list: List
+  list: IList
 }
 
 export default function CardList({ title , list}: ListProps) {
-  const {createCard} = useWorkspace()
+  const dispatch = useDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [cardName, setCardName] = useState('')
   const [listName, setListName] = useState(title)
-
+  const [cards, setCards] = useState<ICard[]>(list?.cards || [])
+  const [activeCard, setActiveCard] = useState<ICard | null>(null);
   const { 
     setNodeRef, 
     attributes, 
@@ -54,16 +58,54 @@ export default function CardList({ title , list}: ListProps) {
     }, 0);
   };
 
+  function onDragStart(event: DragStartEvent){
+      if(event.active.data.current?.type === 'list'){
+        setActiveCard(event.active.data.current.list)
+        return;
+      }
+    }
+  
+    function onDragEnd(event: DragEndEvent){
+      const {active, over} = event
+      if (!over) return;
+  
+      const activeCardId = active.id
+      const overCardId = over.id
+  
+      if(activeCardId === overCardId) return;
+  
+      const newOrderCard = arrayMove(
+        list?.cards.map(card => card.id) || [],
+        list?.cards.findIndex(card => card.id === activeCardId) || 0,
+        list?.cards.findIndex(card => card.id === overCardId) || 0
+  
+      )
+  
+      if (list ) {
+        dispatch(reorderCardInBoard({listId: list.id, newOrder: newOrderCard}))
+      }
+      
+    }
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10
+      },
+    })
+  );
+
+
   const addCard = () => {
     if(cardName !== ''){
-      createCard(list.id, cardName)
+      dispatch(addCardToList({listId: list.id, title: cardName}))
     }
   
     setCardName('')
     setIsModalOpen(!isModalOpen)
   }
 
-  const cardsIds = useMemo(() => list.cards.map(card => card.id), [list.cards]);
+  const cardsIds = useMemo(() => cards.map(card => card.id), [cards]);
 
   // Detectar clics fuera del componente
   useEffect(() => {
@@ -82,6 +124,10 @@ export default function CardList({ title , list}: ListProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isModalOpen]);
+
+  useEffect(() => {
+    setCards(list.cards || [])
+  }, [list, list?.id])
 
   if(isDragging){
     return <div 
@@ -102,7 +148,7 @@ export default function CardList({ title , list}: ListProps) {
     </h3>
     
     <div className="list flex-1 overflow-y-auto  px-1" ref={listRef}>
-        {list.cards.map((card) => (
+        {cards.map((card) => (
             <Card key={card.id} card={card} />
         ))}
       <div className={`flex flex-col w-full  mb-2 ${!isModalOpen && 'hidden'}`}>
@@ -153,11 +199,11 @@ export default function CardList({ title , list}: ListProps) {
         >
           {listName}
         </h3>
-        
+        <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <div className="list flex-1 overflow-y-auto  px-1" ref={listRef}>
-          
-          <SortableContext items={list.cards} >
-            {list.cards.map((card) => (
+        
+          <SortableContext items={cardsIds} >
+            {cards.map((card) => (
                 <Card key={card.id} card={card} />
             ))}
           </SortableContext>
@@ -183,6 +229,18 @@ export default function CardList({ title , list}: ListProps) {
             
           </div>
         </div>
+        {createPortal(
+          <DragOverlay>
+            {activeCard && 
+              <Card
+                card={activeCard}
+              />
+            }
+          </DragOverlay>,
+          document.body
+        )}
+
+        </DndContext>
         <ButtonAdd 
           onClick={toggleModal} 
           title="tarjeta" 

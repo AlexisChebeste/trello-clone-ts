@@ -1,12 +1,13 @@
 import { useParams } from 'react-router';
 import AsideBoards from '../../../components/Aside/AsideBoards';
 import BoardSection from '../../../components/BoardPage/BoardSection';
-import { useWorkspace } from '../../../hooks/useWorkspace';
 import Layout from '../../Layout';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../../redux/store';
 
 export default function BoardPage() {
     const {idBoard} = useParams<{idBoard: string}>()
-    const {workspaces}= useWorkspace()
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces)
 
     const board = workspaces.
         flatMap(workspace => workspace.boards)

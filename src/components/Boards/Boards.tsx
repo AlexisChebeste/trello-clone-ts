@@ -1,17 +1,18 @@
 import {useRef, useState} from 'react';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import CardBoard from '../Home/CardBoard';
-import { useWorkspace } from '../../hooks/useWorkspace';
 import { UserRound } from 'lucide-react';
 import { useParams } from 'react-router';
 import { WorkspaceInfo } from './WorkspaceInfo';
 import Addbutton from './Addbutton';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../redux/store';
 
 export default function Boards() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const {workspaces} = useWorkspace();
+    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
 
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
 

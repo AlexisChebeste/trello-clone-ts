@@ -26,9 +26,20 @@ export const mockLogin = (email: string, password: string) => {
       id: workspaceId,
       name: 'Workspace Example',
       boards: [
-        { id: '1', name: 'Board 1' },
-        { id: '2', name: 'Board 2' },
+        {
+          id: '1', idWorkspace: '1'  ,name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
+          isArchived: false, lastActive: new Date(), members: []
+        },
+        {
+          id: '2',  idWorkspace: '1', name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
+          isArchived: true, lastActive: new Date(), members: []
+        },
       ],
+      isPublic: true,
+      members: [],
+      archivedBoards: [],
+      admin: { id: '1', name: 'John Doe' , email: 'test@example.com', workspaces:[] ,boards: []},
+      logo: 'bg-gradient-to-br from-[#0C66E4] to-[#37B4C3]',
     };
   };
   

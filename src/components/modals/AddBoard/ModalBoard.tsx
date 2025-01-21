@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useWorkspace } from "../../../hooks/useWorkspace";
 import ModalBoardColorSelector from "./ModalBoardColorSelector";
 import ModalBoardButtons from "./ModalBoardButtons";
 import { colors, gradients } from "../../../lib/colors";
 import ModalFlex from "../ModalGeneric";
+import { useDispatch } from "react-redux";
+import { addBoardToWorkspace } from "../../../redux/states/workspaceSlices";
 
 interface ModalBoardProps {
   workspaceId: string;
@@ -18,14 +19,33 @@ export default function ModalBoard({
   workspaceId,
   buttonRef,
 }: ModalBoardProps) {
-  const { createBoard } = useWorkspace();
+  const dispatch = useDispatch();
   const [boardName, setBoardName] = useState<string>("");// Color por defecto
   const [color, setColor] = useState<string>("bg-blue-500"); // Color por defecto
+
   const addBoard = () => {
       
-    if (boardName.trim() !== '') createBoard(workspaceId, boardName, color);  // Incluye el color seleccionado 
-    onClose();
-    setBoardName(""); // Reinicia el color seleccionado
+    if (boardName.trim() !== "") {
+      // Dispatch de la acción para agregar el board
+      dispatch(
+        addBoardToWorkspace({
+          workspaceId,
+          board: {
+            id: Math.random().toString(), // Generar un ID único
+            name: boardName,
+            color,
+            description: "",
+            isArchived: false,
+            lastActive: new Date(),
+            idWorkspace: workspaceId,
+            lists: [],
+            members: [],
+          },
+        })
+      );
+      onClose();
+      setBoardName(""); // Reiniciar el nombre
+    }
   };
 
 

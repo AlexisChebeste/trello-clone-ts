@@ -1,8 +1,8 @@
 import { Link } from "react-router";
-import { Board} from "../../types";
+import { IBoard} from "../../types";
 
 interface CardBoardProps {
-  board: Board;
+  board: IBoard;
 }
 
 export default function CardBoard({ board}: CardBoardProps) {

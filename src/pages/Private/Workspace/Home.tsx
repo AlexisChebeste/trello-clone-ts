@@ -4,7 +4,6 @@ import Boards from "../../../components/Boards/Boards";
 
 export default function Home() {
     
-    
 
     return (
         <>

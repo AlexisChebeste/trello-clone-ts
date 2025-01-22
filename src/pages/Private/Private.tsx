@@ -1,4 +1,4 @@
-import { Navigate, Route } from "react-router";
+import {Route } from "react-router";
 import RoutesWithNotFound from "../../utilities/RoutesWithNotFound";
 import { lazy } from "react";
 
@@ -12,11 +12,12 @@ const AccountPage = lazy(() => import("./Workspace/AccountPage"));
 const BillingPage = lazy(() => import("./Workspace/BillingPage"));
 const Layout = lazy(() => import("../Layout"));
 const LayoutAside = lazy(() => import("../../components/LayoutAside"));
+const WorkspaceRedirect = lazy(() => import("./Workspace/WorkspaceRedirect"));
 
 function Private(){
     return(
         <RoutesWithNotFound>
-            <Route path="/" element={<Navigate to=":idWorkspace/home" />} />
+            <Route path="/" element={<WorkspaceRedirect />} />
             <Route element={<Layout />}>
                 <Route path=":idWorkspace/home" element={<Home />}/>
 

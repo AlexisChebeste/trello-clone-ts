@@ -4,7 +4,7 @@ export const mockLogin = (email: string, password: string) => {
     // Simula una respuesta de login exitosa
     if (email === 'test@example.com' && password === 'password123') {
       return {
-        user: { id: '1', email, name: 'John Doe' },
+        user: { id: '1', email, name: 'John Doe', boards: [], workspaces: [] },
         token: 'mocked-jwt-token',
         isAuthenticated: true,
       };
@@ -15,7 +15,7 @@ export const mockLogin = (email: string, password: string) => {
   export const mockRegister = (email: string, password: string, name: string) => {
     // Simula una respuesta de registro exitosa
     return {
-      user: { id: '1', email, name },
+      user: { id: '1', email, name ,boards: [], workspaces: []},
       token: 'mocked-jwt-token',
     };
   };

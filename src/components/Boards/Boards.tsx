@@ -13,8 +13,14 @@ export default function Boards() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
-
-    const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
+    let workspace;
+    if(idWorkspace === ':idWorkspace'){ 
+       
+        workspace = workspaces[0]
+    
+    } else {
+        workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
+    }
 
     const buttonRef = useRef<HTMLButtonElement>(null); 
 
@@ -33,7 +39,7 @@ export default function Boards() {
 
     return(
         <div className="w-full flex flex-col gap-8">
-            <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description}/>
+            <WorkspaceInfo logo={workspace.logo} name={workspace.name} description={workspace.description} isPublic={workspace.isPublic}/>
             
             
             <article className='flex flex-col gap-4'>

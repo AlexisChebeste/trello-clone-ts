@@ -42,7 +42,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
 
 
     return(
-      <Sidebar className={`backdrop-blur-md z-50 ${className}`}>
+      <Sidebar className={`backdrop-blur-md  ${className}`}>
         <div className='flex  gap-2 border-b border-slate-300/30 py-5 px-4 items-center w-full'>
           <div className={`flex  justify-center items-center h-9 w-11  rounded-md ${workspace?.logo} text-white font-bold text-xl`}>
             {workspace?.name[0].toUpperCase()}
@@ -66,7 +66,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
               <ModalAccount idWorkspace={idWorkspace}/>
         </div>
         <div className="flex flex-col w-auto  pb-2 ">
-          <div className='  flex justify-between items-center pl-4'>
+          <div className='  flex justify-between items-center pl-4 '>
             <h3 className='text-sm font-bold  '>Sus tableros</h3>
             <button 
               ref={buttonRef}
@@ -77,7 +77,8 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
               className={`p-1  ${isBoardPage ? 'hover:bg-white/30' : 'hover:bg-slate-200'} rounded-md mr-3`}
             >
               <Plus className='size-4 '/>
-            </button>
+            </button >
+            
           </div>
           
           <div className="flex flex-col">

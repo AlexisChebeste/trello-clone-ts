@@ -17,7 +17,7 @@ const Sidebar = ({ children, className }:SidebarProps) => {
     <div
       className={`flex ${
         isCollapsed ? "w-7" : `w-64 max-w-72 `
-      }   transition-all duration-500 ${className} h-full border-r border-slate-300/30 `}
+      }   transition-all duration-500 ${className} h-full border-r border-slate-300/30 z-10`}
     >
       {/* Contenido del Sidebar */}
       {!isCollapsed && (
@@ -30,7 +30,7 @@ const Sidebar = ({ children, className }:SidebarProps) => {
       <button
         onClick={toggleSidebar}
         aria-label="Toggle Sidebar"
-        className="absolute top-4 right-[-16px] bg-blue-600 text-white p-1  rounded-full shadow-lg hover:bg-blue-800 transition-all duration-500 z-50 border border-slate-400" 
+        className="absolute top-4 right-[-16px] bg-blue-600 text-white p-1  rounded-full shadow-lg hover:bg-blue-800 transition-all duration-500 z-10 border border-slate-400" 
       >
         {isCollapsed ? <ChevronRight /> : <ChevronLeft  />}
       </button>

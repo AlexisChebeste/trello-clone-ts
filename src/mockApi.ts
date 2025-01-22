@@ -20,18 +20,19 @@ export const mockLogin = (email: string, password: string) => {
     };
   };
   
-  export const mockGetWorkspace = (workspaceId: string) => {
+  export const mockGetWorkspace = (nameWorkspace: string) => {
     // Simula obtener un workspace con algunos tableros
+    const newId = Math.random().toString(36).substr(2, 9)
     return {
-      id: workspaceId,
-      name: 'Workspace Example',
+      id: newId,
+      name: nameWorkspace,
       boards: [
         {
-          id: '1', idWorkspace: '1'  ,name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
+          id: '1', idWorkspace: newId ,name: 'Tablero 1', color: 'bg-[#0079bf]', lists: [],
           isArchived: false, lastActive: new Date(), members: []
         },
         {
-          id: '2',  idWorkspace: '1', name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
+          id: '2',  idWorkspace: newId, name: 'Tablero 2', color: 'bg-[#519839]', lists: [],
           isArchived: true, lastActive: new Date(), members: []
         },
       ],

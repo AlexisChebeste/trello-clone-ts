@@ -14,7 +14,7 @@ export default function AsideWorkspace() {
     useEffect(() => {
         dispatch(getWorkspacesStart());
         try {
-        const mockWorkspaces = [mockGetWorkspace('1'), mockGetWorkspace('2'), mockGetWorkspace('3')]; // Simula que obtenemos los workspaces
+        const mockWorkspaces = [mockGetWorkspace('Workspace1'), mockGetWorkspace('Workspace2'), mockGetWorkspace('Workspace3')]; // Simula que obtenemos los workspaces
         dispatch(getWorkspacesSuccess(mockWorkspaces));
         } catch (e) {
         dispatch(getWorkspacesFailure('Error al cargar los workspaces'));

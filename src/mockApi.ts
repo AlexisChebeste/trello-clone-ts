@@ -39,8 +39,8 @@ export const mockLogin = (email: string, password: string) => {
       isPublic: true,
       members: [],
       archivedBoards: [],
-      admin: { id: '1', name: 'John Doe' , email: 'test@example.com', workspaces:[] ,boards: []},
-      logo: '/public/gradientes/gradientAzul.svg',
+      admin: { id: '1', name: 'John ', lastname:'Doe' , email: 'test@example.com', workspaces:[] ,boards: [], avatar: '/gradientes/gradientAzul.svg' },
+      logo: '/gradientes/gradientAzul.svg',
     };
   };
   

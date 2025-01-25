@@ -3,13 +3,13 @@ import CardWorkspace from './CardWorkspace';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWorkspacesFailure, getWorkspacesStart, getWorkspacesSuccess } from '../../redux/states/workspaceSlices';
 import { mockGetWorkspace } from '../../mockApi';
-import { AppStore } from '../../redux/store';
+import { RootState } from '../../redux/store';
 
 
 export default function AsideWorkspace() {
 
     const dispatch = useDispatch();
-    const { workspaces, loading, error } = useSelector((state: AppStore) => state.workspace);
+    const { workspaces, loading, error } = useSelector((state: RootState) => state.workspace);
 
     useEffect(() => {
         dispatch(getWorkspacesStart());

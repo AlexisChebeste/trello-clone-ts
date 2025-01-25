@@ -18,6 +18,7 @@ export interface User {
     email: string;
     avatar?: string;
     token?: string; // Solo para el login
+    expiresIn?: number; // Solo para el login
 }
 
 export const registerUser = async (userData : RegisterUserData): Promise<void> => {

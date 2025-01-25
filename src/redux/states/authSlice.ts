@@ -10,9 +10,9 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
+  user: JSON.parse(localStorage.getItem("user") || "null"),
   isLoading: false,
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("user"),
   error: null,
 };
 
@@ -20,7 +20,15 @@ export const login = createAsyncThunk<User, LoginCredentials>(
   "/auth/login",
   async (credentials: LoginCredentials, { rejectWithValue }) => {
       try {
-          return await loginUser(credentials);
+            const response =  await loginUser(credentials);
+            const { expiresIn } = response;
+            if (expiresIn) {
+                const tokenExpiration = new Date().getTime() + expiresIn * 1000;
+                localStorage.setItem("tokenExpiration", tokenExpiration.toString());
+            }
+
+            return response;
+
       } catch (err: any) {
           return rejectWithValue(err.response?.data?.message || "Error en el login");
       }
@@ -56,7 +64,22 @@ const authSlice = createSlice({
       logout(state) {
           state.user = null;
           state.isAuthenticated = false;
+
+          localStorage.removeItem("user");
       },
+      checkAuth(state) {
+            const tokenExpiration = localStorage.getItem("tokenExpiration");
+            if (tokenExpiration) {
+                const currentTime = new Date().getTime();
+
+                if (currentTime >= parseInt(tokenExpiration)){
+                    state.user = null;
+                    state.isAuthenticated = false;
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("tokenExpiration");
+                }
+            }
+      }
   },
   extraReducers: (builder) => {
       builder
@@ -67,6 +90,8 @@ const authSlice = createSlice({
               state.isLoading = false;
               state.isAuthenticated = true;
               state.user = action.payload;
+
+              localStorage.setItem("user", JSON.stringify(action.payload));
           })
           .addCase(login.rejected, (state, action: PayloadAction<any>) => {
               state.isLoading = false;
@@ -90,5 +115,5 @@ const authSlice = createSlice({
 });
 
 // Exportar acciones y reducer
-export const { logout } = authSlice.actions;
+export const { logout,checkAuth } = authSlice.actions;
 export default authSlice.reducer;

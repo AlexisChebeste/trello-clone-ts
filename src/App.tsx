@@ -1,10 +1,10 @@
-import { Suspense, lazy} from "react";
+import { Suspense, lazy, useEffect} from "react";
 import { Route,  BrowserRouter as Router, Navigate} from "react-router";
 import AuthGuard from "./guards/auth.guard";
 import { PrivateRoutes, PublicRoutes } from "./models/routes";
 import RoutesWithNotFound from "./utilities/RoutesWithNotFound";
-import { Provider } from "react-redux";
-import {store} from "./redux/store";
+import {useDispatch } from "react-redux";
+import { checkAuth } from "./redux/states/authSlice";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
@@ -13,11 +13,18 @@ const BoardPage = lazy(() => import("./pages/Private/Board/BoardPage"));
 
 export default function App() {
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Ejecuta checkAuth al cargar la aplicación
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
     <div className="App">
 
       <Suspense fallback={<div>Loading...</div>}>
-        <Provider store={store}>
+        
           <Router>
             <RoutesWithNotFound>
               <Route path="/" element={<Navigate to={PrivateRoutes.PRIVATE} replace />} />
@@ -33,7 +40,6 @@ export default function App() {
                 
             </RoutesWithNotFound>
           </Router>
-        </Provider>
       </Suspense>
     </div>
   )

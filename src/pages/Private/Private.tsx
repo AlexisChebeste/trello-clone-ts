@@ -1,6 +1,8 @@
 import {Route } from "react-router";
 import RoutesWithNotFound from "../../utilities/RoutesWithNotFound";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/states/authSlice";
 
 const Home = lazy(() => import("./Workspace/Home"));
 const WorkspacePage = lazy(() => import("./Workspace/WorkspacePage"));
@@ -15,6 +17,25 @@ const LayoutAside = lazy(() => import("../../components/LayoutAside"));
 const WorkspaceRedirect = lazy(() => import("./Workspace/WorkspaceRedirect"));
 
 function Private(){
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        const checkTokenExpiration = () => {
+          const tokenExpiration = localStorage.getItem("tokenExpiration");
+          if (tokenExpiration) {
+            const currentTime = new Date().getTime();
+            if (currentTime >= parseInt(tokenExpiration)) {
+              dispatch(logout()); // Cierra la sesión
+              localStorage.removeItem("tokenExpiration");
+            }
+          }
+        };
+    
+        const interval = setInterval(checkTokenExpiration, 5000); // Verifica cada 5 segundos
+        return () => clearInterval(interval); // Limpia el intervalo al desmontar
+      }, [dispatch]);
+
+
     return(
         <RoutesWithNotFound>
             <Route path="/" element={<WorkspaceRedirect />} />

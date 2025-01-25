@@ -15,8 +15,7 @@ export default function Login(){
     const idWorkspace = '1';
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(email, password)
-        dispatch(login({email, password}));
+        await dispatch(login({email, password}));
         navigate(PrivateRoutes.HOME(idWorkspace), {replace:true});
         
     }

@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authSliceReducer, { AuthState } from "./states/authSlice";
-import workspaceSliceReducer, { WorkspaceState } from "./states/workspaceSlices";
+import authReducer from "./states/authSlice";
+import workspaceSliceReducer from "./states/workspaceSlices";
 
-export interface AppStore {
-    auth: AuthState
-    workspace: WorkspaceState
-}
 
-export default configureStore<AppStore>({
+export const store = configureStore({
     reducer: {
-        auth: authSliceReducer,
+        auth: authReducer,
         workspace: workspaceSliceReducer,
     }
 })
+
+// Tipos para dispatch y estado
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

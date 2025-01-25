@@ -2,14 +2,14 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router";
-import { AppStore } from "../../redux/store";
+import {RootState } from "../../redux/store";
 
 
 export default function MenuWorkspaces() {
     
     const location = useLocation();
     const isBoardPage = location.pathname.includes("b/");
-    const workspaces = useSelector((state: AppStore) => state.workspace.workspaces);
+    const workspaces = useSelector((state: RootState) => state.workspace.workspaces);
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -22,6 +22,9 @@ export default function MenuWorkspaces() {
             setOpen(false)
         }
     })
+
+    if(workspaces.length === 0) return null;
+
     return(
         <div id="modal-workspace" className="relative z-50 ">
             <button className={`p-2 ${isBoardPage ? 'hover:bg-white/30': 'hover:bg-slate-200'} rounded-md font-semibold flex items-center gap-1 text-sm`} onClick={handleOpen}>
@@ -37,8 +40,9 @@ export default function MenuWorkspaces() {
                             className="px-4 py-2 hover:bg-slate-200 rounded-md font-semibold flex gap-2 items-center text-slate-700"
                             key={workspace.id}
                         >
-                            <div className={`w-10 h-10 ${workspace.logo} rounded-md flex items-center justify-center text-white`} >
-                                <span>{workspace.name[0]}</span>
+                            <div className={`w-10 h-10 rounded-md flex items-center justify-center text-white relative text-lg`} >
+                                <img src={workspace.logo} alt={workspace.name} className="size-full rounded-md"/>
+                                <span className="absolute inset-0 flex items-center justify-center">{workspace.name[0]}</span>
                             </div>
                             {workspace.name}
                         </NavLink>

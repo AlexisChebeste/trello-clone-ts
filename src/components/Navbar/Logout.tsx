@@ -1,14 +1,17 @@
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 import { PublicRoutes } from "../../models/routes";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
 
 
 export default function Logout() {
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     const logOut = () =>{
         navigate(`/${PublicRoutes.LOGIN}`, {replace:true});
-        
+        dispatch(logOut)
         
     }
 

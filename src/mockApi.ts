@@ -40,7 +40,7 @@ export const mockLogin = (email: string, password: string) => {
       members: [],
       archivedBoards: [],
       admin: { id: '1', name: 'John Doe' , email: 'test@example.com', workspaces:[] ,boards: []},
-      logo: 'bg-gradient-to-br from-[#0C66E4] to-[#37B4C3]',
+      logo: '/public/gradientes/gradientAzul.svg',
     };
   };
   

@@ -1,22 +1,26 @@
 import { Navigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppStore } from "../../../redux/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { getWorkspacesFailure, getWorkspacesStart, getWorkspacesSuccess } from "../../../redux/states/workspaceSlices";
 import { mockGetWorkspace } from "../../../mockApi";
 
 export default function WorkspaceRedirect() {
   const dispatch = useDispatch();
-    const { workspaces} = useSelector((state: AppStore) => state.workspace);
+  const { workspaces} = useSelector((state: AppStore) => state.workspace);
+
+  const fetchWorkspaces = useCallback(async () => {
+    dispatch(getWorkspacesStart());
+    try {
+      const mockWorkspaces = [mockGetWorkspace('1'), mockGetWorkspace('2'), mockGetWorkspace('3')]; // Simula que obtenemos los workspaces
+      dispatch(getWorkspacesSuccess(mockWorkspaces));
+    } catch (e) {
+    dispatch(getWorkspacesFailure('Error al cargar los workspaces'));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-        dispatch(getWorkspacesStart());
-        try {
-        const mockWorkspaces = [mockGetWorkspace('1'), mockGetWorkspace('2'), mockGetWorkspace('3')]; // Simula que obtenemos los workspaces
-        dispatch(getWorkspacesSuccess(mockWorkspaces));
-        } catch (e) {
-        dispatch(getWorkspacesFailure('Error al cargar los workspaces'));
-        }
+    fetchWorkspaces()
     }, [dispatch]);
 
   if (workspaces.length === 0) {

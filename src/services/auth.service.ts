@@ -1,6 +1,20 @@
-const baseUrl = 'https://rickandmortyapi.com/api/';
-const characterUrl = baseUrl + 'character/';
+import axios from 'axios';
+import { IUser } from '../types';
 
-export const getMorty = () => {
-  return fetch(characterUrl + '2').then(res => res.json());
+const API_URL = 'https://api.example.com/auth';
+
+export const loginService = async (
+  email: string,
+  password: string
+): Promise<{ user: IUser; token: string }> => {
+  const response = await axios.post(`${API_URL}/login`, { email, password });
+  return response.data;
+};
+
+export const registerService = async (
+  email: string,
+  password: string
+): Promise<{ user: IUser; token: string }> => {
+  const response = await axios.post(`${API_URL}/register`, { email, password });
+  return response.data;
 };

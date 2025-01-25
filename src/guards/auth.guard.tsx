@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
-import { AppStore } from "../redux/store";
 import { Navigate, Outlet } from "react-router";
 import { PrivateRoutes, PublicRoutes } from "../models/routes";
+import { RootState } from "../redux/store";
 
 interface Props {
     privateValidation: boolean;
@@ -12,7 +12,7 @@ const PublicValidationFragment = <Navigate replace to={PrivateRoutes.PRIVATE} />
   
 
 export const AuthGuard = ({privateValidation}: Props) => {
-    const userState = useSelector((store: AppStore) => store.auth.isAuthenticated);
+    const userState = useSelector((store: RootState) => store.auth.isAuthenticated);
     return userState ? (
         privateValidation ? (
             PrivateValidationFragment

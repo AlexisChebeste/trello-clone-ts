@@ -1,16 +1,12 @@
 import { NavLink, useLocation, } from "react-router";
 import Logout from "./Logout";
-import { useSelector } from "react-redux";
-import { AppStore } from "../../redux/store";
 import MenuWorkspaces from "./MenuWorkspaces";
 import AddWorkspace from "./AddWorkspace";
 
 export default function Navbar() {
     const location = useLocation();
     const isBoardPage = location.pathname.includes("b/");
-    const workspaces = useSelector((state: AppStore) => state.workspace.workspaces);
-    
-    
+
     return(
         <header 
             className='border-b  border-b-slate-200/60  backdrop-blur-sm  h-14 w-full z-50'>
@@ -19,7 +15,7 @@ export default function Navbar() {
                     <div className='flex gap-6  items-center'>
                         
                         <NavLink 
-                            to={`/w/${workspaces[0].id}/home`} 
+                            to={`/w/1/home`} 
                             className= {`flex-shrink-0 flex gap-1 items-center `}
                         >
                             <span className='text-xl font-bold '>

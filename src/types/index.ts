@@ -2,7 +2,8 @@ export interface IUser {
     id: string;
     email: string;
     name: string;
-    avatar?: string;
+    lastname: string;
+    avatar: string;
     workspaces: IWorkspace[];
     boards: IBoard[];
   }

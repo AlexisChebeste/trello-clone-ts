@@ -4,7 +4,7 @@ import AuthGuard from "./guards/auth.guard";
 import { PrivateRoutes, PublicRoutes } from "./models/routes";
 import RoutesWithNotFound from "./utilities/RoutesWithNotFound";
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import {store} from "./redux/store";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));

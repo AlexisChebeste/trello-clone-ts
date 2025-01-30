@@ -1,17 +1,18 @@
 import {Plus } from "lucide-react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
-import { addWorkspace } from "../../redux/states/workspaceSlices";
-import { mockGetWorkspace } from "../../mockApi";
+import { createWorkspace } from "../../redux/states/workspacesSlices";
+import { AppDispatch, RootState } from "../../redux/store";
 
 
 export default function AddWorkspace() {
     const location = useLocation();
     const isBoardPage = location.pathname.includes("b/");
     const [open, setOpen] = useState(false);
-    const [workspaceName, setWorkspaceName] = useState('')
-    const dispatch = useDispatch();
+    const [workspaceName, setWorkspaceName] = useState<string>('')
+    const { loading, error } = useSelector((state: RootState) => state.workspaces);
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     const handleOpen = () => {
@@ -20,11 +21,19 @@ export default function AddWorkspace() {
 
     const sendWorkspace = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const newWorkspace = mockGetWorkspace(workspaceName)
-        dispatch(addWorkspace(newWorkspace))
-        navigate(`/w/${newWorkspace.id}`)
-        setOpen(false)
-        setWorkspaceName('')
+        try {
+            const result = await dispatch(createWorkspace({ name: workspaceName })).unwrap();
+            if (!result || !result.id) {
+                console.error("Error: El workspace creado no tiene ID");
+                return;
+            }
+    
+            await navigate(`/w/${result.id}`); // Redirige al workspace recién creado
+            setOpen(false);
+            setWorkspaceName("");
+        } catch (error) {
+            console.error("Error al crear el workspace:", error);
+        }
     }
 
     addEventListener('click', (e) => {
@@ -62,8 +71,9 @@ export default function AddWorkspace() {
                             className="bg-blue-500 text-white font-semibold rounded-md text-lg p-2 mt-4"
                             type="submit"
                         >
-                            Crear espacio de trabajo
+                           {loading ? 'Creando...' : 'Crear espacio de trabajo'} 
                         </button>
+                        {error && <p>Error: {error}</p>}
                     </form>
 
                 </div>

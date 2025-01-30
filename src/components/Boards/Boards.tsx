@@ -6,18 +6,16 @@ import { useParams } from 'react-router';
 import { WorkspaceInfo } from './WorkspaceInfo';
 import Addbutton from './Addbutton';
 import { useSelector } from 'react-redux';
-import { AppStore } from '../../redux/store';
+import { RootState } from '../../redux/store';
 
 export default function Boards() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     let workspace;
     if(idWorkspace === ':idWorkspace'){ 
-       
         workspace = workspaces[0]
-    
     } else {
         workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     }

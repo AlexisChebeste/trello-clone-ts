@@ -46,7 +46,6 @@ export const createWorkspace = createAsyncThunk<IWorkspace, { name: string }, { 
   async (workspaceData : CreateWorkspaceData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post<IWorkspace>('/workspaces', workspaceData);
-      console.log(response.data)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al crear workspace');

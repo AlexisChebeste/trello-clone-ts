@@ -1,3 +1,5 @@
+import { IBoard, IUser } from ".";
+
 export interface IWorkspace {
     id: string;
     name: string;
@@ -5,8 +7,8 @@ export interface IWorkspace {
     isCustomLogo: boolean;
     description: string;
     isPublic: boolean;
-    members: string[];
-    boards: string[];
+    members: IUser[];
+    boards: IBoard[];
     invitations: string[];
     invitedGuests: string[];
     plan: 'free' | 'standard' | 'premium' | 'enterprise';

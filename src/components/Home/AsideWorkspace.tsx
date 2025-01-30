@@ -1,25 +1,11 @@
-import { useEffect } from 'react';
 import CardWorkspace from './CardWorkspace';
-import { useDispatch, useSelector } from 'react-redux';
-import { getWorkspacesFailure, getWorkspacesStart, getWorkspacesSuccess } from '../../redux/states/workspaceSlices';
-import { mockGetWorkspace } from '../../mockApi';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 
 export default function AsideWorkspace() {
 
-    const dispatch = useDispatch();
-    const { workspaces, loading, error } = useSelector((state: RootState) => state.workspace);
-
-    useEffect(() => {
-        dispatch(getWorkspacesStart());
-        try {
-        const mockWorkspaces = [mockGetWorkspace('Workspace1'), mockGetWorkspace('Workspace2'), mockGetWorkspace('Workspace3')]; // Simula que obtenemos los workspaces
-        dispatch(getWorkspacesSuccess(mockWorkspaces));
-        } catch (e) {
-        dispatch(getWorkspacesFailure('Error al cargar los workspaces'));
-        }
-    }, [dispatch]);
+    const { workspaces, loading, error } = useSelector((state: RootState) => state.workspaces);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
@@ -32,7 +18,7 @@ export default function AsideWorkspace() {
                         <CardWorkspace 
                             key={workspace.id} 
                             id={workspace.id}
-                            logo={workspace.logo || ''}
+                            logo={workspace.logo}
                             name={workspace.name} 
                         />
                     )

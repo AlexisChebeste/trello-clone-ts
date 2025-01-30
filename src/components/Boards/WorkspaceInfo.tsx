@@ -14,7 +14,7 @@ export function WorkspaceInfo({logo,isPublic,name, description, children} : Work
         <div className="flex flex-col gap-4">
             <div className="flex gap-4 items-center ">
                 <div className={`size-16 rounded-lg text-white font-bold text-3xl relative`}>
-                    <img src={logo} alt={name} className='w-full h-full rounded-lg' />
+                    <img src={`/public${logo}`} alt={name} className='w-full h-full rounded-lg' />
                     <span className=" absolute inset-0  text-white flex items-center justify-center">{name.charAt(0).toUpperCase()}</span>
                 </div>
                 <div className='flex flex-col text-gray-700 gap-1'>

@@ -2,12 +2,9 @@ import { Globe, LockKeyhole} from "lucide-react";
 import ButtonWorkspace from "../ButtonWorkspace";
 import { useState, useRef} from "react";
 import ModalVisibility from "./ModalVisibility";
-import { useDispatch } from "react-redux";
-import { updatePublicWorkspace } from "../../redux/states/workspaceSlices";
 import { IWorkspace } from "../../types";
 
 export default function WorkspaceVisibility({workspace}: {workspace: IWorkspace}) {
-  const dispatch= useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -20,7 +17,6 @@ export default function WorkspaceVisibility({workspace}: {workspace: IWorkspace}
   };
 
   const setIsPublic = (isPublic: boolean) => {
-    dispatch(updatePublicWorkspace({ id: workspace.id, isPublic }));
     handleVisibility();
   }
 

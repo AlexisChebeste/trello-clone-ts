@@ -5,10 +5,10 @@ import WorkspaceVisibility from "../../../components/AccountPage/WorkspaceVisibi
 import { useRef, useState } from "react";
 import ModalDeleteWorkspace from "../../../components/AccountPage/ModalDeleteWorkspace";
 import { useSelector } from "react-redux";
-import { AppStore } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 
 export default function AccountPage(){
-    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const {idWorkspace} = useParams<{idWorkspace: string}>();
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);

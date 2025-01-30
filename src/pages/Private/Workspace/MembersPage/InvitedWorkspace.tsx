@@ -1,12 +1,12 @@
 import Members from "../../../../components/MembersPage/Members";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
-import { AppStore } from "../../../../redux/store";
+import { RootState } from "../../../../redux/store";
 
 
 export default function InvitedWorkspace() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const workspaces = useSelector((store: AppStore)=> store.workspace.workspaces)
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     if(!workspace){
         return <div>Workspace not found</div>

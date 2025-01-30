@@ -10,13 +10,13 @@ import { WorkspaceInfo } from "../../../components/Boards/WorkspaceInfo";
 import { UserRoundPlus } from "lucide-react";
 import ModalArchived from "../../../components/WorkspacePage/ModalArchived";
 import { useSelector } from "react-redux";
-import { AppStore } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 
 
 
 export default function WorkspacePage() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isArchivedModalOpen, setIsArchivedModalOpen] = useState(false);

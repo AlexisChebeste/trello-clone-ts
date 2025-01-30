@@ -12,14 +12,16 @@ export interface IUser {
     id: string;
     name: string;
     logo: string;
-    description?: string;
+    isCustomLogo: boolean;
+    description: string;
     isPublic: boolean;
     members: IUser[];
     boards: IBoard[];
-    archivedBoards: IBoard[];
-    admin: IUser;
+    invitations: string[];
+    invitedGuests: string[];
+    plan: 'free' | 'standard' | 'premium' | 'enterprise';
   }
-  
+
   export interface IBoard {
     id: string;
     name: string;

@@ -6,10 +6,10 @@ import SectionSubscription from "../../../components/BillingPage/SectionSubscrip
 import SectionCategory from "../../../components/BillingPage/SectionCategory";
 import TableSub from "../../../components/BillingPage/TableSub";
 import { useSelector } from "react-redux";
-import { AppStore } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 
 export default function BillingPage(){
-    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces);
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const {idWorkspace} = useParams<{idWorkspace: string}>();
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isMensual, setIsMensual] = useState(true);

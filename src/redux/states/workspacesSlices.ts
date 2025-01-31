@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { IWorkspace, IWorkspaceState } from '../../types/workspace';
+import { IWorkspace} from '../../types';
 import axiosInstance from '../../api/axiosInstance';
+
+export interface IWorkspaceState {
+  workspaces: IWorkspace[];
+  selectedWorkspace: IWorkspace | null;
+  loading: boolean;
+  error: string | null;
+}
+
 
 interface CreateWorkspaceData{
   name: string
@@ -71,6 +79,7 @@ const workspaceSlice = createSlice({
       .addCase(fetchUserWorkspaces.fulfilled, (state, action: PayloadAction<IWorkspace[]>) => {
         state.loading = false;
         state.workspaces = action.payload;
+        console.log("Workspaces cargados:", action.payload);
       })
       .addCase(fetchUserWorkspaces.rejected, (state, action) => {
         state.loading = false;

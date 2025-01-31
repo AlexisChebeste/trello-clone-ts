@@ -3,8 +3,10 @@ import { Route,  BrowserRouter as Router, Navigate} from "react-router";
 import AuthGuard from "./guards/auth.guard";
 import { PrivateRoutes, PublicRoutes } from "./models/routes";
 import RoutesWithNotFound from "./utilities/RoutesWithNotFound";
-import {useDispatch } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./redux/states/authSlice";
+import { AppDispatch, RootState } from "./redux/store";
+import { fetchUserWorkspaces } from "./redux/states/workspacesSlices";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
@@ -13,11 +15,15 @@ const BoardPage = lazy(() => import("./pages/Private/Board/BoardPage"));
 
 export default function App() {
 
-  const dispatch = useDispatch();
-
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
+  
   useEffect(() => {
     // Ejecuta checkAuth al cargar la aplicación
     dispatch(checkAuth());
+    if (user) {
+      dispatch(fetchUserWorkspaces()); // Carga los workspaces del usuario si está autenticado
+    }
   }, [dispatch]);
 
   return (

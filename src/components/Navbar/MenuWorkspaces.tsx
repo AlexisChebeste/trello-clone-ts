@@ -1,9 +1,8 @@
 import { ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router";
-import {AppDispatch, RootState } from "../../redux/store";
-import { fetchUserWorkspaces } from "../../redux/states/workspacesSlices";
+import {RootState } from "../../redux/store";
 
 
 export default function MenuWorkspaces() {
@@ -12,13 +11,9 @@ export default function MenuWorkspaces() {
     const isBoardPage = location.pathname.includes("b/");
     const [open, setOpen] = useState(false);
 
-    const dispatch = useDispatch<AppDispatch>();
-    const { workspaces, loading, error } = useSelector((state: RootState) => state.workspaces);
+    const { workspaces} = useSelector((state: RootState) => state.workspaces);
 
-    useEffect(() => {
-        dispatch(fetchUserWorkspaces());
-    }, [dispatch]);
-
+    
     const handleOpen = () => {
         setOpen(!open)
     }
@@ -29,10 +24,6 @@ export default function MenuWorkspaces() {
             setOpen(false)
         }
     })
-
-    if (loading) return <p>Cargando workspaces...</p>;
-    if (error) return <p>Error: {error}</p>;
-
 
     return(
         <div id="modal-workspace" className="relative z-50 ">
@@ -54,7 +45,7 @@ export default function MenuWorkspaces() {
                             >
                                 <div className={`w-10 h-10 rounded-md flex items-center justify-center text-white relative text-lg`} >
                                     <img src={`/public${workspace.logo}`} alt={workspace.name} className="size-full rounded-md"/>
-                                    <span className="absolute inset-0 flex items-center justify-center">{workspace.name[0]}</span>
+                                    <span className="absolute inset-0 flex items-center justify-center font-bold">{workspace.name[0].toUpperCase()}</span>
                                 </div>
                                 {workspace.name}
                             </NavLink>

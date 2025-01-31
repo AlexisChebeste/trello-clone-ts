@@ -2,6 +2,7 @@ import { NavLink, useLocation, } from "react-router";
 import Logout from "./Logout";
 import MenuWorkspaces from "./MenuWorkspaces";
 import AddWorkspace from "./AddWorkspace";
+import { PrivateRoutes } from "../../models/routes";
 
 export default function Navbar() {
     const location = useLocation();
@@ -15,7 +16,7 @@ export default function Navbar() {
                     <div className='flex gap-6  items-center'>
                         
                         <NavLink 
-                            to={`/w/1/home`} 
+                            to={`${PrivateRoutes.PRIVATE}`} 
                             className= {`flex-shrink-0 flex gap-1 items-center `}
                         >
                             <span className='text-xl font-bold '>

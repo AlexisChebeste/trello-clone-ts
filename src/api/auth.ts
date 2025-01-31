@@ -17,6 +17,7 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
+    workspaces: string[]
     token?: string; // Solo para el login
     expiresIn?: number; // Solo para el login
 }

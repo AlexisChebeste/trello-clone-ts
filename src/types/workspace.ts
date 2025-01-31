@@ -14,10 +14,3 @@ export interface IWorkspace {
     plan: 'free' | 'standard' | 'premium' | 'enterprise';
   }
   
-  export interface IWorkspaceState {
-    workspaces: IWorkspace[];
-    selectedWorkspace: IWorkspace | null;
-    loading: boolean;
-    error: string | null;
-  }
-  

@@ -1,7 +1,8 @@
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch, store } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/states/authSlice";
 import { LogOut } from "lucide-react";
+import { persistStore } from "redux-persist";
 
 
 export default function Logout() {
@@ -9,6 +10,7 @@ export default function Logout() {
 
     const logOut = () =>{
         dispatch(logout());
+        persistStore(store).purge(); 
     }
 
 

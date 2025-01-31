@@ -17,7 +17,7 @@ interface AsideBoardsProps {
 }
 
 export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) {
-    const workspaces = useSelector((store: RootState) => store.workspace.workspaces);
+    const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null); 
@@ -46,7 +46,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
       <Sidebar className={`backdrop-blur-md  ${className}`}>
         <div className='flex  gap-2 border-b border-slate-300/30 py-5 px-4 items-center w-full'>
           <div className={`flex  justify-center items-center h-10 w-12  rounded-md  text-white font-bold text-xl relative`}>
-            <img src={workspace.logo} alt={`${workspace.name} logo`}  className='size-full rounded-md'/>
+            <img src={`/public${workspace.logo}`} alt={`${workspace.name} logo`}  className='size-full rounded-md'/>
             <span className='absolute inset-0 flex items-center justify-center'>{workspace.name[0].toUpperCase()}</span>
           </div>
           <div className="flex flex-col   w-full ">

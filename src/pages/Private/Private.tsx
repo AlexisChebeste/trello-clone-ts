@@ -1,8 +1,9 @@
 import {Route } from "react-router";
 import RoutesWithNotFound from "../../utilities/RoutesWithNotFound";
 import { lazy, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { logout } from "../../redux/states/authSlice";
+import { AppDispatch} from "../../redux/store";
 
 const Home = lazy(() => import("./Workspace/Home"));
 const WorkspacePage = lazy(() => import("./Workspace/WorkspacePage"));
@@ -14,11 +15,11 @@ const AccountPage = lazy(() => import("./Workspace/AccountPage"));
 const BillingPage = lazy(() => import("./Workspace/BillingPage"));
 const Layout = lazy(() => import("../Layout"));
 const LayoutAside = lazy(() => import("../../components/LayoutAside"));
-const WorkspaceRedirect = lazy(() => import("./Workspace/WorkspaceRedirect"));
+const WorkspaceRedirect = lazy(() => import("../Private/Workspace/WorkspaceRedirect"));
 
 function Private(){
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         const checkTokenExpiration = () => {
           const tokenExpiration = localStorage.getItem("tokenExpiration");
@@ -35,10 +36,10 @@ function Private(){
         return () => clearInterval(interval); // Limpia el intervalo al desmontar
       }, [dispatch]);
 
-
+  // Si hay workspaces, redirigimos al primer workspace
     return(
         <RoutesWithNotFound>
-            <Route path="/" element={<WorkspaceRedirect />} />
+            <Route path="/" element={<WorkspaceRedirect />}/>
             <Route element={<Layout />}>
                 <Route path=":idWorkspace/home" element={<Home />}/>
 

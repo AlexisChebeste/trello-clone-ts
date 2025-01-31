@@ -26,7 +26,7 @@ export const login = createAsyncThunk<User, LoginCredentials>(
                 const tokenExpiration = new Date().getTime() + expiresIn * 1000;
                 localStorage.setItem("tokenExpiration", tokenExpiration.toString());
             }
-
+            
             return response;
 
       } catch (err: any) {

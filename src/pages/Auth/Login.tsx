@@ -12,11 +12,10 @@ export default function Login(){
     const navigate = useNavigate();
     const {isLoading, error} = useSelector((state: RootState) => state.auth);
 
-    const idWorkspace = '1';
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await dispatch(login({email, password}));
-        navigate(PrivateRoutes.HOME(idWorkspace), {replace:true});
+        navigate(`${PrivateRoutes.PRIVATE}`);
         
     }
 

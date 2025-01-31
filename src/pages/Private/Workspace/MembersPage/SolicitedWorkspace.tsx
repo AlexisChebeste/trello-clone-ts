@@ -25,29 +25,29 @@ export default function SolicitedWorkspace() {
             </div>
             <div className="flex flex-col ">
                         
-                {workspace.members?.length ?? 0 > 0 ? workspace.members?.map((member) => (
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4">
-                    <div className="flex items-center gap-4 ">
-                        <div  className="size-10 rounded-full bg-sky-400" />
-                        <div className="flex flex-col flex-1">
-                            <span className=" text-slate-800 font-semibold">{member.name}</span>
-                            <span className="text-sm text-slate-500">{member.email} • Invitado del espacio de trabajo</span>
+                {workspace.members?.length ?? 0 > 0 ? workspace.members?.map((member,index) => (
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4" key={index}>
+                        <div className="flex items-center gap-4 ">
+                            <div  className="size-10 rounded-full bg-sky-400" />
+                            <div className="flex flex-col flex-1">
+                                <span className=" text-slate-800 font-semibold">{member.name}</span>
+                                <span className="text-sm text-slate-500">{member.email} • Invitado del espacio de trabajo</span>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-2 items-center">
-                        <p className="text-sm text-slate-500 max-w-60">
-                            Solicitud enviado el 12 de agosto de 2021
-                        </p>
-                        <ButtonWorkspace className=" px-4">
-                            Añadir al espacio de trabajo
-                        </ButtonWorkspace>
-                        <ButtonWorkspace>
-                            <X className="size-4"/>
-                        </ButtonWorkspace>
-                    </div>
+                        <div className="flex flex-col sm:flex-row gap-2 items-center">
+                            <p className="text-sm text-slate-500 max-w-60">
+                                Solicitud enviado el 12 de agosto de 2021
+                            </p>
+                            <ButtonWorkspace className=" px-4">
+                                Añadir al espacio de trabajo
+                            </ButtonWorkspace>
+                            <ButtonWorkspace>
+                                <X className="size-4"/>
+                            </ButtonWorkspace>
+                        </div>
                     
                     
-                </div>
+                    </div>
                 )):
                     <div className="py-8 text-gray-700 border-b border-b-slate-300 flex items-center justify-center text-sm italic">No hay solicitudes para unirse.</div>
                 

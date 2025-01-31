@@ -6,10 +6,11 @@ import ModalBoard from '../modals/AddBoard/ModalBoard';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';
 import {IBoard } from '../../types';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { archivedBoard } from '../../redux/states/workspaceSlices';
-import { RootState } from '../../redux/store';
+import { AppDispatch, RootState} from '../../redux/store';
+import { fetchWorkspaceById } from '../../redux/states/workspacesSlices';
+import { useSelector } from 'react-redux';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -17,12 +18,15 @@ interface AsideBoardsProps {
 }
 
 export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) {
-    const {workspaces} = useSelector((store: RootState) => store.workspaces);
-    const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
+   const dispatch = useDispatch<AppDispatch>()
+   const {selectedWorkspace} = useSelector((store: RootState)=> store.workspaces)
+    useEffect(() => {
+      dispatch(fetchWorkspaceById(idWorkspace));
+    }, [dispatch, idWorkspace]);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null); 
     const [boards, setBoards] = useState<IBoard[] | []>([]);
-    const dispatch = useDispatch()
     const handleOpenModal = () => {
       setIsModalOpen(true);
     };
@@ -37,20 +41,20 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     };
   
     useEffect(() => {
-      if (workspace) setBoards(workspace.boards.filter(board => board.isArchived === false));
-    }, [workspace?.boards]);
+      if (selectedWorkspace) setBoards(selectedWorkspace.boards.filter(board => board.isArchived === false));
+    }, [selectedWorkspace?.boards]);
 
-    if (!workspace) return null;
+    if (!selectedWorkspace) return null;
 
     return(
       <Sidebar className={`backdrop-blur-md  ${className}`}>
         <div className='flex  gap-2 border-b border-slate-300/30 py-5 px-4 items-center w-full'>
           <div className={`flex  justify-center items-center h-10 w-12  rounded-md  text-white font-bold text-xl relative`}>
-            <img src={`/public${workspace.logo}`} alt={`${workspace.name} logo`}  className='size-full rounded-md'/>
-            <span className='absolute inset-0 flex items-center justify-center'>{workspace.name[0].toUpperCase()}</span>
+            <img src={`/public${selectedWorkspace.logo}`} alt={`${selectedWorkspace.name} logo`}  className='size-full rounded-md'/>
+            <span className='absolute inset-0 flex items-center justify-center'>{selectedWorkspace.name[0].toUpperCase()}</span>
           </div>
           <div className="flex flex-col   w-full ">
-            <h2 className="text-md   font-semibold">{workspace?.name}</h2>
+            <h2 className="text-md   font-semibold">{selectedWorkspace?.name}</h2>
             <p className=' text-xs '>Grautita</p>
           </div>
         </div>
@@ -95,9 +99,9 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
             )}
           </div>
         </div>
-        {workspace && (
+        {selectedWorkspace && (
           <ModalBoard
-            workspaceId={workspace.id}
+            workspaceId={selectedWorkspace.id}
             isOpen={isModalOpen}
             onClose={handleCloseModal}
             buttonRef={buttonRef}

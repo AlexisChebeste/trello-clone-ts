@@ -10,8 +10,8 @@ export default function Members({members}: MembersProps){
         
         <div className="flex flex-col ">
             
-            {members?.map((member) => (
-                <MemberCard key={member.id} member={member}/>
+            {members?.map((member, index) => (
+                <MemberCard key={index} member={member}/>
             ))}
             {members.length === 0 && 
                 <div className="text-slate-600 text-sm p-8 border-y border-y-gray-300 text-center italic">

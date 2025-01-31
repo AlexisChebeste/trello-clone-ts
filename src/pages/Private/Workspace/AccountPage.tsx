@@ -46,7 +46,7 @@ export default function AccountPage(){
                     <button ref={buttonRef} onClick={handleOpenModal} className="text-red-700 font-semibold hover:underline ">
                         ¿Eliminar este Espacio de trabajo?
                     </button>
-                    <ModalDeleteWorkspace isOpen={isModalOpen} onClose={handleCloseModal} buttonRef={buttonRef} />
+                    <ModalDeleteWorkspace isOpen={isModalOpen} onClose={handleCloseModal} buttonRef={buttonRef} workspace={workspace}/>
                 </div>
                 
                 

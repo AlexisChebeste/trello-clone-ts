@@ -1,16 +1,32 @@
 import { X } from "lucide-react";
 import ModalFlex from "../modals/ModalGeneric";
 import { useState } from "react";
+import { IWorkspace } from "../../types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { deleteWorkspace } from "../../redux/states/workspacesSlices";
+import { useNavigate } from "react-router";
+import { PrivateRoutes } from "../../models/routes";
 
 interface ModalBoardProps {
     isOpen: boolean;
     onClose: () => void;
     buttonRef: React.RefObject<HTMLButtonElement>;
+    workspace: IWorkspace
 }
 
-export default function ModalDeleteWorkspace({isOpen, onClose, buttonRef}: ModalBoardProps) {
-
+export default function ModalDeleteWorkspace({isOpen, onClose, buttonRef,workspace}: ModalBoardProps) {
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = useNavigate()
     const [name, setName] = useState('');
+
+    const handleDeleteWorkspace= async (id:string) =>{
+        if(name === workspace.name){
+            await dispatch(deleteWorkspace(id))
+            navigate(`${PrivateRoutes.PRIVATE}`, {replace: true})
+        }
+    }
+
 
     if(!isOpen) return null;
     return (
@@ -27,7 +43,7 @@ export default function ModalDeleteWorkspace({isOpen, onClose, buttonRef}: Modal
                 </button>
             </div>
             <div className="flex flex-col justify-between px-5 text-slate-700 gap-2 text-sm">
-                <h4 className="text-base font-semibold text-slate-800 ">Introduce el nombre del Espacio de trabajo “prueba” para eliminarlo</h4>
+                <h4 className="text-base font-semibold text-slate-800 ">Introduce el nombre del Espacio de trabajo “{workspace.name}” para eliminarlo</h4>
                 <p className="text-xs font-medium">Cosas que debes saber:</p>
                 <ul className="text-sm font-normal list-disc  ml-5">
                     <li>Esta acción es permanente y no se puede deshacer.</li>
@@ -46,7 +62,7 @@ export default function ModalDeleteWorkspace({isOpen, onClose, buttonRef}: Modal
                     value={name}
                     onChange={e => setName(e.target.value)}
                 />
-                <button className={`w-full p-2   rounded-md  font-semibold text-sm ${name === 'prueba' ? 'cursor-pointer bg-red-600 hover:bg-red-700 text-white' : 'cursor-not-allowed bg-gray-100 text-gray-400'} transition-all duration-300`} disabled={name !== 'prueba'}>
+                <button onClick={() => handleDeleteWorkspace(workspace.id)} className={`w-full p-2   rounded-md  font-semibold text-sm ${name === workspace.name ? 'cursor-pointer bg-red-600 hover:bg-red-700 text-white' : 'cursor-not-allowed bg-gray-100 text-gray-400'} transition-all duration-300`} disabled={name !== workspace.name}>
                     Eliminar Espacio de trabajo
                 </button>
             </div>

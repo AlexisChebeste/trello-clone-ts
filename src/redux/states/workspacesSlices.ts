@@ -40,8 +40,8 @@ export const fetchWorkspaceById = createAsyncThunk<IWorkspace, string, { rejectV
   '/workspaces/:id',
   async (workspaceId, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get<{ workspace: IWorkspace }>(`/workspaces/${workspaceId}`);
-      return response.data.workspace;
+      const response = await axiosInstance.get<IWorkspace>(`/workspaces/${workspaceId}`);
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'No tienes acceso a este workspace');
     }
@@ -61,6 +61,31 @@ export const createWorkspace = createAsyncThunk<IWorkspace, { name: string }, { 
   }
 );
 
+// Eliminar un workspace
+export const deleteWorkspace = createAsyncThunk<string, string,{rejectValue:string}>(
+  '/workspaces/deleteWorkspace',
+  async(workspaceId, {rejectWithValue}) => {
+    try{
+      await axiosInstance.delete(`/workspaces/${workspaceId}`)
+      return workspaceId;
+    }catch(error:any){
+      return rejectWithValue(error.response?.data?.message || 'Error al crear workspace')
+    }
+  }
+)
+
+export const updateIsPublicWorkspace = createAsyncThunk<IWorkspace, { id: string, isPublic: boolean }, { rejectValue: string }>(
+  '/workspaces/updateIsPublic',
+  async ({id, isPublic}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put<IWorkspace>(`/workspaces/${id}/is-public`, { isPublic });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al actualizar workspace');
+    }
+  }
+)
+
 const workspaceSlice = createSlice({
   name: 'workspaces',
   initialState,
@@ -79,7 +104,6 @@ const workspaceSlice = createSlice({
       .addCase(fetchUserWorkspaces.fulfilled, (state, action: PayloadAction<IWorkspace[]>) => {
         state.loading = false;
         state.workspaces = action.payload;
-        console.log("Workspaces cargados:", action.payload);
       })
       .addCase(fetchUserWorkspaces.rejected, (state, action) => {
         state.loading = false;
@@ -114,7 +138,37 @@ const workspaceSlice = createSlice({
       .addCase(createWorkspace.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string || 'Error desconocido';
-      });
+      })
+
+      // Eliminar workspace por ID
+      .addCase(deleteWorkspace.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteWorkspace.fulfilled, (state, action: PayloadAction<string>) => {
+        state.loading = false;
+        state.selectedWorkspace = null;
+        state.workspaces = state.workspaces.filter(w => w.id !== action.payload)
+      })
+      .addCase(deleteWorkspace.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Error al eliminar workspace";
+      })
+      
+      // Actualizar isPublic workspace
+      .addCase(updateIsPublicWorkspace.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateIsPublicWorkspace.fulfilled, (state, action: PayloadAction<IWorkspace>) => {
+        state.loading = false;
+        state.selectedWorkspace = action.payload;
+        state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(updateIsPublicWorkspace.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al cambiar estado del workspace';
+      })
   }
 });
 

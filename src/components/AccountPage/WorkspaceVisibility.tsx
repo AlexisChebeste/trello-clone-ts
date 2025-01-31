@@ -3,11 +3,14 @@ import ButtonWorkspace from "../ButtonWorkspace";
 import { useState, useRef} from "react";
 import ModalVisibility from "./ModalVisibility";
 import { IWorkspace } from "../../types";
+import { useDispatch } from "react-redux";
+import { updateIsPublicWorkspace } from "../../redux/states/workspacesSlices";
+import { AppDispatch } from "../../redux/store";
 
 export default function WorkspaceVisibility({workspace}: {workspace: IWorkspace}) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
+  const dispatch = useDispatch<AppDispatch>();
     const handdleOpen = () => {
         setIsOpen(true);
     }
@@ -17,6 +20,7 @@ export default function WorkspaceVisibility({workspace}: {workspace: IWorkspace}
   };
 
   const setIsPublic = (isPublic: boolean) => {
+    dispatch(updateIsPublicWorkspace({ id: workspace.id, isPublic }));
     handleVisibility();
   }
 

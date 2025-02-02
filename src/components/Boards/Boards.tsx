@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import CardBoard from '../Home/CardBoard';
 import { UserRound } from 'lucide-react';
@@ -6,11 +6,13 @@ import { useParams } from 'react-router';
 import { WorkspaceInfo } from './WorkspaceInfo';
 import Addbutton from './Addbutton';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
+import { useDispatch } from 'react-redux';
+import { fetchBoardsByWorkspace } from '../../redux/states/boardsSlice';
 
 export default function Boards() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-
+    const dispatch = useDispatch<AppDispatch>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const {workspaces} = useSelector((store: RootState) => store.workspaces);
     let workspace;
@@ -19,6 +21,12 @@ export default function Boards() {
     } else {
         workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     }
+
+    const {boards} = useSelector((store: RootState) => store.boards);
+
+    useEffect(() => {
+        dispatch(fetchBoardsByWorkspace(idWorkspace || ''));
+    }, [dispatch, idWorkspace]);
 
     const buttonRef = useRef<HTMLButtonElement>(null); 
 
@@ -47,10 +55,10 @@ export default function Boards() {
                 </div>
                 
                 <div className="relative w-full grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 justify-items-stretch gap-2 lg:gap-4 ">
-                    {workspace.boards.map((board) => (
+                    {boards.map((board) => (
                         <CardBoard key={board.id} board={board} />
                     ))}
-                    <Addbutton buttonRef={buttonRef} onClick={handleOpenModal} remaining={workspace.boards.length}/>
+                    <Addbutton buttonRef={buttonRef} onClick={handleOpenModal} remaining={boards.length}/>
                     
                 </div>
                 

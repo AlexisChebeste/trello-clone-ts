@@ -1,20 +1,21 @@
 import { MoveUpRight, X } from "lucide-react";
-import { Board } from "../../types";
+import { IBoard } from "../../types";
 import { Link } from "react-router";
 import { useDispatch } from "react-redux";
-import { archivedBoard } from "../../redux/states/workspaceSlices";
+import { AppDispatch } from "../../redux/store";
+import { updateArchivedBoard } from "../../redux/states/boardsSlice";
 
 interface ModalArchivedProps {
     isModalOpen: boolean;
     setIsModalOpen: (value: boolean) => void;
-    boardsArchived: Board[];
+    boardsArchived: IBoard[];
     workName: string;
 }
 
 export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchived, workName}: ModalArchivedProps) {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const changeArchived = (boardId: string) => {
-        dispatch(archivedBoard({boardId: boardId}))
+        dispatch(updateArchivedBoard({id: boardId}))
         setIsModalOpen(!isModalOpen);
     }
 
@@ -37,7 +38,11 @@ export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchiv
                     {boardsArchived && boardsArchived.map(board => (
                         <div key={board.id} className="mt-6 flex justify-between items-center">
                             <div className="flex gap-4 items-center">
-                                <div className={`w-14 h-10 rounded-sm ${board.color}`}></div>
+                                <img 
+                                    src={`/public${board.color}`}
+                                    alt={board.name + ' color'}
+                                    className='w-14 h-10 rounded-sm  object-cover' 
+                                />
                                 <div className="flex flex-col justify-between  text-sm">
                                     <Link to={`/b/${board.id}/${board.name}`} className="text-blue-500 hover:underline flex items-center gap-2">
                                         {board.name}

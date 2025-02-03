@@ -1,15 +1,18 @@
 import { Ellipsis, X } from "lucide-react";
 import { useState } from "react";
 import { IBoard } from "../../types";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { updateArchivedBoard } from "../../redux/states/boardsSlice";
 
-export function ModalCloseBoard({board, onArchive}: {board: IBoard, onArchive: (id: string) => void}) {
+export function ModalCloseBoard({board}: {board: IBoard}) {
     const [isOpen, setIsOpen] = useState(false);
-
+    const dispatch = useDispatch<AppDispatch>();
     const toggleModal = () => setIsOpen(!isOpen);
     const isBoardPage = location.pathname.includes("b/");
 
     const handleArchived = () => {
-        onArchive(board.id);
+        dispatch(updateArchivedBoard({id: board.id}))
         setIsOpen(!isOpen);
     }
 

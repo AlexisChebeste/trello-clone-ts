@@ -9,7 +9,6 @@ export interface IBoardState {
     error: string | null;
 }
 
-
 interface CreateBoardData{
     name: string
     idWorkspace: string
@@ -77,11 +76,12 @@ export const deleteWorkspace = createAsyncThunk<string, string,{rejectValue:stri
   }
 )
 
-export const updateIsPublicWorkspace = createAsyncThunk<IBoard, { id: string, isPublic: boolean }, { rejectValue: string }>(
-  '/boards/updateIsPublic',
-  async ({id, isPublic}, { rejectWithValue }) => {
+export const updateArchivedBoard = createAsyncThunk<IBoard, {id: string}, { rejectValue: string }>(
+  '/boards/archive',
+  async ({id}, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put<IBoard>(`/boards/${id}/is-public`, { isPublic });
+      const response = await axiosInstance.put<IBoard>(`/boards/${id}/archive`);
+      console.log(response.data)
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al actualizar workspace');
@@ -158,17 +158,17 @@ const boardsSlice = createSlice({
         state.error = action.payload || "Error al eliminar board";
       })
       
-      // Actualizar isPublic board
-      .addCase(updateIsPublicWorkspace.pending, (state) => {
+      // Actualizar archived state board
+      .addCase(updateArchivedBoard.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateIsPublicWorkspace.fulfilled, (state, action: PayloadAction<IBoard>) => {
+      .addCase(updateArchivedBoard.fulfilled, (state, action: PayloadAction<IBoard>) => {
         state.loading = false;
         state.selectedBoard = action.payload;
         state.boards = state.boards.map(w => w.id === action.payload.id ? action.payload : w);
       })
-      .addCase(updateIsPublicWorkspace.rejected, (state, action) => {
+      .addCase(updateArchivedBoard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error desconocido al cambiar estado del board';
       })

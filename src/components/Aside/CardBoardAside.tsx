@@ -4,10 +4,9 @@ import { IBoard } from "../../types";
 
 interface CardBoardAsideProps {
     board: IBoard;
-    onArchive: (boardId: string) => void;
 }
 
-export default function CardBoardAside({board , onArchive}: CardBoardAsideProps) {
+export default function CardBoardAside({board }: CardBoardAsideProps) {
     const isBoardPage = location.pathname.includes("b/");
 
     return(
@@ -25,7 +24,7 @@ export default function CardBoardAside({board , onArchive}: CardBoardAsideProps)
                 />
                 <h3 className='  text-sm'>{board.name}</h3>
             </Link>
-            <ModalCloseBoard board={board} onArchive={onArchive}/>
+            <ModalCloseBoard board={board} />
 
         </div>
     )

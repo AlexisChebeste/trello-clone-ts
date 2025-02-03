@@ -17,9 +17,9 @@ export default function Dropdown({ options, selected, onChange, label }: Dropdow
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 ">
       <label className="text-sm text-gray-600">{label}</label>
-      <div className="relative w-full">
+      <div className="relative w-full ">
         {/* Botón principal */}
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -31,12 +31,12 @@ export default function Dropdown({ options, selected, onChange, label }: Dropdow
 
         {/* Lista desplegable */}
         {isOpen && (
-          <ul className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg">
+          <ul className="absolute  w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
             {options.map((option) => (
               <li
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
-                className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer rounded-md"
               >
                 {option.label}
               </li>

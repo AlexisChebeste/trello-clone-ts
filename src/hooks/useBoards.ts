@@ -8,7 +8,7 @@ export function useBoards(idWorkspace?: string) {
   const { boards, loading } = useSelector((store: RootState) => store.boards);
 
   const [sortBy, setSortBy] = useState<string>("most-recent");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     if (idWorkspace) {
@@ -18,7 +18,11 @@ export function useBoards(idWorkspace?: string) {
 
   const filteredBoards = useMemo(() => {
     return boards
-      .filter((board) => board.idWorkspace === idWorkspace && !board.isArchived)
+      .filter((board) => 
+        board.idWorkspace === idWorkspace 
+        && !board.isArchived &&
+        board.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
       .sort((a, b) => {
         switch (sortBy) {
           case "most-recent":
@@ -33,7 +37,7 @@ export function useBoards(idWorkspace?: string) {
             return 0;
         }
       });
-  }, [boards, idWorkspace, sortBy]);
+  }, [boards, idWorkspace, sortBy, searchQuery]);
 
   const boardsArchived = useMemo(() => {
     return boards.filter((board) => board.idWorkspace === idWorkspace && board.isArchived);

@@ -3,7 +3,7 @@ import { IBoard } from "../../types";
 import { Link } from "react-router";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/store";
-import { updateArchivedBoard } from "../../redux/states/boardsSlice";
+import { updateArchivedBoard, deleteBoard } from "../../redux/states/boardsSlice";
 
 interface ModalArchivedProps {
     isModalOpen: boolean;
@@ -17,6 +17,10 @@ export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchiv
     const changeArchived = (boardId: string) => {
         dispatch(updateArchivedBoard({id: boardId}))
         setIsModalOpen(!isModalOpen);
+    }
+
+    const handledeleteBoard = (boardId: string) => {
+        dispatch(deleteBoard(boardId))
     }
 
 
@@ -53,9 +57,18 @@ export default function ModalArchived({isModalOpen, setIsModalOpen, boardsArchiv
                             </div>
                             
                             <div className="flex gap-4 items-center text-white">
-                                <button className="bg-blue-600 py-2 px-4 font-semibold rounded-md text-sm "
-                                onClick={() => changeArchived(board.id)}>Volver a abrir</button>
-                                <button className="bg-red-600 py-2 px-4 font-semibold rounded-md text-sm">Eliminar</button>
+                                <button 
+                                    className="bg-blue-600 py-2 px-4 font-semibold rounded-md text-sm "
+                                    onClick={() => changeArchived(board.id)}
+                                >
+                                    Volver a abrir
+                                </button>
+                                <button 
+                                    className="bg-red-600 py-2 px-4 font-semibold rounded-md text-sm"
+                                    onClick={() => handledeleteBoard(board.id)}
+                                >
+                                    Eliminar
+                                </button>
                             </div>
                         </div>
                     ))}

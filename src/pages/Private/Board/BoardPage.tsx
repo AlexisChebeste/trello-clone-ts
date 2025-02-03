@@ -2,28 +2,36 @@ import { useParams } from 'react-router';
 import AsideBoards from '../../../components/Aside/AsideBoards';
 import BoardSection from '../../../components/BoardPage/BoardSection';
 import Layout from '../../Layout';
-import { useSelector } from 'react-redux';
-import { AppStore } from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
+import { useEffect } from 'react';
+import { fetchBoardById } from '../../../redux/states/boardsSlice';
 
 export default function BoardPage() {
     const {idBoard} = useParams<{idBoard: string}>()
-    const workspaces = useSelector((store: AppStore) => store.workspace.workspaces)
+    const dispatch = useDispatch<AppDispatch>()
 
-    const board = workspaces.
-        flatMap(workspace => workspace.boards)
-        .find(board => board.id === idBoard);
+    const {selectedBoard} = useSelector((state: RootState) => state.boards)
+
+    useEffect(() => {
+        if (idBoard) {
+            dispatch(fetchBoardById(idBoard))
+        }
+    }, [idBoard])
 
 
-    if(!board) return <div>Board not found</div>
+    if(!selectedBoard || !idBoard) return <div>Board not found</div>
 
     return(
-        <Layout className={`${board?.color}`}>
+        <Layout 
+            bgImage={selectedBoard.color}
+        >
             <div className={`flex-1 w-full flex  h-full overflow-y-auto  `}>
                 <AsideBoards  
-                    idWorkspace={board?.idWorkspace || '1'} 
+                    idWorkspace={selectedBoard.idWorkspace} 
                     className={`bg-black/20 drop-shadow-md  text-white `}
                 />
-                <BoardSection />
+                <BoardSection board={selectedBoard}/>
             </div>
         </Layout>
         

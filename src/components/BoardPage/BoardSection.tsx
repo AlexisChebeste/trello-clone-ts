@@ -1,21 +1,11 @@
 import List from "./List"
 import { useParams } from "react-router"
-import { useSelector } from "react-redux"
-import { AppStore } from "../../redux/store"
 import AddList from "./AddList"
+import { IBoard } from "../../types"
 
 
-export default function BoardSection() {
+export default function BoardSection({board}: {board: IBoard}) {
   const {idBoard} = useParams<{idBoard: string}>()
-  const board = useSelector((state: AppStore) =>
-    state.workspace.workspaces
-      .flatMap((workspace) => workspace.boards)
-      .find((board) => board.id === idBoard)
-  );
-
-  if (!board ) {
-    return <div>Board no encontrado</div>;
-  }
   
   if(!idBoard) return null;
 

@@ -38,11 +38,11 @@ export const fetchBoardsByWorkspace = createAsyncThunk<IBoard[], string, { rejec
 );
 
 // Obtener un workspace específico por ID
-export const fetchWorkspaceById = createAsyncThunk<IBoard, string, { rejectValue: string }>(
-  '/workspaces/:id',
-  async (workspaceId, { rejectWithValue }) => {
+export const fetchBoardById = createAsyncThunk<IBoard, string, { rejectValue: string }>(
+  '/boards/:id',
+  async (idBoard, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get<IBoard>(`/workspaces/${workspaceId}`);
+      const response = await axiosInstance.get<IBoard>(`/boards/${idBoard}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'No tienes acceso a este workspace');
@@ -64,7 +64,7 @@ export const createBoard = createAsyncThunk<IBoard, CreateBoardData, { rejectVal
 );
 
 // Eliminar un workspace
-export const deleteWorkspace = createAsyncThunk<string, string,{rejectValue:string}>(
+export const deleteBoard = createAsyncThunk<string, string,{rejectValue:string}>(
   '/boards/deleteBoard',
   async(boardId, {rejectWithValue}) => {
     try{
@@ -114,15 +114,15 @@ const boardsSlice = createSlice({
       })
 
       // Obtener board por ID
-      .addCase(fetchWorkspaceById.pending, (state) => {
+      .addCase(fetchBoardById.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchWorkspaceById.fulfilled, (state, action: PayloadAction<IBoard>) => {
+      .addCase(fetchBoardById.fulfilled, (state, action: PayloadAction<IBoard>) => {
         state.loading = false;
         state.selectedBoard = action.payload;
       })
-      .addCase(fetchWorkspaceById.rejected, (state, action) => {
+      .addCase(fetchBoardById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error desconocido';
       })
@@ -144,16 +144,16 @@ const boardsSlice = createSlice({
       })
 
       // Eliminar board por ID
-      .addCase(deleteWorkspace.pending, (state) => {
+      .addCase(deleteBoard.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteWorkspace.fulfilled, (state, action: PayloadAction<string>) => {
+      .addCase(deleteBoard.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.selectedBoard = null;
         state.boards = state.boards.filter(w => w.id !== action.payload)
       })
-      .addCase(deleteWorkspace.rejected, (state, action) => {
+      .addCase(deleteBoard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Error al eliminar board";
       })

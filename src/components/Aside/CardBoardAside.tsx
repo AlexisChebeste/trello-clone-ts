@@ -18,7 +18,11 @@ export default function CardBoardAside({board , onArchive}: CardBoardAsideProps)
                 aria-describedby="Tablero"
                 aria-labelledby="Tablero"
             >
-                <div className={`w-7 h-5 rounded-sm ${board.color}`}></div>
+                <img 
+                    src={`/public${board.color}`}
+                    alt={`${board.name} logo`}
+                    className='w-7 h-5 rounded-sm object-cover' 
+                />
                 <h3 className='  text-sm'>{board.name}</h3>
             </Link>
             <ModalCloseBoard board={board} onArchive={onArchive}/>

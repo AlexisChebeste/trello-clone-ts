@@ -32,7 +32,7 @@ export default function BoardsHeader({ onSortChange, onSearchChange, sortBy, sea
   }, [localSearchQuery, onSearchChange]);
 
   return (
-    <div className="space-y-4 bg-white pb-4 sticky top-0 z-10 border-b">
+    <div className="space-y-4 bg-white pb-4 sticky top-0  border-b">
       <h1 className="text-2xl font-bold">Tableros</h1>
       
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between lg:justify-start">
@@ -41,7 +41,7 @@ export default function BoardsHeader({ onSortChange, onSearchChange, sortBy, sea
 
         <Dropdown options={optionsFilter} selected={sortBy} onChange={onSortChange} label='Filtrar por'  />
 
-        <div className="space-y-2 w-56">
+        <div className="space-y-2 max-w-56">
           <label className="text-sm text-gray-600">Buscar</label>
           <input
             type="search"

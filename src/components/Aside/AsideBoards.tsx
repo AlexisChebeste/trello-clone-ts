@@ -5,12 +5,12 @@ import Sidebar from './Siderbar';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import WorkspaceLink from './WorkspaceLink';
 import { ModalAccount } from './ModalAccount';
-import {IBoard } from '../../types';
 import { useDispatch } from 'react-redux';
 import { archivedBoard } from '../../redux/states/workspaceSlices';
 import { AppDispatch, RootState} from '../../redux/store';
 import { fetchWorkspaceById } from '../../redux/states/workspacesSlices';
 import { useSelector } from 'react-redux';
+import { useBoards } from '../../hooks/useBoards';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -26,7 +26,6 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null); 
-    const [boards, setBoards] = useState<IBoard[] | []>([]);
     const handleOpenModal = () => {
       setIsModalOpen(true);
     };
@@ -40,9 +39,10 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
       dispatch(archivedBoard({boardId: boardId}))
     };
   
-    useEffect(() => {
-      if (selectedWorkspace) setBoards(selectedWorkspace.boards.filter(board => board.isArchived === false));
-    }, [selectedWorkspace?.boards]);
+    const {
+      filteredBoards
+    } = useBoards(idWorkspace);
+
 
     if (!selectedWorkspace) return null;
 
@@ -55,7 +55,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
           </div>
           <div className="flex flex-col   w-full ">
             <h2 className="text-md   font-semibold">{selectedWorkspace?.name}</h2>
-            <p className=' text-xs '>Grautita</p>
+            <p className=' text-xs '>{selectedWorkspace.plan.toUpperCase()}</p>
           </div>
         </div>
         <div className='flex flex-col  py-3'>
@@ -84,11 +84,16 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
             >
               <Plus className='size-4 '/>
             </button >
-            
+            <ModalBoard
+              workspaceId={selectedWorkspace.id}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              buttonRef={buttonRef}
+            />
           </div>
           
           <div className="flex flex-col">
-            {boards.filter((board) => !board.isArchived).map((board) => (
+            {filteredBoards.map((board) => (
               
                 <CardBoardAside 
                   key={board.id} 
@@ -99,14 +104,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
             )}
           </div>
         </div>
-        {selectedWorkspace && (
-          <ModalBoard
-            workspaceId={selectedWorkspace.id}
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            buttonRef={buttonRef}
-          />
-        )}
+          
           
             
       </Sidebar>   

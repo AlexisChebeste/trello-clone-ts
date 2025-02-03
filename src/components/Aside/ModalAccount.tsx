@@ -9,7 +9,7 @@ export function ModalAccount({idWorkspace}: {idWorkspace: string}) {
     const isBoardPage = location.pathname.includes("b/");
     const isActive = (path: string) => location.pathname === path;
     return(
-        <div className="flex w-full relative">
+        <div className="flex w-full relative ">
             <button className={`flex items-center justify-between w-full text-sm font-semibold pl-4 pr-2 ${isBoardPage ? 'hover:bg-white/10' : 'hover:bg-gray-100'} py-2`} onClick={toggleModal}>
                 <Settings className="size-4"/>
                 Ajustes del espacio de trabajo
@@ -17,7 +17,7 @@ export function ModalAccount({idWorkspace}: {idWorkspace: string}) {
             </button>
             {isOpen && (
                 <div 
-                    className="absolute top-10 left-0 w-72 bg-white shadow-md rounded-md border border-gray-200 flex flex-col py-2 text-gray-600 "
+                    className="absolute top-10 left-0 w-72 bg-white shadow-md rounded-md border border-gray-200 flex flex-col py-2 text-gray-600 z-50"
                     style={{
                         maxWidth: "calc(100vw - 16px)", // Asegura que no sobresalga de la pantalla
                     }}

@@ -15,7 +15,7 @@ export function ModalCloseBoard({board, onArchive}: {board: IBoard, onArchive: (
 
 
     return(
-        <div className="group relative">
+        <div className="group relative max-w-screen">
             <button className={`p-2  ${isBoardPage ? 'hover:bg-white/30' : 'hover:bg-gray-200'}  rounded-md transition-all ease-in-out duration-200 ${isOpen ? 'sticky' : 'hidden'} group-hover:flex mr-2 ` }
             onClick={toggleModal}>
                 <Ellipsis className='size-4 '/>

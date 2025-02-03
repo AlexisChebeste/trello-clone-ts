@@ -1,43 +1,29 @@
-import {useEffect, useRef, useState} from 'react';
-import ModalBoard from '../modals/AddBoard/ModalBoard';
 import CardBoard from '../Home/CardBoard';
 import { UserRound } from 'lucide-react';
 import { useParams } from 'react-router';
 import { WorkspaceInfo } from './WorkspaceInfo';
 import Addbutton from './Addbutton';
 import { useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../redux/store';
-import { useDispatch } from 'react-redux';
-import { fetchBoardsByWorkspace } from '../../redux/states/boardsSlice';
+import { RootState } from '../../redux/store';
+import { useBoards } from '../../hooks/useBoards';
+import ArchivedBoards from '../WorkspacePage/ArchivedBoards';
 
 export default function Boards() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
-    const dispatch = useDispatch<AppDispatch>();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    
     const {workspaces} = useSelector((store: RootState) => store.workspaces);
     let workspace;
-    if(idWorkspace === ':idWorkspace'){ 
+    (idWorkspace === ':idWorkspace') ? 
         workspace = workspaces[0]
-    } else {
+        :
         workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
-    }
+    
 
-    const {boards} = useSelector((store: RootState) => store.boards);
 
-    useEffect(() => {
-        dispatch(fetchBoardsByWorkspace(idWorkspace || ''));
-    }, [dispatch, idWorkspace]);
-
-    const buttonRef = useRef<HTMLButtonElement>(null); 
-
-    const handleCloseModal = () => {
-        setIsModalOpen(!isModalOpen);
-    };
-
-    const handleOpenModal = () => {
-        setIsModalOpen(!isModalOpen);
-        
-    };
+    const {
+        filteredBoards,
+        boardsArchived
+    } = useBoards(idWorkspace);
 
     if(!workspace) {
         return <div>El espacio de trabajo no existe</div>
@@ -55,22 +41,15 @@ export default function Boards() {
                 </div>
                 
                 <div className="relative w-full grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 justify-items-stretch gap-2 lg:gap-4 ">
-                    {boards.map((board) => (
+                    {filteredBoards.map((board) => (
                         <CardBoard key={board.id} board={board} />
                     ))}
-                    <Addbutton buttonRef={buttonRef} onClick={handleOpenModal} remaining={boards.length}/>
+                    <Addbutton remaining={workspace.boards.length} workspaceId={workspace.id}/>
                     
                 </div>
-                
+                <ArchivedBoards boardsArchived={boardsArchived} nameWorkspace={workspace.name}/>
             </article>
-            <ModalBoard
-                workspaceId={workspace.id}
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                buttonRef={buttonRef}
-                aria-labelledby="modal-title" // Asociar el modal con un título
-                aria-hidden={!isModalOpen ? "true" : "false"} // Asegúrate de que el contenido detrás del modal esté oculto
-            />
+            
             
         </div>
     )

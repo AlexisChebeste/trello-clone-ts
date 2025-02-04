@@ -25,9 +25,9 @@ const initialState: IListState = {
 // Obtener las listas del board
 export const fetchListsByBoards = createAsyncThunk<IList[], string, { rejectValue: string }>(
   '/lists/inBoard/:id',
-  async (boardId, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get<IList[] >(`/lists/inBoard/${boardId}`);
+      const response = await axiosInstance.get<IList[] >(`/lists/inBoard/${id}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al cargar las listas');
@@ -62,6 +62,22 @@ export const deleteList = createAsyncThunk<string, string,{rejectValue:string}>(
   }
 )
 
+// Actualizar el título de una lista
+export const updateListTitle = createAsyncThunk<
+  IList,
+  { id: string; title: string; position: number },
+  { rejectValue: string }
+>(
+  "/lists/updateTitle",
+  async ({ id, title, position }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put<IList>(`/lists/${id}`, { title , position});
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Error al actualizar la lista");
+    }
+  }
+);
 
 const listsSlice = createSlice({
   name: 'lists',
@@ -118,6 +134,15 @@ const listsSlice = createSlice({
         state.error = action.payload || "Error al eliminar la lista";
       })
       
+      // Actualizar título de la lista
+      .addCase(updateListTitle.fulfilled, (state, action: PayloadAction<IList>) => {
+        state.lists = state.lists.map((list) =>
+          list.id === action.payload.id ? { ...list, title: action.payload.title } : list
+        );
+      })
+      .addCase(updateListTitle.rejected, (state, action) => {
+        state.error = action.payload || "Error desconocido";
+      });
   }
 });
 

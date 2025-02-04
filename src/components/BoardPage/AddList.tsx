@@ -1,18 +1,19 @@
 import { useDispatch } from "react-redux"
 import ButtonAdd from "./ButtonAdd"
 import { useState } from "react"
-import { addListToBoard } from "../../redux/states/workspaceSlices"
 import { X } from "lucide-react"
+import { AppDispatch } from "../../redux/store"
+import { createList } from "../../redux/states/listsSlice"
 
 
 export default function AddList({idBoard}: {idBoard: string}) {
     
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const [isModalOpen, setIsModalOpen] = useState(true)
-    const [listName, setListName] = useState('')
+    const [listName, setListName] = useState<string>('')
     const addList = () => {
         if(listName !== '' && idBoard){
-          dispatch(addListToBoard({boardId: idBoard, title:listName}))
+          dispatch(createList({ title: listName, boardId: idBoard}))
         }
         setListName('')
         setIsModalOpen(!isModalOpen)

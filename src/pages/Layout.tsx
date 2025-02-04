@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar/Navbar";
 interface LayoutProps {
     children?: React.ReactNode;
     className?: string;
-    bgImage: string;
+    bgImage?: string;
 }
 
 export default function Layout({children, className, bgImage}: LayoutProps) {

@@ -22,6 +22,8 @@ export default function BoardPage() {
 
     if(!selectedBoard || !idBoard) return <div>Board not found</div>
 
+    
+
     return(
         <Layout 
             bgImage={selectedBoard.color}

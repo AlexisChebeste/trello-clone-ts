@@ -24,7 +24,7 @@ export default function App() {
     if (user) {
       dispatch(fetchUserWorkspaces()); // Carga los workspaces del usuario si está autenticado
     }
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return (
     <div className="App">

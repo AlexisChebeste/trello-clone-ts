@@ -91,4 +91,3 @@ export default function BoardSection({board}: {board: IBoard}) {
     </div>
   )
 }
-

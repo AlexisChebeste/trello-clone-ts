@@ -12,8 +12,8 @@ export interface ICardState {
 }
 
 interface CreateCardData{
-    title: string
-    listId: string
+  title: string
+  listId: string
 }
 
 // Estado inicial
@@ -29,7 +29,8 @@ export const fetchCardsByLists = createAsyncThunk<ICard[], string, { rejectValue
   '/cards/inLists/:id',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get<ICard[] >(`/cards/inLists/${id}`);
+      
+      const response = await axiosInstance.get<ICard[]>(`/cards/inLists/${id}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al cargar las cards');
@@ -43,6 +44,7 @@ export const createCard = createAsyncThunk<ICard, CreateCardData, { rejectValue:
   '/cards',
   async (cardData : CreateCardData, { rejectWithValue }) => {
     try {
+      console.log(cardData)
       const response = await axiosInstance.post<ICard>('/cards', cardData);
       return response.data;
     } catch (error: any) {
@@ -83,12 +85,11 @@ ICard,
 
 export const moveCard = createAsyncThunk(
   "cards/moveCard",
-  async ({ idCard, idSourceList, idTargetList, newPosition }: any) => {
-    await axiosInstance.put(`/api/cards/move`, { idCard, idSourceList, idTargetList, newPosition });
-    return { idCard, idSourceList, idTargetList, newPosition };
+  async ({ idCard, newListId, newPosition }: { idCard: string; newListId: string; newPosition: number }) => {
+    const response = await axiosInstance.put(`/cards/${idCard}/move`, { newListId, newPosition });
+    return response.data;
   }
 );
-
 
 const cardsSlice = createSlice({
   name: "cards",
@@ -97,6 +98,13 @@ const cardsSlice = createSlice({
     clearCard: (state) => {
       state.selectedCard = null;
     },
+    moveCardOptimistic: (state, action) => {
+      const { idCard, newListId } = action.payload;
+      const card = state.cards.find((card) => card.id === idCard);
+      if (card) {
+        card.idList = newListId;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -104,10 +112,13 @@ const cardsSlice = createSlice({
       .addCase(fetchCardsByLists.pending, (state) => {
         state.loading = true;
         state.error = null;
-      })
+            })
       .addCase(fetchCardsByLists.fulfilled, (state, action: PayloadAction<ICard[]>) => {
         state.loading = false;
-        state.cards = action.payload;
+        const newCards = action.payload.filter(
+          (newCard) => !state.cards.some((existingCard) => existingCard.id === newCard.id)
+        );
+        state.cards = [...state.cards, ...newCards]; // Agregar las tarjetas a la lista
       })
       .addCase(fetchCardsByLists.rejected, (state, action) => {
         state.loading = false;
@@ -153,14 +164,21 @@ const cardsSlice = createSlice({
       })
       .addCase(updateCardTitle.rejected, (state, action) => {
         state.error = action.payload || "Error desconocido";
-      });
+      })
 
-      
+      .addCase(moveCard.fulfilled, (state, action) => {
+        const { idCard, newListId, newPosition } = action.payload;
+        const card = state.cards.find((card) => card.id === idCard);
+        if (card) {
+          card.idList = newListId;
+          card.position = newPosition;
+        }
+      });
     
   }
 });
 
-export const { clearCard } = cardsSlice.actions;
+export const { clearCard, moveCardOptimistic } = cardsSlice.actions;
 export default cardsSlice.reducer;
 
 

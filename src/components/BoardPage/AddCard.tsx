@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import ButtonAdd from "./ButtonAdd";
 import { AppDispatch } from "../../redux/store";
+import { createCard } from "../../redux/states/cardsSlice";
 
 interface AddCardProps {
     idList: string;
@@ -20,7 +21,7 @@ export default function AddCard({idList, listRef, isModalOpen, setIsModalOpen}: 
 
     const addCard = () => {
         if(cardName !== ''){
-          /* dispatch(addCardToList({listId: idList, title: cardName})) */
+          dispatch(createCard({listId: idList, title: cardName}))
         }
       
         setCardName('')

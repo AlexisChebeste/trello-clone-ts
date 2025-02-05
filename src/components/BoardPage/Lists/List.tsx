@@ -1,13 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "../Card";
 import { IList } from "../../../types";
 import { CSS } from "@dnd-kit/utilities";
 import AddCard from "../AddCard";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
 import { updateListTitle } from "../../../redux/states/listsSlice";
 import ListOption from "./ListOption";
-import { useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { fetchCardsByLists } from "../../../redux/states/cardsSlice";
 
 interface ListProps {
   list: IList;
@@ -20,6 +21,14 @@ export default function List({ list, isDraggingOverlay}: ListProps) {
   const [isEditing, setIsEditing] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Obtener las tarjetas de la lista
+  const {cards} = useSelector((state: RootState) => state.cards)
+
+  useEffect(() => {
+    dispatch(fetchCardsByLists(list.id));
+  }, [dispatch])
+
   // Configurar `useSortable` para manejar el arrastre de listas
   const {
     attributes,
@@ -83,9 +92,11 @@ export default function List({ list, isDraggingOverlay}: ListProps) {
 
       {/* 🔹 TARJETAS */}
         <div className="list flex-1 overflow-y-auto py-0.5 px-1" ref={listRef}>
-          {list.cards.map((card) => (
-            <Card key={card.id} card={card} />
-          ))}
+          <SortableContext items={cards.map((card) => card.id)} strategy={verticalListSortingStrategy}>
+            {cards.filter(card => card.idList === list.id).map((card) => (
+              <Card key={card.id} card={card} />
+            ))}
+          </SortableContext>
           <AddCard idList={list.id} listRef={listRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
       

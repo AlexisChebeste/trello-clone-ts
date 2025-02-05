@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Card from "../Card";
-import { IList } from "../../../types";
+import { ICard, IList } from "../../../types";
 import { CSS } from "@dnd-kit/utilities";
 import AddCard from "../AddCard";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
 import { updateListTitle } from "../../../redux/states/listsSlice";
 import ListOption from "./ListOption";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -13,9 +13,10 @@ import { fetchCardsByLists } from "../../../redux/states/cardsSlice";
 interface ListProps {
   list: IList;
   isDraggingOverlay?: boolean;
+  cards: ICard[];
 }
 
-export default function List({ list, isDraggingOverlay}: ListProps) {
+export default function List({ list, isDraggingOverlay, cards}: ListProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [listName, setListName] = useState(list.title);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,11 +24,11 @@ export default function List({ list, isDraggingOverlay}: ListProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Obtener las tarjetas de la lista
-  const {cards} = useSelector((state: RootState) => state.cards)
+  
 
   useEffect(() => {
     dispatch(fetchCardsByLists(list.id));
-  }, [dispatch])
+  }, [dispatch, list.id])
 
   // Configurar `useSortable` para manejar el arrastre de listas
   const {
@@ -61,6 +62,8 @@ export default function List({ list, isDraggingOverlay}: ListProps) {
     }
   };
 
+  const tasksIds = useMemo(() => cards.map((card) => card.id), [cards]);
+
   return (
     <div 
       ref={setNodeRef} {...attributes} {...listeners} style={style}
@@ -92,8 +95,8 @@ export default function List({ list, isDraggingOverlay}: ListProps) {
 
       {/* 🔹 TARJETAS */}
         <div className="list flex-1 overflow-y-auto py-0.5 px-1" ref={listRef}>
-          <SortableContext items={cards.map((card) => card.id)} strategy={verticalListSortingStrategy}>
-            {cards.filter(card => card.idList === list.id).map((card) => (
+          <SortableContext items={tasksIds} strategy={verticalListSortingStrategy}>
+            {cards.map((card) => (
               <Card key={card.id} card={card} />
             ))}
           </SortableContext>

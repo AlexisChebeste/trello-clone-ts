@@ -4,10 +4,11 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface CardProps {
     card: ICard
+    isDraggingOverlay?: boolean;
   }
   
 
-  export default function Card({ card }: CardProps) {
+  export default function Card({ card, isDraggingOverlay }: CardProps) {
     const {
       attributes,
       listeners,
@@ -21,7 +22,7 @@ interface CardProps {
         type: "CARD",
         card,
       },
-      
+      disabled: isDraggingOverlay,
     })
 
     const style = {

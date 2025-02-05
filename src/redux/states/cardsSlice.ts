@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { ICard} from '../../types';
 import axiosInstance from '../../api/axiosInstance';
+import { arrayMove } from '@dnd-kit/sortable';
 
 
 
@@ -14,6 +15,12 @@ export interface ICardState {
 interface CreateCardData{
   title: string
   listId: string
+}
+
+interface MoveCardPayload {
+  cardId: string;
+  newPosition: number;
+  newListId: string;
 }
 
 // Estado inicial
@@ -75,7 +82,7 @@ ICard,
   "/cards/updateTitle",
   async ({ id, title, position }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.put<ICard>(`/cards/${id}`, { title , position});
+      const response = await axiosInstance.put(`/cards/${id}`, { title , position});
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Error al actualizar la tarjeta");
@@ -83,11 +90,20 @@ ICard,
   }
 );
 
-export const moveCard = createAsyncThunk(
+export const moveCard = createAsyncThunk<
+  ICard,
+  MoveCardPayload,
+  { rejectValue: string }
+>(
   "cards/moveCard",
-  async ({ idCard, newListId, newPosition }: { idCard: string; newListId: string; newPosition: number }) => {
-    const response = await axiosInstance.put(`/cards/${idCard}/move`, { newListId, newPosition });
-    return response.data;
+  async ({ cardId, newPosition, newListId }: MoveCardPayload, {rejectWithValue}) => {
+    try{
+      const response = await axiosInstance.put<ICard>(`/cards/move`, { cardId, newPosition, newListId });
+      return response.data; // Retorna las tarjetas actualizadas
+    }catch(error:any){
+      return rejectWithValue(error.response?.data?.message || 'Error al mover la tarjeta')
+    }
+    
   }
 );
 
@@ -98,12 +114,16 @@ const cardsSlice = createSlice({
     clearCard: (state) => {
       state.selectedCard = null;
     },
-    moveCardOptimistic: (state, action) => {
-      const { idCard, newListId } = action.payload;
-      const card = state.cards.find((card) => card.id === idCard);
-      if (card) {
-        card.idList = newListId;
-      }
+    moveCardOptimistic: (state, action: PayloadAction<MoveCardPayload>) => {
+      const { cardId, newListId, newPosition } = action.payload;
+      const cardIndex = state.cards.findIndex((c) => c.id === cardId);
+      
+      if (cardIndex === -1) return;
+    
+    
+      state.cards[cardIndex].idList = newListId;
+      state.cards = arrayMove(state.cards, cardIndex, newPosition);
+    
     },
   },
   extraReducers: (builder) => {
@@ -165,40 +185,20 @@ const cardsSlice = createSlice({
       .addCase(updateCardTitle.rejected, (state, action) => {
         state.error = action.payload || "Error desconocido";
       })
-
-      .addCase(moveCard.fulfilled, (state, action) => {
-        const { idCard, newListId, newPosition } = action.payload;
-        const card = state.cards.find((card) => card.id === idCard);
-        if (card) {
-          card.idList = newListId;
-          card.position = newPosition;
-        }
-      });
+      // Mover tarjeta
+      .addCase(moveCard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(moveCard.fulfilled, (state, action: PayloadAction<ICard>) => {
+        state.loading = false;
+        state.cards = state.cards.map((card) =>
+          card.id === action.payload.id ? action.payload : card
+        );
+      })
     
   }
 });
 
 export const { clearCard, moveCardOptimistic } = cardsSlice.actions;
 export default cardsSlice.reducer;
-
-
-/* // Mover card
-      .addCase(moveCard.fulfilled, (state, action) => {
-        const { idCard, idSourceList, idTargetList, newPosition } = action.payload;
-  
-        const sourceList = state.cards.find((list) => list.id === idSourceList);
-        const targetList = state.cards.find((list) => list.id === idTargetList);
-        if (!sourceList || !targetList) return;
-  
-        const cardToMove = sourceList.cards.find((card) => card.id === idCard);
-        if (!cardToMove) return;
-  
-        sourceList.cards = sourceList.cards.filter((card) => card.id !== idCard);
-        targetList.cards.splice(newPosition, 0, cardToMove);
-  
-        state.cards.forEach((list) => {
-          list.cards.forEach((card, index) => {
-            card.position = index;
-          });
-        });
-      }) */

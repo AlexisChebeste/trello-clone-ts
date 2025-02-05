@@ -79,6 +79,25 @@ export const updateListTitle = createAsyncThunk<
   }
 );
 
+//Update position of lists
+export const moveList = createAsyncThunk<
+  { idList: string; newPosition: number },
+  { idBoard: string; idList: string;  newPosition: number },
+  { rejectValue: string }
+>(
+  "/lists/moveList",
+  async ({ idBoard, idList, newPosition}, { rejectWithValue }) => {
+    try {
+      await axiosInstance.put<string>("/lists/moveLists", { idBoard, idList, newPosition });
+
+      return { idList, newPosition };
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Error al reordenar las listas");
+    }
+  }
+);
+
+
 const listsSlice = createSlice({
   name: 'lists',
   initialState,
@@ -142,7 +161,22 @@ const listsSlice = createSlice({
       })
       .addCase(updateListTitle.rejected, (state, action) => {
         state.error = action.payload || "Error desconocido";
+      })
+
+      // Mover lista
+      .addCase(moveList.fulfilled, (state, action) => {
+        const { idList, newPosition } = action.payload;
+        const listToMove = state.lists.find((list) => list.id === idList);
+        if (!listToMove) return;
+
+        state.lists = state.lists.filter((list) => list.id !== idList);
+        state.lists.splice(newPosition, 0, listToMove);
+
+        state.lists.forEach((list, index) => {
+          list.position = index;
+        });
       });
+      
   }
 });
 

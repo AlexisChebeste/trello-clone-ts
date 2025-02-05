@@ -7,7 +7,7 @@ interface CardProps {
   
 
   export default function Card({ card }: CardProps) {
-
+    
 
     return (
       <div 

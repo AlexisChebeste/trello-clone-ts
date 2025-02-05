@@ -12,7 +12,7 @@ export default function Navbar() {
         <header 
             className='border-b  border-b-slate-200/60  backdrop-blur-sm  h-14 w-full z-50'>
             <nav className={`${isBoardPage ?  'text-white bg-black/40 ' :'text-slate-600'}`}>
-                <div className="flex justify-between h-14 px-6">
+                <div className="flex justify-between h-14 px-6 gap-4">
                     <div className='flex gap-6  items-center'>
                         
                         <NavLink 

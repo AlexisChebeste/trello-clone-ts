@@ -16,7 +16,7 @@ export default function Logout() {
 
     return(
         <button onClick={logOut} className="border bg-white  text-gray-700 border-slate-500 hover:bg-slate-200   font-semibold p-2 h-max my-auto rounded-md  transition-colors " >
-            <div className="flex items-center ">
+            <div className="flex items-center w-max">
                 <LogOut  className="size-4 "/>
                 <span className="ml-2 text-sm ">Cerrar sesión</span>
             </div>

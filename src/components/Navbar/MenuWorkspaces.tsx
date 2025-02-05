@@ -27,11 +27,11 @@ export default function MenuWorkspaces() {
 
     return(
         <div id="modal-workspace" className="relative z-50 ">
-            <button className={`p-2 ${isBoardPage ? 'hover:bg-white/30': 'hover:bg-slate-200'} rounded-md font-semibold flex items-center gap-1 text-sm`} onClick={handleOpen}>
+            <button className={`p-2 ${isBoardPage ? 'hover:bg-white/30': 'hover:bg-slate-200'} rounded-md font-semibold flex items-center gap-1 text-sm min-w-32 w-full`} onClick={handleOpen}>
                 Espacios de trabajo
                 <ChevronDown size={24} />
             </button>
-            <div className={`${open ? 'absolute': 'hidden'} top-12 left-0 bg-white shadow-lg rounded-md p-2 border-slate-200 border w-72 text-sm `} >
+            <div className={`${open ? 'absolute': 'hidden'} top-12 left-0 bg-white shadow-lg rounded-md p-2 border-slate-200 border w-72 text-sm `} onClick={handleOpen}>
                 <h3 className="px-4 py-2 font-medium text-slate-500">Tus Espacios de trabajo</h3>
                 
                 

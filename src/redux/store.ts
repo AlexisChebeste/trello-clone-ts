@@ -3,6 +3,7 @@ import authReducer from "./states/authSlice";
 import workspaceReducer from "./states/workspacesSlices"
 import boardsReducer from "./states/boardsSlice";
 import listsReducer from "./states/listsSlice";
+import cardsReducer from "./states/cardsSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -13,10 +14,11 @@ const persistConfig ={
 }
 
 const rootReducer = combineReducers({
-    workspaces: workspaceReducer,
     auth: authReducer,
+    workspaces: workspaceReducer,
     boards: boardsReducer,
     lists: listsReducer,
+    cards: cardsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

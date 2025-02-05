@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addCardToList } from "../../redux/states/workspaceSlices";
 import ButtonAdd from "./ButtonAdd";
+import { AppDispatch } from "../../redux/store";
 
 interface AddCardProps {
     idList: string;
@@ -15,12 +15,12 @@ interface AddCardProps {
 export default function AddCard({idList, listRef, isModalOpen, setIsModalOpen}: AddCardProps) {
     
     
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
     const [cardName, setCardName] = useState('')
 
     const addCard = () => {
         if(cardName !== ''){
-          dispatch(addCardToList({listId: idList, title: cardName}))
+          /* dispatch(addCardToList({listId: idList, title: cardName})) */
         }
       
         setCardName('')

@@ -7,18 +7,19 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
 import { updateListTitle } from "../../../redux/states/listsSlice";
 import ListOption from "./ListOption";
-import { defaultAnimateLayoutChanges, useSortable } from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
 
 interface ListProps {
   list: IList;
+  isDraggingOverlay?: boolean;
 }
 
-export default function List({ list}: ListProps) {
+export default function List({ list, isDraggingOverlay}: ListProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [listName, setListName] = useState(list.title);
   const [isEditing, setIsEditing] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
-
+  const [isModalOpen, setIsModalOpen] = useState(false)
   // Configurar `useSortable` para manejar el arrastre de listas
   const {
     attributes,
@@ -29,14 +30,19 @@ export default function List({ list}: ListProps) {
     isDragging
   } = useSortable({
     id: list.id,
-    animateLayoutChanges: defaultAnimateLayoutChanges, // Mantiene el espacio visible cuando se mueve
-    data: {type: "LIST"},
+    data: {
+      type: "LIST",
+      list,
+    },
+    disabled: isDraggingOverlay,
   });
 
   const style = {
-    transform: CSS.Transform.toString(transform), // Convierte la transformación en CSS
-    transition: transition , // Suaviza los cambios
-    opacity: isDragging ? 0.5 : 1, // Reduce la opacidad del ítem que se está arrastrando
+    transform: CSS.Transform.toString(transform), 
+    transition , 
+    opacity: isDragging && !isDraggingOverlay ? 0.5 : 1, // Reduce la opacidad del ítem que se está arrastrando
+    zIndex: isDraggingOverlay ? 1 : 0, // Asegura que el ítem arrastrado esté por encima de los demás
+    boxShadow: isDraggingOverlay ? "0 0 8px 2px rgba(0, 0, 0, 0.1)" : "none", // Añade una sombra al ítem arrastrado
   };
 
   const handleBlur = () => {
@@ -49,10 +55,10 @@ export default function List({ list}: ListProps) {
   return (
     <div 
       ref={setNodeRef} {...attributes} {...listeners} style={style}
-      className="bg-slate-200 mt-2 p-4 rounded-xl shadow-list w-72 shrink-0 flex flex-col gap-4 text-slate-900 max-h-[80vh] justify-between"
+      className="bg-slate-200 mt-2 pt-4 px-4 rounded-xl shadow-list w-72 shrink-0 flex flex-col gap-4 text-slate-900 max-h-[80vh] justify-between relative overflow-visible"
     >
       {/* 🔹 CABECERA */}
-      <div className="flex justify-between items-center w-full gap-2">
+      <div className="flex justify-between items-center w-full gap-2 ">
         {isEditing ? (
           <input
             className="font-medium overflow-hidden cursor-pointer py-1 px-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white"
@@ -72,7 +78,7 @@ export default function List({ list}: ListProps) {
         )}
 
         {/* 🔹 OPCIONES */}
-        <ListOption />
+        <ListOption setIsModalOpen={setIsModalOpen}/>
       </div>
 
       {/* 🔹 TARJETAS */}
@@ -80,9 +86,9 @@ export default function List({ list}: ListProps) {
           {list.cards.map((card) => (
             <Card key={card.id} card={card} />
           ))}
-          
+          <AddCard idList={list.id} listRef={listRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </div>
-      <AddCard idList={list.id} listRef={listRef} />
+      
     </div>
   );
 }

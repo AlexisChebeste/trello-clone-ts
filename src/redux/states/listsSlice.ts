@@ -104,6 +104,20 @@ const listsSlice = createSlice({
   reducers: {
     clearList: (state) => {
       state.selectedList = null;
+    },
+    moveListOptimistic: (state, action: PayloadAction<{ idList: string; newPosition: number }>) => {
+      const { idList, newPosition } = action.payload;
+      const oldIndex = state.lists.findIndex((list) => list.id === idList);
+      if (oldIndex === -1) return;
+
+      // Mueve la lista localmente antes de la petición al backend
+      const [movedList] = state.lists.splice(oldIndex, 1);
+      state.lists.splice(newPosition, 0, movedList);
+
+      // Actualiza la posición de todas las listas
+      state.lists.forEach((list, index) => {
+        list.position = index;
+      });
     }
   },
   extraReducers: (builder) => {
@@ -180,5 +194,5 @@ const listsSlice = createSlice({
   }
 });
 
-export const { clearList } = listsSlice.actions;
+export const { clearList, moveListOptimistic } = listsSlice.actions;
 export default listsSlice.reducer;

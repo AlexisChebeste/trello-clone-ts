@@ -7,12 +7,14 @@ import ButtonAdd from "./ButtonAdd";
 interface AddCardProps {
     idList: string;
     listRef: React.RefObject<HTMLDivElement>;
+    isModalOpen: boolean;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-export default function AddCard({idList, listRef}: AddCardProps) {
+export default function AddCard({idList, listRef, isModalOpen, setIsModalOpen}: AddCardProps) {
     
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    
     const dispatch = useDispatch()
     const [cardName, setCardName] = useState('')
 

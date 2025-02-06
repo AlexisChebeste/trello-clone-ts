@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { ICard} from '../../types';
 import axiosInstance from '../../api/axiosInstance';
-import { arrayMove } from '@dnd-kit/sortable';
-
-
 
 export interface ICardState {
     cards: ICard[];
@@ -33,11 +30,11 @@ const initialState: ICardState = {
 
 // Obtener las cards de la lista
 export const fetchCardsByLists = createAsyncThunk<ICard[], string, { rejectValue: string }>(
-  '/cards/inLists/:id',
+  '/boards/:id/cards',
   async (id, { rejectWithValue }) => {
     try {
       
-      const response = await axiosInstance.get<ICard[]>(`/cards/inLists/${id}`);
+      const response = await axiosInstance.get<ICard[]>(`/boards/${id}/cards`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al cargar las cards');
@@ -96,14 +93,13 @@ export const moveCard = createAsyncThunk<
   { rejectValue: string }
 >(
   "cards/moveCard",
-  async ({ cardId, newPosition, newListId }: MoveCardPayload, {rejectWithValue}) => {
-    try{
+  async ({ cardId, newPosition, newListId }: MoveCardPayload, { rejectWithValue }) => {
+    try {
       const response = await axiosInstance.put<ICard>(`/cards/move`, { cardId, newPosition, newListId });
-      return response.data; // Retorna las tarjetas actualizadas
-    }catch(error:any){
-      return rejectWithValue(error.response?.data?.message || 'Error al mover la tarjeta')
+      return response.data; // Retorna la tarjeta actualizada
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al mover la tarjeta');
     }
-    
   }
 );
 
@@ -116,14 +112,28 @@ const cardsSlice = createSlice({
     },
     moveCardOptimistic: (state, action: PayloadAction<MoveCardPayload>) => {
       const { cardId, newListId, newPosition } = action.payload;
-      const cardIndex = state.cards.findIndex((c) => c.id === cardId);
-      
-      if (cardIndex === -1) return;
     
+      // Buscar la tarjeta que se mueve
+      const card = state.cards.find((c) => c.id === cardId);
+      if (!card) return;
     
-      state.cards[cardIndex].idList = newListId;
-      state.cards = arrayMove(state.cards, cardIndex, newPosition);
+      // Filtrar las tarjetas de la lista actual y la nueva lista
+      const oldListCards = state.cards.filter((c) => c.idList === card.idList);
+      const newListCards = state.cards.filter((c) => c.idList === newListId);
     
+      // Eliminar la tarjeta de su lista actual
+      const updatedOldList = oldListCards.filter((c) => c.id !== cardId);
+    
+      // Insertar la tarjeta en la nueva lista
+      const updatedNewList = [...newListCards];
+      updatedNewList.splice(newPosition, 0, { ...card, idList: newListId });
+    
+      // Reordenar posiciones en ambas listas
+      updatedOldList.forEach((c, index) => (c.position = index));
+      updatedNewList.forEach((c, index) => (c.position = index));
+    
+      // Actualizar el estado global de las tarjetas
+      state.cards = [...updatedOldList, ...updatedNewList];
     },
   },
   extraReducers: (builder) => {
@@ -135,10 +145,7 @@ const cardsSlice = createSlice({
             })
       .addCase(fetchCardsByLists.fulfilled, (state, action: PayloadAction<ICard[]>) => {
         state.loading = false;
-        const newCards = action.payload.filter(
-          (newCard) => !state.cards.some((existingCard) => existingCard.id === newCard.id)
-        );
-        state.cards = [...state.cards, ...newCards]; // Agregar las tarjetas a la lista
+        state.cards = action.payload; // Reemplaza todas las tarjetas de la lista
       })
       .addCase(fetchCardsByLists.rejected, (state, action) => {
         state.loading = false;
@@ -185,17 +192,16 @@ const cardsSlice = createSlice({
       .addCase(updateCardTitle.rejected, (state, action) => {
         state.error = action.payload || "Error desconocido";
       })
-      // Mover tarjeta
-      .addCase(moveCard.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(moveCard.fulfilled, (state, action: PayloadAction<ICard>) => {
         state.loading = false;
-        state.cards = state.cards.map((card) =>
-          card.id === action.payload.id ? action.payload : card
-        );
-      })
+        const updatedCard = action.payload;
+      
+        // Remover la tarjeta de su posición anterior y actualizarla en la nueva lista
+        state.cards = state.cards
+          .filter((card) => card.id !== updatedCard.id)
+          .concat(updatedCard)
+          .sort((a, b) => a.position - b.position);
+      });
     
   }
 });

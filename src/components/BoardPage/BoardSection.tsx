@@ -5,7 +5,7 @@ import { useDispatch ,useSelector} from "react-redux"
 import { AppDispatch, RootState } from "../../redux/store"
 import { useEffect, useMemo, useState } from "react"
 import { fetchListsByBoards, moveList } from "../../redux/states/listsSlice"
-import { fetchCardsByLists, moveCardOptimistic } from "../../redux/states/cardsSlice"
+import { fetchCardsByLists, moveCard, moveCardOptimistic } from "../../redux/states/cardsSlice"
 import { closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, KeyboardSensor, MouseSensor ,TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import List from "./Lists/List"
@@ -126,52 +126,39 @@ export default function BoardSection({board}: {board: IBoard}) {
   
     if (!activeCard) return;
   
+    let newPosition: number | undefined;
+    let newListId: string | undefined;
+  
     // 🔹 Si la tarjeta se mueve dentro de la misma lista
     if (overCard && activeCard.idList === overCard.idList) {
       if (activeCard.position !== overCard.position) {
-        dispatch(
-          moveCardOptimistic({
-            newListId: activeCard.idList,
-            cardId: activeCard.id,
-            newPosition: overCard.position,
-          })
-        );
+        newListId = activeCard.idList;
+        newPosition = overCard.position;
       }
     }
   
-    // 🔹 Si la tarjeta se mueve a otra lista (y no sobre otra tarjeta)
+    // 🔹 Si la tarjeta se mueve a otra lista vacía
     if (overList && activeCard.idList !== overList.id) {
-      const cardsInNewList = cards.filter(card => card.idList === overList.id);
-  
-      // Encontramos la posición exacta donde se está soltando
-      const newPosition = cardsInNewList.length;
-  
-      dispatch(
-        moveCardOptimistic({
-          newListId: overList.id,
-          cardId: activeCard.id,
-          newPosition,
-        })
-      );
+      const cardsInNewList = cards.filter((card) => card.idList === overList.id);
+      newListId = overList.id;
+      newPosition = cardsInNewList.length;
     }
   
     // 🔹 Si la tarjeta se mueve sobre otra tarjeta en otra lista
     if (overCard && activeCard.idList !== overCard.idList) {
-      dispatch(
-        moveCardOptimistic({
-          newListId: overCard.idList,
-          cardId: activeCard.id,
-          newPosition: overCard.position,
-        })
-      );
+      newListId = overCard.idList;
+      newPosition = overCard.position;
+    }
+  
+    if (newListId !== undefined && newPosition !== undefined) {
+      // 🔹 Optimistic UI Update (Actualiza el estado local rápido)
+      dispatch(moveCardOptimistic({ newListId, cardId: activeCard.id, newPosition }));
+    
+      // 🔹 API Call (Actualiza en el backend)
+      dispatch(moveCard({ newListId, cardId: activeCard.id, newPosition }));
     }
   };
   
-  
-  
-  
-
-
   const listsIds = useMemo(() => lists.map((list) => list.id), [lists]);
 
 

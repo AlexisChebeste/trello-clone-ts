@@ -113,10 +113,12 @@ const cardsSlice = createSlice({
         state.cards = state.cards.filter((card) => card.id !== action.payload);
       })
       .addCase(moveCard.fulfilled, (state, action) => {
-        const updatedCard = action.payload;
-        state.cards = state.cards.filter((card) => card.id !== updatedCard.id);
-        state.cards.push(updatedCard);
-        state.cards.sort((a, b) => a.position - b.position);
+        const { id, idList, position } = action.payload;
+        const card = state.cards.find((c) => c.id === id);
+        if (card) {
+          card.idList = idList;
+          card.position = position;
+        }
       });
   },
 });

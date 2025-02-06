@@ -5,7 +5,7 @@ import { useDispatch ,useSelector} from "react-redux"
 import { AppDispatch, RootState } from "../../redux/store"
 import { useEffect, useMemo, useState } from "react"
 import { fetchListsByBoards, moveList } from "../../redux/states/listsSlice"
-import { fetchCardsByLists, moveCard } from "../../redux/states/cardsSlice"
+import { fetchCardsByLists, moveCardOptimistic } from "../../redux/states/cardsSlice"
 import { closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, KeyboardSensor, MouseSensor ,TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
 import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import List from "./Lists/List"
@@ -22,11 +22,25 @@ export default function BoardSection({board}: {board: IBoard}) {
 
 
   useEffect(() => {
-    if(idBoard){
-      dispatch(fetchListsByBoards(idBoard))
-      dispatch(fetchCardsByLists(idBoard))
-    }
-  }, [dispatch, idBoard])
+    if (!idBoard) return;
+  
+    let isMounted = true;
+  
+    const fetchData = async () => {
+      if (isMounted) {
+        dispatch(fetchListsByBoards(idBoard));
+        dispatch(fetchCardsByLists(idBoard));
+      }
+    };
+  
+    fetchData();
+  
+    return () => {
+      isMounted = false;
+    };
+  }, [idBoard, dispatch]);
+  
+  
 
   if(!idBoard) return null;
 
@@ -66,61 +80,96 @@ export default function BoardSection({board}: {board: IBoard}) {
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
+    setActiveColumn(null);
+    setActiveCard(null);
     const { active, over } = event;
   
-    if(!over) return;
-
+    if (!over) return;
+  
     const activeId = active.id.toString();
     const overId = over.id.toString();
-
-    if(activeId === overId) return;
-
-    if(active.data.current?.type === "list"){
-      const activeList = lists.find((list) => list.id === activeId);
-      const overList = lists.find((list) => list.id === overId);
-
-      if(activeList && overList){
-        dispatch(moveList({idBoard: idBoard, idList: activeList.id, newPosition: overList.position}))
-      }
-      return;
+  
+    if (activeId === overId) return;
+  
+    const activeIndex = lists.findIndex((list) => list.id === activeId);
+    const overIndex = lists.findIndex((list) => list.id === overId);
+  
+    if (activeIndex !== -1 && overIndex !== -1) {
+      const newLists = [...lists];
+      const [movedList] = newLists.splice(activeIndex, 1);
+      newLists.splice(overIndex, 0, movedList);
+  
+      dispatch(
+        moveList({
+          idBoard,
+          idList: activeId,
+          newPosition: overIndex,
+        })
+      );
     }
-    
   };
+  
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
   
-    if(!over) return;
-
+    if (!over) return;
+  
     const activeId = active.id.toString();
     const overId = over.id.toString();
-
-    if(activeId === overId) return;
-
-    const isActiveATask = active.data.current?.type === "card";
-    const isOverATask = over.data.current?.type === "card";
-    const isOverAColumn = over.data.current?.type === "list";
-
-    if(isActiveATask && isOverATask){
-      const activeCard = cards.find((card) => card.id === activeId);
-      const overCard = cards.find((card) => card.id === overId);
-
-      if(activeCard && overCard){
-        dispatch(moveCard({newListId: overCard.idList, cardId: activeCard.id, newPosition: overCard.position}))
-      }
-
-    }
-
-    if(isActiveATask && isOverAColumn){
-      const activeCard = cards.find((card) => card.id === activeId);
-      const overList = lists.find((list) => list.id === overId);
-
-      if(activeCard && overList){
-        dispatch(moveCard({newListId: overList.id, cardId: activeCard.id, newPosition: 0}))
+  
+    if (activeId === overId) return;
+  
+    const activeCard = cards.find((card) => card.id === activeId);
+    const overCard = cards.find((card) => card.id === overId);
+    const overList = lists.find((list) => list.id === overId);
+  
+    if (!activeCard) return;
+  
+    // 🔹 Si la tarjeta se mueve dentro de la misma lista
+    if (overCard && activeCard.idList === overCard.idList) {
+      if (activeCard.position !== overCard.position) {
+        dispatch(
+          moveCardOptimistic({
+            newListId: activeCard.idList,
+            cardId: activeCard.id,
+            newPosition: overCard.position,
+          })
+        );
       }
     }
-    
-  }
+  
+    // 🔹 Si la tarjeta se mueve a otra lista (y no sobre otra tarjeta)
+    if (overList && activeCard.idList !== overList.id) {
+      const cardsInNewList = cards.filter(card => card.idList === overList.id);
+  
+      // Encontramos la posición exacta donde se está soltando
+      const newPosition = cardsInNewList.length;
+  
+      dispatch(
+        moveCardOptimistic({
+          newListId: overList.id,
+          cardId: activeCard.id,
+          newPosition,
+        })
+      );
+    }
+  
+    // 🔹 Si la tarjeta se mueve sobre otra tarjeta en otra lista
+    if (overCard && activeCard.idList !== overCard.idList) {
+      dispatch(
+        moveCardOptimistic({
+          newListId: overCard.idList,
+          cardId: activeCard.id,
+          newPosition: overCard.position,
+        })
+      );
+    }
+  };
+  
+  
+  
+  
 
 
   const listsIds = useMemo(() => lists.map((list) => list.id), [lists]);

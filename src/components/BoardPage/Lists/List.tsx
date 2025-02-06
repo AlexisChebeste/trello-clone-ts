@@ -53,6 +53,7 @@ export default function List({ list, cards}: ListProps) {
 
   const cardsIds = useMemo(() => cards.map((card) => card.id), [cards]);
 
+
   return (
     <div 
       ref={setNodeRef}

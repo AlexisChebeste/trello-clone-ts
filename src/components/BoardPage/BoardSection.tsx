@@ -6,8 +6,8 @@ import { AppDispatch, RootState } from "../../redux/store"
 import { useEffect, useMemo, useState } from "react"
 import { fetchListsByBoards, moveList } from "../../redux/states/listsSlice"
 import { fetchCardsByLists, moveCard, moveCardOptimistic } from "../../redux/states/cardsSlice"
-import { closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, KeyboardSensor, MouseSensor ,TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
-import { horizontalListSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
+import { closestCorners, DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, MouseSensor ,TouchSensor, useSensor, useSensors } from "@dnd-kit/core"
+import { horizontalListSortingStrategy, SortableContext } from "@dnd-kit/sortable"
 import List from "./Lists/List"
 import { createPortal } from "react-dom"
 import Card from "./Card"
@@ -51,9 +51,6 @@ export default function BoardSection({board}: {board: IBoard}) {
         delay: 250,
         tolerance: 5,
       }
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
     }),
     useSensor(MouseSensor,{
       activationConstraint: {
@@ -158,7 +155,7 @@ export default function BoardSection({board}: {board: IBoard}) {
       dispatch(moveCard({ newListId, cardId: activeCard.id, newPosition }));
     }
   };
-  
+
   const listsIds = useMemo(() => lists.map((list) => list.id), [lists]);
 
 

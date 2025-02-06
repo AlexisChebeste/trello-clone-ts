@@ -63,6 +63,18 @@ export const deleteCard = createAsyncThunk<string, string, { rejectValue: string
   }
 );
 
+export const updateTitleCard = createAsyncThunk<ICard, { cardId: string; title: string }, { rejectValue: string }>(
+  'cards/updateTitle',
+  async ({ cardId, title }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put<ICard>(`/cards/${cardId}/title`, { title });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al actualizar el título de la tarjeta');
+    }
+  }
+);
+
 export const moveCard = createAsyncThunk<ICard, MoveCardPayload, { rejectValue: string }>(
   'cards/move',
   async ({ cardId, newPosition, newListId }, { rejectWithValue }) => {
@@ -119,7 +131,13 @@ const cardsSlice = createSlice({
           card.idList = idList;
           card.position = position;
         }
-      });
+      })
+      .addCase(updateTitleCard.fulfilled, (state, action) => {
+        const card = state.cards.find((c) => c.id === action.payload.id);
+        if (card) {
+          card.title = action.payload.title;
+        }
+      })
   },
 });
 

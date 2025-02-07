@@ -15,14 +15,14 @@ export default function AsideHeader({idWorkspace, selectedWorkspace}: AsideHeade
 
     return(
         <div>
-            <div className='flex  gap-2 border-b border-slate-300/30 p-5 px-4 items-center w-full'>
+            <div className='flex  gap-2 border-b border-slate-300/30 py-3 px-4 items-center w-full'>
                 <div className={`flex  justify-center items-center h-10 w-12  rounded-md  text-white font-bold text-xl relative`}>
                     <img src={`/public${selectedWorkspace.logo}`} alt={`${selectedWorkspace.name} logo`}  className='size-full rounded-md'/>
                     <span className='absolute inset-0 flex items-center justify-center'>{selectedWorkspace.name[0].toUpperCase()}</span>
                 </div>
                 <div className="flex flex-col   w-full ">
                     <h2 className="text-md   font-semibold">{selectedWorkspace?.name}</h2>
-                    <p className=' text-xs '>{selectedWorkspace.plan.toUpperCase()}</p>
+                    <p className=' text-xs '>{selectedWorkspace.plan}</p>
                 </div>
             </div>
             <div className='flex flex-col  pt-3'>

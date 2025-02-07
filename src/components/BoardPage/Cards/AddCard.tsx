@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import ButtonAdd from "./ButtonAdd";
-import { AppDispatch } from "../../redux/store";
-import { createCard } from "../../redux/states/cardsSlice";
+import ButtonAdd from "../ButtonAdd";
+import { AppDispatch } from "../../../redux/store";
+import { createCard } from "../../../redux/states/cardsSlice";
 
 interface AddCardProps {
     idList: string;

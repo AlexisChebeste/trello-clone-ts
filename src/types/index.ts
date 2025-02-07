@@ -31,9 +31,15 @@ export interface IUser {
     lastActive: Date;
     idWorkspace: string;
     lists: IList[];
-    members: IUser[];
+    members: IMember[];
   }
   
+  export interface IMember{
+    id: string;
+    user: string;
+    role: 'admin' | "member";
+  }
+
   export interface IList {
     id: string;
     title: string;

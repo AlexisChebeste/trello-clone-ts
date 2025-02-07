@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
-import Card from "../Card";
+import Card from "../Cards/Card";
 import { ICard, IList } from "../../../types";
-import AddCard from "../AddCard";
+import AddCard from "../Cards/AddCard";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
 import { updateListTitle } from "../../../redux/states/listsSlice";

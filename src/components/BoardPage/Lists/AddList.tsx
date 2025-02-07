@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux"
-import ButtonAdd from "./ButtonAdd"
+import ButtonAdd from "../ButtonAdd"
 import { useState } from "react"
 import { X } from "lucide-react"
-import { AppDispatch } from "../../redux/store"
-import { createList } from "../../redux/states/listsSlice"
+import { AppDispatch } from "../../../redux/store"
+import { createList } from "../../../redux/states/listsSlice"
 
 
 export default function AddList({idBoard}: {idBoard: string}) {

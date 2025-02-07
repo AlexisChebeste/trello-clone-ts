@@ -1,11 +1,11 @@
 import { useSortable } from "@dnd-kit/sortable";
-import type { ICard } from "../../types";
+import type { ICard } from "../../../types";
 import {CSS} from '@dnd-kit/utilities';
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { AppDispatch } from "../../../redux/store";
 import { Pencil } from "lucide-react";
-import { updateTitleCard } from "../../redux/states/cardsSlice";
+import { updateTitleCard } from "../../../redux/states/cardsSlice";
 
 interface CardProps {
     card: ICard;

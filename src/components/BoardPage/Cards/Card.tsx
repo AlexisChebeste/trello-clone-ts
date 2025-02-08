@@ -19,7 +19,6 @@ export default function Card({ card, openedCardId, setOpenedCardId }: CardProps)
   const dispatch = useDispatch<AppDispatch>();
   const [cardName, setCardName] = useState(card.title);
   const [isEditing, setIsEditing] = useState(false);
-  
 
   const {
     attributes,
@@ -73,7 +72,11 @@ export default function Card({ card, openedCardId, setOpenedCardId }: CardProps)
       ) : (
         <div
           className="group flex justify-between items-center h-10 px-3  overflow-hidden cursor-pointer text-sm   w-full  hover:ring-2 hover:ring-blue-500  hover:rounded-xl text-slate-600"
-          onClick={() => setOpenedCardId(card.id)}
+          onPointerUp={() => {
+            if (!isDragging) {
+              setOpenedCardId(card.id); // 🔹 Solo abre el modal si NO se arrastró
+            }
+          }}
         >
           {cardName}
           <button 

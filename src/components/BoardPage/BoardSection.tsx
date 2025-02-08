@@ -184,7 +184,7 @@ export default function BoardSection({board}: {board: IBoard}) {
                 : null
               }
               {activeCard ? (
-                <Card card={activeCard} />
+                <Card card={activeCard} openedCardId={""} setOpenedCardId={( id: string) =>{id}} />
               ): null}
             </DragOverlay>
           , document.body

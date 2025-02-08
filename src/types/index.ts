@@ -61,6 +61,7 @@ export interface IUser {
 export interface IActivity {
   user: string;
   action: string;
+  commentary: string;
   timestamp: Date;
 }
   

@@ -2,18 +2,28 @@ import { useRef, useState } from "react";
 import { Ellipsis, X } from "lucide-react";
 import ButtonOption from "./ButtonOption";
 import ModalGeneric from "../../modals/ModalGeneric";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../redux/store";
+import { deleteList } from "../../../redux/states/listsSlice";
 
 interface ListOptionProps {
     setIsModalOpen: (value: boolean) => void;
+    listId: string;
 }
 
-export default function ListOption({setIsModalOpen}: ListOptionProps) {
+export default function ListOption({setIsModalOpen, listId}: ListOptionProps) {
+    const dispatch = useDispatch<AppDispatch>()
     const [isOptionOpen, setIsOptionOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleOpenOption = () => {
         setIsOptionOpen(!isOptionOpen);
     };
+
+    const delList = async() => {
+        await dispatch(deleteList(listId))
+        setIsOptionOpen(false)
+    }
 
     return (
         <>
@@ -54,29 +64,14 @@ export default function ListOption({setIsModalOpen}: ListOptionProps) {
                             Añadir tarjeta
                         </ButtonOption>
                     </li>
-                    <li>
+                    {/* <li>
                         <ButtonOption onClick={() => console.log("Copiar lista")}>
                             Copiar lista
                         </ButtonOption>
-                    </li>
+                    </li> */}
                     <li>
-                        <ButtonOption onClick={() => console.log("Mover lista")}>
-                            Mover lista
-                        </ButtonOption>
-                    </li>
-                    <li>
-                        <ButtonOption onClick={() => console.log("Mover todas las tarjetas de esta lista")}>
-                            Mover todas las tarjetas de esta lista
-                        </ButtonOption>
-                    </li>
-                    <li>
-                        <ButtonOption onClick={() => console.log("Archivar esta lista")}>
-                            Archivar esta lista
-                        </ButtonOption>
-                    </li>
-                    <li>
-                        <ButtonOption onClick={() => console.log("Archivar todas las tarjetas de esta lista")}>
-                            Archivar todas las tarjetas de esta lista
+                        <ButtonOption onClick={delList}>
+                            Borrar esta lista
                         </ButtonOption>
                     </li>
                 </ul>

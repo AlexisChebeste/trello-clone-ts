@@ -85,7 +85,7 @@ export default function List({ list, cards}: ListProps) {
         )}
 
         {/* 🔹 OPCIONES */}
-        <ListOption setIsModalOpen={setIsModalOpen}/>
+        <ListOption setIsModalOpen={setIsModalOpen} listId={list.id}/>
       </div>
 
       {/* 🔹 TARJETAS */}

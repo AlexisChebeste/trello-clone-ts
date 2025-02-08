@@ -11,8 +11,12 @@ interface UserProfile{
     avatar: string;
 }
 
+interface IBoardHeaderProps {
+    board: IBoard;
+    setIsModalOpen: (value: boolean) => void;
+}
 
-export default function BoardHeader({ board }: { board: IBoard }) {
+export default function BoardHeader({ board, setIsModalOpen }: IBoardHeaderProps) {
     const [members, setMembers] = useState<UserProfile[]>()
     
     const fetchMembers = async () => {
@@ -47,7 +51,7 @@ export default function BoardHeader({ board }: { board: IBoard }) {
                     />
                 ))}   
                 <button
-                    onClick={() => {}}
+                    onClick={() => setIsModalOpen(true)}
                     className={`flex items-center justify-center gap-1 bg-gray-200 hover:bg-gray-100 py-2 px-3 rounded-sm text-slate-700 font-semibold text-sm w-max `}
                 >
                     <UserRoundPlus className="size-4"/>

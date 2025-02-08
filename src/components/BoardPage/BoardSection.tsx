@@ -12,6 +12,7 @@ import List from "./Lists/List"
 import { createPortal } from "react-dom"
 import Card from "./Cards/Card"
 import BoardHeader from "./BoardHeader"
+import InviteModal from "../modals/Invitate/InviteModal"
 
 export default function BoardSection({board}: {board: IBoard}) {
   const {idBoard} = useParams<{idBoard: string}>()
@@ -20,6 +21,7 @@ export default function BoardSection({board}: {board: IBoard}) {
   const {cards} = useSelector((state: RootState) => state.cards) 
   const [activeColumn, setActiveColumn] = useState<IList | null>(null)
   const [activeCard, setActiveCard] = useState<ICard | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!idBoard) return;
@@ -160,7 +162,7 @@ export default function BoardSection({board}: {board: IBoard}) {
   return(
     
       <div className={`flex-1 overflow-hidden flex flex-col h-auto  `}>
-        <BoardHeader board={board}/>
+        <BoardHeader board={board} setIsModalOpen={setIsModalOpen}/>
         <DndContext  sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver} >
           <div className="board flex-1 flex overflow-x-auto overflow-y-hidden ">
             
@@ -190,6 +192,9 @@ export default function BoardSection({board}: {board: IBoard}) {
           , document.body
           )}
         </DndContext>
+        {isModalOpen && (
+          <InviteModal onClose={() => setIsModalOpen(false)} type="board" id={idBoard} />
+        )}
       </div>
   )
 }

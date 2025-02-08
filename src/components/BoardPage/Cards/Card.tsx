@@ -10,12 +10,12 @@ import ModalCard from "./ModalCard";
 
 interface CardProps {
     card: ICard;
-    isOpened: boolean;
-    setIsOpened: (value: boolean) => void;
+    openedCardId: string;
+    setOpenedCardId: (id: string) => void;
   }
   
 
-export default function Card({ card, isOpened, setIsOpened }: CardProps) {
+export default function Card({ card, openedCardId, setOpenedCardId }: CardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [cardName, setCardName] = useState(card.title);
   const [isEditing, setIsEditing] = useState(false);
@@ -34,7 +34,7 @@ export default function Card({ card, isOpened, setIsOpened }: CardProps) {
       type: "card",
       index: card.position
     },
-    disabled: isOpened
+    disabled: openedCardId !== ""
   })
 
   const style = {
@@ -73,7 +73,7 @@ export default function Card({ card, isOpened, setIsOpened }: CardProps) {
       ) : (
         <div
           className="group flex justify-between items-center h-10 px-3  overflow-hidden cursor-pointer text-sm   w-full  hover:ring-2 hover:ring-blue-500  hover:rounded-xl text-slate-600"
-          onClick={() => setIsOpened(true)}
+          onClick={() => setOpenedCardId(card.id)}
         >
           {cardName}
           <button 
@@ -90,8 +90,8 @@ export default function Card({ card, isOpened, setIsOpened }: CardProps) {
       )}
 
 
-      {isOpened && (
-        <ModalCard card={card} setIsOpened={setIsOpened} handleBlur={handleBlur}  />
+      {openedCardId !== "" && (
+        <ModalCard card={card} setOpenedCardId={setOpenedCardId} handleBlur={handleBlur}  />
       )}
     </div>
   )

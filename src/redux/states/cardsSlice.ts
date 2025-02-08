@@ -20,6 +20,12 @@ interface MoveCardPayload {
   newListId: string;
 }
 
+interface ActivityCardData {
+  cardId: string;
+  action: string;
+  commentary: string;
+}
+
 const initialState: ICardState = {
     cards: [],
     selectedCard: null,
@@ -87,6 +93,30 @@ export const moveCard = createAsyncThunk<ICard, MoveCardPayload, { rejectValue: 
   }
 );
 
+export const updateDescriptionCard = createAsyncThunk<ICard, { cardId: string; description: string }, { rejectValue: string }>(
+  'cards/updateDescription',
+  async ({ cardId, description }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.put<ICard>(`/cards/${cardId}/description`, { description });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al actualizar la descripción de la tarjeta');
+    }
+  }
+)
+
+export const addActivityCard = createAsyncThunk<ICard, ActivityCardData, { rejectValue: string }>(
+  'cards/addComment',
+  async ({ cardId, action,commentary }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post<ICard>(`/cards/${cardId}/activity`, { action, commentary});
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al añadir un comentario a la tarjeta');
+    }
+  }
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState,
@@ -136,6 +166,18 @@ const cardsSlice = createSlice({
         const card = state.cards.find((c) => c.id === action.payload.id);
         if (card) {
           card.title = action.payload.title;
+        }
+      })
+      .addCase(updateDescriptionCard.fulfilled, (state, action) => {
+        const card = state.cards.find((c) => c.id === action.payload.id);
+        if (card) {
+          card.description = action.payload.description;
+        }
+      })
+      .addCase(addActivityCard.fulfilled, (state, action) => {
+        const card = state.cards.find((c) => c.id === action.payload.id);
+        if (card) {
+          card.activity = action.payload.activity;
         }
       })
   },

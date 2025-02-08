@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../redux/store";
-import { deleteCard } from "../../../redux/states/cardsSlice";
+import { addActivityCard, deleteCard, updateDescriptionCard } from "../../../redux/states/cardsSlice";
 
 interface UserProfile {
     id: string;
@@ -16,58 +16,70 @@ interface UserProfile {
 
 interface ModalCardProps {
   card: ICard;
-  setIsOpened: (value: boolean) => void;
+  setOpenedCardId: (id: string) => void;
   handleBlur: () => void;
 }
 
 
-export default function ModalCard({ card, setIsOpened , handleBlur}: ModalCardProps) {
+export default function ModalCard({ card, setOpenedCardId , handleBlur}: ModalCardProps) {
     const dispatch = useDispatch<AppDispatch>();
     const [cardName, setCardName] = useState(card.title);
     const [isEditing, setIsEditing] = useState(false);
     const [description, setDescription] = useState(card.description || "");
+    const [commentary, setCommentary] = useState("");
+    const [isEditingDesc, setIsEditingDesc] = useState(false);
+    const [isAddingActivity, setIsAddingActivity] = useState(false);
 
     const [activityUsers, setActivityUsers] = useState<Record<string, UserProfile>>({});
 
     useEffect(() => {
         const fetchUsers = async () => {
-        const userIds = Array.from(new Set(card.activity.map((a) => a.user))); // Obtener IDs únicos
-        const userPromises = userIds.map(async (userId) => {
-            const response = await axiosInstance.get<UserProfile>(`/user/${userId}`);
-            return { userId, userProfile: response.data };
-        });
+            if(!card) return;
 
-        const usersData = await Promise.all(userPromises);
-        const usersMap: Record<string, UserProfile> = {};
-        usersData.forEach(({ userId, userProfile }) => {
-            usersMap[userId] = userProfile;
-        });
+            setActivityUsers({}); // Limpiar usuarios anteriores
 
-        setActivityUsers(usersMap);
+            const userIds = Array.from(new Set(card.activity.map((a) => a.user))); // Obtener IDs únicos
+            const userPromises = userIds.map(async (userId) => {
+                const response = await axiosInstance.get<UserProfile>(`/user/${userId}`);
+                return { userId, userProfile: response.data };
+            });
+
+            const usersData = await Promise.all(userPromises);
+            const usersMap: Record<string, UserProfile> = {};
+            usersData.forEach(({ userId, userProfile }) => {
+                usersMap[userId] = userProfile;
+            });
+
+            setActivityUsers(usersMap);
         };
 
         fetchUsers();
-    }, [card.activity]);
+    }, [card]);
 
     addEventListener('click', (e) => {
         const bgModal = document.getElementById('bg-modal')
         const modalCard = document.getElementById('modal-card')
-        const titleEdit = document.getElementById('title-edit')
         if(bgModal && modalCard){
             if(e.target === bgModal){
-                setIsOpened(false)
-            }
-        }
-        if(titleEdit){
-            if(e.target !== titleEdit){
-                setIsEditing(false)
+                setOpenedCardId("");
             }
         }
     })
 
     const delCard = async () => {
         await dispatch(deleteCard(card.id));
-        setIsOpened(false);
+        setOpenedCardId("");
+    }
+
+    const handleEditDesc = async () => {
+        await dispatch(updateDescriptionCard({cardId: card.id, description: description}));
+        setIsEditingDesc(false);
+    }
+
+    const handleAddActivity = async () => {
+        await dispatch(addActivityCard({cardId: card.id, action: "comentó", commentary: commentary}));
+        setIsAddingActivity(false);
+        setCommentary("");
     }
 
     return (
@@ -76,7 +88,7 @@ export default function ModalCard({ card, setIsOpened , handleBlur}: ModalCardPr
                 {/* Botón de cierre */}
                 <button 
                 className="absolute top-4 right-4 text-slate-600 hover:text-gray-800"
-                onClick={() => setIsOpened(false)}
+                onClick={() => setOpenedCardId("")}
                 >
                 <X className="size-6" />
                 </button>
@@ -113,21 +125,67 @@ export default function ModalCard({ card, setIsOpened , handleBlur}: ModalCardPr
                 {/* Descripción */}
                 <div className="mb-4">
                 <h3 className="text-lg font-semibold mb-2">Descripción</h3>
-                <textarea
-                    className="w-full min-h-24  p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Añadir una descripción más detallada..."
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                <div className="flex flex-col  gap-2 transition-all duration-300 ease-in-out">
+                    <textarea
+                        className="w-full min-h-24  p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Añadir una descripción más detallada..."
+                        value={description}
+                        onClick={() => setIsEditingDesc(true)}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    {isEditingDesc && (
+                        <div className="flex justify-start gap-2 ">
+                            <button 
+                                className="py-2 px-3 bg-blue-500 rounded-md text-white font-semibold hover:bg-blue-600 transition-colors"
+                                onClick={handleEditDesc}
+                            >
+                                Guardar
+                            </button>
+                            <button 
+                                className="py-2 px-3 bg-white rounded-md border border-gray-500 font-semibold hover:bg-slate-100 transition-colors"
+                                onClick={() => setIsEditingDesc(false)}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+
+                    )}
+                    
+                </div>
+                
+
                 </div>
 
                 {/* Actividad */}
                 <div className="mb-4">
                     <h2 className="text-lg font-semibold text-gray-700 mb-3">Actividad</h2>
-                    <input
-                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
-                    placeholder="Escribe un comentario..."
-                />
+                    <div className="flex flex-col gap-2">
+                        <input
+                            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                            placeholder="Escribe un comentario..."
+                            value={commentary}
+                            onClick={() => setIsAddingActivity(true)}
+                            onChange={(e) => setCommentary(e.target.value)}
+                        />
+                        {isAddingActivity && (
+                            <div className="flex justify-start gap-2 ">
+                                <button 
+                                    className="py-2 px-3 bg-blue-500 rounded-md text-white font-semibold hover:bg-blue-600 transition-colors"
+                                    onClick={handleAddActivity}
+                                >
+                                    Guardar
+                                </button>
+                                <button 
+                                    className="py-2 px-3 bg-white rounded-md border border-gray-500 font-semibold hover:bg-slate-100 transition-colors"
+                                    onClick={() => setIsAddingActivity(false)}
+                                >
+                                    Cancelar
+                                </button>
+                            </div>
+
+                        )}
+                    </div>
+                    
                 </div>
                 <div className="flex flex-col gap-3 mt-4">
                     {card.activity.map((entry, index) => {
@@ -139,10 +197,15 @@ export default function ModalCard({ card, setIsOpened , handleBlur}: ModalCardPr
                                     alt="avatar"
                                     className="w-8 h-8 rounded-full object-cover"
                                 />
-                                <div>
+                                <div className="flex flex-col gap-1 w-full max-w-max">
                                     <p className="text-sm">
                                     <span className="font-semibold text-slate-800">{user ? `${user.name} ${user.lastname}` : "Cargando..."}</span> {entry.action}
                                     </p>
+                                    {entry.commentary && (
+                                        <p className="text-sm text-gray-600 bg-white border shadow-sm  rounded-xl py-2 px-3 w-full">
+                                            {entry.commentary}
+                                        </p>
+                                    )}
                                     <p className="text-xs text-gray-500">{new Date(entry.timestamp).toLocaleString()}</p>
                                 </div>
                             </div>

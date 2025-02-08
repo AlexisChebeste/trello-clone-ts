@@ -155,11 +155,13 @@ export default function BoardSection({board}: {board: IBoard}) {
 
   const listsIds = useMemo(() => lists.map((list) => list.id), [lists]);
 
+  
+
   return(
     
       <div className={`flex-1 overflow-hidden flex flex-col h-auto  `}>
         <BoardHeader board={board}/>
-        <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
+        <DndContext  sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragOver={handleDragOver} >
           <div className="board flex-1 flex overflow-x-auto overflow-y-hidden ">
             
             <div className="flex p-4 space-x-4  items-start ">

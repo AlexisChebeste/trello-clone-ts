@@ -20,6 +20,7 @@ export default function List({ list, cards}: ListProps) {
   const [isEditing, setIsEditing] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isOpened, setIsOpened] = useState(false);
 
   const {
     attributes,
@@ -34,7 +35,8 @@ export default function List({ list, cards}: ListProps) {
       data: {
         type: "list", 
         index: list.position
-      }
+      },
+      disabled: isOpened
     }
   )
 
@@ -93,7 +95,7 @@ export default function List({ list, cards}: ListProps) {
         >
           <SortableContext items={cardsIds} strategy={verticalListSortingStrategy}>
             {cards.map((card) => (
-              <Card key={card.id} card={card} />
+              <Card key={card.id} card={card} setIsOpened={setIsOpened} isOpened={isOpened} />
             ))}
           </SortableContext>
           <AddCard idList={list.id} listRef={listRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />

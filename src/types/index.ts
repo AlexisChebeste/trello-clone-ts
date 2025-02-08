@@ -55,9 +55,13 @@ export interface IUser {
     dueDate?: string;
     position: number;
     idList: string;
-    activity: [];
+    activity: IActivity[];
   }
   
-  
+export interface IActivity {
+  user: string;
+  action: string;
+  timestamp: Date;
+}
   
   

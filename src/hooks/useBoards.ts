@@ -6,7 +6,6 @@ import { fetchBoardsByWorkspace } from "../redux/states/boardsSlice";
 export function useBoards(idWorkspace?: string) {
   const dispatch = useDispatch<AppDispatch>();
   const { boards, loading } = useSelector((store: RootState) => store.boards);
-
   const [sortBy, setSortBy] = useState<string>("most-recent");
   const [searchQuery, setSearchQuery] = useState<string>("");
 

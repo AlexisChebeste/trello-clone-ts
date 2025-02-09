@@ -89,6 +89,18 @@ export const updateArchivedBoard = createAsyncThunk<IBoard, {id: string}, { reje
   }
 )
 
+export const addMemberToBoard = createAsyncThunk<IBoard, {idBoard: string}, { rejectValue: string }>(
+  '/boards/addMember',
+  async ({idBoard}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post<IBoard>(`/boards/${idBoard}/members`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al agregar miembro al board');
+    }
+  }
+)
+
 const boardsSlice = createSlice({
   name: 'boards',
   initialState,
@@ -172,6 +184,20 @@ const boardsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Error desconocido al cambiar estado del board';
       })
+      .addCase(addMemberToBoard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addMemberToBoard.fulfilled, (state, action: PayloadAction<IBoard>) => {
+        state.loading = false;
+        state.selectedBoard = action.payload;
+        state.boards = state.boards.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(addMemberToBoard.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al agregar miembro al board';
+      });
+
   }
 });
 

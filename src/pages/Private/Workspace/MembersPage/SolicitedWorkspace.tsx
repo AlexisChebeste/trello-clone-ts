@@ -2,20 +2,23 @@ import { useParams } from "react-router";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import { X } from "lucide-react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/store";
+import { AppDispatch, RootState } from "../../../../redux/store";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../../api/axiosInstance";
 import { UserProfile } from "../../../../types";
+import { useDispatch } from "react-redux";
+import { acceptInvitation, rejectInvitation } from "../../../../redux/states/workspacesSlices";
 
 
 
 export default function SolicitedWorkspace() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
+    const dispatch = useDispatch<AppDispatch>();
     const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [activityUsers, setActivityUsers] = useState<Record<string, UserProfile>>({});
     
-    if(!workspace){
+    if(!workspace || !idWorkspace){
         return <div>Workspace not found</div>
     }
 
@@ -42,9 +45,15 @@ export default function SolicitedWorkspace() {
         };
 
         fetchUsers();
-    }, [workspace.invitedGuests]);
+    }, [dispatch, workspace.invitedGuests]);
 
-    
+    const handleAccept = async (user: UserProfile) => {
+        await dispatch(acceptInvitation({id: idWorkspace,userId: user.id}));
+    }
+
+    const handleDecline = async (user: UserProfile) => {
+        await dispatch(rejectInvitation({id: idWorkspace, userId: user.id}));
+    }
 
     return (
         <div className="flex-1">
@@ -59,8 +68,9 @@ export default function SolicitedWorkspace() {
                         
                 {workspace.invitations?.length ?? 0 > 0 ? workspace.invitations.map((member,index) => {
                     const user = activityUsers[member.user];
+                    if(!user) return null;
                     return(
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4" key={index}>
+                        <div className="flex flex-col lg:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4" key={index}>
                         <div className="flex items-center gap-4 ">
                             <img src={user.avatar} alt={user.name} className="size-12 rounded-full"/>
                             <div className="flex flex-col flex-1">
@@ -72,10 +82,14 @@ export default function SolicitedWorkspace() {
                             <p className="text-sm text-slate-500 max-w-60">
                                 Solicitud enviada el {new Date(member.dateSolicited).toDateString()}
                             </p>
-                            <ButtonWorkspace className=" px-4">
+                            <ButtonWorkspace className=" px-4"
+                                onClick={() => handleAccept(user)}
+                            >
                                 Añadir al espacio de trabajo
                             </ButtonWorkspace>
-                            <ButtonWorkspace>
+                            <ButtonWorkspace
+                                onClick={() => handleDecline(user)}
+                            >
                                 <X className="size-4"/>
                             </ButtonWorkspace>
                         </div>

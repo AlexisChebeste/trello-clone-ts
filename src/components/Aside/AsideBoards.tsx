@@ -1,6 +1,6 @@
 import {useState, useRef, useEffect} from 'react';
 import { Plus} from 'lucide-react';
-import CardBoardAside from './CardBoardAside';
+import CardBoardAside from './BoardSection/CardBoardAside';
 import Sidebar from './Siderbar';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import { useDispatch } from 'react-redux';
@@ -8,7 +8,9 @@ import { AppDispatch, RootState} from '../../redux/store';
 import { fetchWorkspaceById } from '../../redux/states/workspacesSlices';
 import { useSelector } from 'react-redux';
 import { useBoards } from '../../hooks/useBoards';
-import AsideHeader from './AsideHeader';
+import AsideHeader from './HeaderSection/AsideHeader';
+import SoliciteInvitation from './SoliciteInvitation';
+import { fetchUserProfile } from '../../redux/states/authSlice';
 
 interface AsideBoardsProps {
   idWorkspace: string;
@@ -18,8 +20,11 @@ interface AsideBoardsProps {
 export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) {
    const dispatch = useDispatch<AppDispatch>()
    const {selectedWorkspace} = useSelector((store: RootState)=> store.workspaces)
+   const {user} = useSelector((store: RootState) => store.auth);
+
     useEffect(() => {
       dispatch(fetchWorkspaceById(idWorkspace));
+      dispatch(fetchUserProfile());
     }, [dispatch, idWorkspace]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,11 +46,14 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
 
     if (!selectedWorkspace) return null;
 
+    const userInWorkspace = selectedWorkspace.members.some((u) => u.id === user?.id);
+
     return(
       <Sidebar className={`backdrop-blur-md  ${className}`}>
         <AsideHeader 
           idWorkspace={idWorkspace} 
           selectedWorkspace={selectedWorkspace} 
+          userInWorkspace={userInWorkspace}
         />
 
         {/*Tableros*/}
@@ -82,7 +90,9 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
             )}
           </div>
         </div>
-          
+        {!userInWorkspace && (
+          <SoliciteInvitation usersInvitations={selectedWorkspace.invitations} />
+        )} 
           
             
       </Sidebar>   

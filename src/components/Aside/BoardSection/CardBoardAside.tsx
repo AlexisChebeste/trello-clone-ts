@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { ModalCloseBoard } from "./ModalCloseBoard";
-import { IBoard } from "../../types";
+import { IBoard } from "../../../types";
 
 interface CardBoardAsideProps {
     board: IBoard;

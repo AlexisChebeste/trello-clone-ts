@@ -18,6 +18,7 @@ export interface User {
     email: string;
     avatar?: string;
     workspaces: string[]
+    boards: string[]
     token?: string; // Solo para el login
     expiresIn?: number; // Solo para el login
 }
@@ -33,6 +34,6 @@ export const loginUser = async (credentials: LoginCredentials): Promise<User> =>
 }
 
 export const getUserProfile = async (): Promise<User> => {
-    const response = await axiosInstance.get("/me");
+    const response = await axiosInstance.get("/profile");
     return response.data;
 }

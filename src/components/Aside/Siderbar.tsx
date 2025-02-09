@@ -16,23 +16,23 @@ const Sidebar = ({ children, className }:SidebarProps) => {
   return (
     <div
       className={`flex ${
-        isCollapsed ? "w-7" : `w-64 max-w-72 `
-      }   transition-all duration-500 ${className} h-full border-r border-slate-300/30 z-10`}
+      isCollapsed ? "w-7" : "w-64 max-w-72"
+      } transition-all duration-500 ${className} h-full max-h-[calc(100vh - 3rem)]  border-r border-slate-300/30 z-10`}
     >
       {/* Contenido del Sidebar */}
       {!isCollapsed && (
-        <div className="flex-1 h-full w-max">
-          {children}
-        </div>
+      <div className="flex flex-col flex-1 h-full w-max">
+        {children}
+      </div>
       )}
 
       {/* Botón para contraer/expandir */}
       <button
-        onClick={toggleSidebar}
-        aria-label="Toggle Sidebar"
-        className="absolute top-4 right-[-16px] bg-blue-600 text-white p-1  rounded-full shadow-lg hover:bg-blue-800 transition-all duration-500 z-10 border border-slate-400" 
+      onClick={toggleSidebar}
+      aria-label="Toggle Sidebar"
+      className="absolute top-4 right-[-16px] bg-blue-600 text-white p-1 rounded-full shadow-lg hover:bg-blue-800 transition-all duration-500 z-10 border border-slate-400"
       >
-        {isCollapsed ? <ChevronRight /> : <ChevronLeft  />}
+      {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
       </button>
     </div>
   );

@@ -63,6 +63,7 @@ export default function InvitedWorkspace() {
                         
                         {workspace.invitedGuests?.length ?? 0 > 0 ? workspace.invitedGuests.map((member,index) => {
                             const user = activityUsers[member.user];
+                            if(!user) return null;
                             return(
                                 <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4" key={index}>
                                 <div className="flex items-center gap-4 ">
@@ -74,7 +75,7 @@ export default function InvitedWorkspace() {
                                 </div>
                                 <div className="flex flex-col sm:flex-row gap-2 items-center">
                                     <ButtonWorkspace className=" px-4">
-                                        Tableros {member.boards.length}
+                                        Tableros ({member.boards.length})
                                     </ButtonWorkspace>
                                     <ButtonWorkspace className=" px-4">
                                         Añadir al espacio de trabajo

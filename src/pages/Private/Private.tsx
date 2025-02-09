@@ -1,6 +1,6 @@
 import {Route } from "react-router";
 import RoutesWithNotFound from "../../utilities/RoutesWithNotFound";
-import { lazy, useEffect } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useDispatch} from "react-redux";
 import { logout } from "../../redux/states/authSlice";
 import { AppDispatch} from "../../redux/store";
@@ -18,7 +18,7 @@ const LayoutAside = lazy(() => import("../../components/LayoutAside"));
 const WorkspaceRedirect = lazy(() => import("../Private/Workspace/WorkspaceRedirect"));
 
 function Private(){
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
         const checkTokenExpiration = () => {
@@ -46,8 +46,8 @@ function Private(){
                 <Route path=":idWorkspace" element={<LayoutAside />} >
                     <Route index element={<WorkspacePage />}/>
 
-                    <Route path="members" element={<MembersPage />}>
-                        <Route index element={<MembersWorkspace />}/>
+                    <Route path="members" element={<MembersPage isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />}>
+                        <Route index element={<MembersWorkspace setIsModalOpen={setIsModalOpen} />}/>
                         <Route path="guests" element={<InvitedWorkspace />}/>
                         <Route path="request" element={< SolicitedWorkspace/>}/>
                     </Route>

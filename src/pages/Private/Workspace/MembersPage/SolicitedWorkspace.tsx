@@ -28,7 +28,7 @@ export default function SolicitedWorkspace() {
                 {workspace.members?.length ?? 0 > 0 ? workspace.members?.map((member,index) => (
                     <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4" key={index}>
                         <div className="flex items-center gap-4 ">
-                            <div  className="size-10 rounded-full bg-sky-400" />
+                            <img src={member.avatar} alt={member.name} className="size-12 rounded-full"/>
                             <div className="flex flex-col flex-1">
                                 <span className=" text-slate-800 font-semibold">{member.name}</span>
                                 <span className="text-sm text-slate-500">{member.email} • Invitado del espacio de trabajo</span>

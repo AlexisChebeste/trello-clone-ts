@@ -46,7 +46,7 @@ export default function InviteModal({  onClose, type, id }: InviteModalProps) {
           </button>
         </div>
 
-        <p className="text-sm text-gray-600 mt-2">Introduce el correo electrónico para enviar una invitación.</p>
+        <p className="text-sm text-gray-600 mt-2">Genera un enlace para invitar a un miembro al {type === "board" ? "tablero" : "Espacio de trabajo"}.</p>
 
 
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

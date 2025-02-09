@@ -33,7 +33,7 @@ export default function Login(){
                 <div className="mt-12   w-full ">
                     <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="mb-6">
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre</label>
                             <input 
                                 type="name" 
                                 id="name" 
@@ -46,12 +46,12 @@ export default function Login(){
                             />
                         </div>
                         <div className="mb-6">
-                            <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                            <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">Apellido</label>
                             <input 
                                 type="lastname" 
                                 id="lastname" 
                                 name="lastname"
-                                placeholder="tu@gmail.com"
+                                placeholder="Tu apellido"
                                 value={lastname}
                                 onChange={(e) => setLastname(e.target.value)} 
                                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 " 

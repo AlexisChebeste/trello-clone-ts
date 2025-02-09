@@ -34,7 +34,7 @@ export default function MembersWorkspace({setIsModalOpen}: {setIsModalOpen: (val
                     
                 </div>
             </div>
-            <Members members={workspace.members || []} />
+            <Members members={workspace.members} plan={workspace.plan} />
             
         </div>
     )

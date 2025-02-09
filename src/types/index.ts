@@ -17,9 +17,20 @@ export interface IUser {
     isPublic: boolean;
     members: IUser[];
     boards: IBoard[];
-    invitations: string[];
-    invitedGuests: string[];
-    plan: 'free' | 'standard' | 'premium' | 'enterprise';
+    invitations: Invitations[];
+    invitedGuests: InvitedGuests[];
+    plan: 'Gratuito' | 'Standard' | 'Premium' | 'Enterprise';
+  }
+
+  export interface Invitations {
+    user: string;
+    status: 'pending' | 'accepted' | 'rejected';
+    dateSolicited: Date;
+  }
+
+  export interface InvitedGuests{
+    user: string;
+    boards: IBoard[];
   }
 
   export interface IBoard {
@@ -66,3 +77,10 @@ export interface IActivity {
 }
   
   
+export interface UserProfile{
+  id: string;
+  name: string;
+  lastname: string;
+  email: string;
+  avatar: string;
+}

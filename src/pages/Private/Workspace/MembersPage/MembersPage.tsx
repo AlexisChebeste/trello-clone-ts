@@ -37,7 +37,11 @@ export default function MembersPage({setIsModalOpen, isModalOpen}: MembersPagePr
             </WorkspaceInfo>
 
             <div className="flex flex-col xl:flex-row  gap-4 ">
-                <SidebarLinks membersLength={workspace.members?.length}/>
+                <SidebarLinks 
+                    membersLength={workspace.members?.length}
+                    invitedGuestsLength={workspace.invitedGuests?.length}
+                    invitationsLength={workspace.invitations?.length}
+                />
 
                 <Outlet />
             </div>

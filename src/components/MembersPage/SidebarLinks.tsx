@@ -3,9 +3,11 @@ import { useParams } from "react-router";
 
 interface SidebarLinksProps {
     membersLength: number;
+    invitedGuestsLength: number;
+    invitationsLength: number;
 }
 
-export default function SidebarLinks({membersLength} : SidebarLinksProps) {
+export default function SidebarLinks({membersLength, invitationsLength, invitedGuestsLength} : SidebarLinksProps) {
 
     const {idWorkspace} = useParams<{idWorkspace: string}>();
 
@@ -31,7 +33,7 @@ export default function SidebarLinks({membersLength} : SidebarLinksProps) {
                         to={`/w/${idWorkspace}/members/guests`} className={`text-sm  px-4 py-2 rounded-md flex items-center font-semibold w-56 sm:w-full gap-2   transition-colors duration-200
                             ${isActive(`/w/${idWorkspace}/members/guests`) ? 'bg-blue-100 text-blue-600  ' : 'text-gray-800 hover:bg-slate-200'}
                         `}>
-                        Invitados ({membersLength}) 
+                        Invitados ({invitedGuestsLength}) 
                     </ Link>
                 </div>
                 
@@ -41,7 +43,7 @@ export default function SidebarLinks({membersLength} : SidebarLinksProps) {
                         className={`text-sm px-4 py-2 rounded-md flex items-center font-semibold w-56 sm:w-full gap-2  transition-colors duration-200
                             ${isActive(`/w/${idWorkspace}/members/request`) ? 'bg-blue-100 text-blue-600  ' : 'text-gray-800 hover:bg-slate-200'}
                         `}>
-                        Solicitudes de unión ({membersLength}) 
+                        Solicitudes de unión ({invitationsLength}) 
                     </ Link>
                 </div>
                 

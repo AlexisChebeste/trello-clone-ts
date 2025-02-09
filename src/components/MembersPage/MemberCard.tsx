@@ -4,9 +4,10 @@ import ButtonWorkspace from "../ButtonWorkspace";
 
 interface MemberCardProps{
     member: IUser
+    plan: string
 }
 
-export default function MemberCard({member}:MemberCardProps){
+export default function MemberCard({member,plan}:MemberCardProps){
 
 
     return(
@@ -22,7 +23,7 @@ export default function MemberCard({member}:MemberCardProps){
                 <ButtonWorkspace>
                     Ver tableros ({member.boards?.length || 0})
                 </ButtonWorkspace>
-                <ButtonWorkspace>
+                <ButtonWorkspace className={`${plan === "Gratuito" && "opacity-40"}`} disabledButton={plan === "Gratuito"}>
                     Administrador <CircleHelp className="size-4"/>
                 </ButtonWorkspace>
                 <ButtonWorkspace>

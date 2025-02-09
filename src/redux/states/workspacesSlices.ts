@@ -99,10 +99,10 @@ export const solicitInvitation = createAsyncThunk<IWorkspace, string, { rejectVa
 );
 
 export const acceptInvitation = createAsyncThunk<IWorkspace, { id: string, userId: string }, { rejectValue: string }>(
-  '/workspaces/:workspaceId/invitations/:userId/accept',
+  '/workspaces/acceptInvitation',
   async ({ id, userId }, { rejectWithValue }) => {
     try {
-      const response =  await axiosInstance.post<IWorkspace>(`/api/workspaces/${id}/invitations/accept`, {userId});
+      const response =  await axiosInstance.post<IWorkspace>(`/workspaces/invitations/${id}/accept`, {userId});
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al aceptar invitación');
@@ -111,10 +111,10 @@ export const acceptInvitation = createAsyncThunk<IWorkspace, { id: string, userI
 )
 
 export const rejectInvitation = createAsyncThunk<IWorkspace, { id: string, userId: string }, { rejectValue: string }>(
-  '/workspaces/acceptInvitation',
+  '/workspaces/rejectInvitation',
   async ({ id, userId }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post<IWorkspace>(`/api/workspaces/${id}/invitations/reject`, {userId});
+      const response = await axiosInstance.post<IWorkspace>(`/workspaces/invitations/${id}/reject`, {userId});
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Error al aceptar invitación');

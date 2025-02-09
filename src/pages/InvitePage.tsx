@@ -23,6 +23,7 @@ const InvitePage = () => {
         setTimeout(() => navigate(`${PrivateRoutes.PRIVATE}`), 2000); // Redirigir después de 2 segundos, por ejemplo
       } catch (err) {
         setError("No se pudo procesar la invitación o la invitación ha expirado.");
+        setTimeout(() => navigate(`${PrivateRoutes.PRIVATE}`), 2000); // Redirigir después de 2 segundos, por ejemplo
       } finally {
         setLoading(false);
       }

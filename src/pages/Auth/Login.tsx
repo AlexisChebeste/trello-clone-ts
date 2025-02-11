@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { PrivateRoutes } from "../../models/routes";
 import { AppDispatch, RootState } from "../../redux/store";
-import { login } from "../../redux/states/authSlice";
+import { fetchUserProfile, login } from "../../redux/states/authSlice";
 
 export default function Login(){
     const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +15,7 @@ export default function Login(){
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await dispatch(login({email, password}));
+        await dispatch(fetchUserProfile());
         navigate(`${PrivateRoutes.PRIVATE}`);
         
     }

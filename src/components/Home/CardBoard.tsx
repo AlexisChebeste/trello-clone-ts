@@ -1,11 +1,13 @@
 import { Link } from "react-router";
-import { IBoard} from "../../types";
+import { IBoard } from "../../types";
+
 
 interface CardBoardProps {
   board: IBoard;
 }
 
 export default function CardBoard({ board}: CardBoardProps) {
+
   return (
     <div  className={`w-full text-white rounded h-24  transition-all ease-in-out duration-300 flex  relative `}>
       <img src={`/public${board.color}`} alt="background board color" className="w-full h-full object-cover rounded absolute"/>

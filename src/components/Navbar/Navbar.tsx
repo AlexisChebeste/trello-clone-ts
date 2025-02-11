@@ -3,6 +3,7 @@ import Logout from "./Logout";
 import MenuWorkspaces from "./MenuWorkspaces";
 import AddWorkspace from "./AddWorkspace";
 import { PrivateRoutes } from "../../models/routes";
+import TrelloIcon from "./TrelloIcon";
 
 export default function Navbar() {
     const location = useLocation();
@@ -19,8 +20,9 @@ export default function Navbar() {
                             to={`${PrivateRoutes.PRIVATE}`} 
                             className= {`flex-shrink-0 flex gap-1 items-center `}
                         >
+                            <TrelloIcon className="size-6"/>
                             <span className='text-xl font-bold '>
-                                TrelloClone
+                                Trello
                             </span>
                         </NavLink>
                         

@@ -13,6 +13,7 @@ const Register = lazy(() => import("./pages/Auth/Register"));
 const Private = lazy(() => import("./pages/Private/Private"));
 const BoardPage = lazy(() => import("./pages/Private/Board/BoardPage"));
 const InvitePage = lazy(() => import("./pages/InvitePage"));
+const UserBoards = lazy(() => import("./pages/User/UserBoards"));
 
 export default function App() {
 
@@ -42,6 +43,7 @@ export default function App() {
 
               <Route element={<AuthGuard privateValidation={true}/>}>
                 <Route path={`${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
+                <Route path="/u/:username/boards" element={<UserBoards />} />
                 <Route path="/b/:idBoard/:nameBoard" element={<BoardPage />} />
                 <Route path="/invite/:token" element={<InvitePage />} />
               </Route>

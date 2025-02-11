@@ -43,7 +43,7 @@ export default function UserBoards() {
                     ): (
                         <div className="flex flex-col gap-10">
                             {workspaces.map(workspace => (
-                                <WorkspaceContent key={workspace.id} workspace={workspace} />
+                                <WorkspaceContent key={workspace.id} workspace={workspace} showAddBoard={true} />
                             ))}
                         </div>
                     )}
@@ -53,7 +53,7 @@ export default function UserBoards() {
                             </h2>
                             <div className="flex flex-col gap-10">
                                 {workspaceBoards.map(workspace => (
-                                    <WorkspaceContent key={workspace.id} workspace={workspace} />
+                                    <WorkspaceContent key={workspace.id} workspace={workspace} showAddBoard={false} />
                                 ))}
                             </div>
                         </>

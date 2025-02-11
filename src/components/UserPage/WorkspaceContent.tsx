@@ -6,7 +6,7 @@ import ArchivedBoards from "../WorkspacePage/ArchivedBoards";
 
 
 
-export default function WorkspaceContent({workspace}: {workspace: IWorkspace}) {
+export default function WorkspaceContent({workspace, showAddBoard}: {workspace: IWorkspace, showAddBoard: boolean}) {
     const boardsArchived = workspace.boards.filter(board => board.isArchived);
 
     return(
@@ -19,7 +19,10 @@ export default function WorkspaceContent({workspace}: {workspace: IWorkspace}) {
                 {workspace.boards.map((board) => (
                     <CardBoard key={board.id} board={board} />
                 ))}
-                <Addbutton remaining={workspace.boards.length} workspaceId={workspace.id}/>
+                {showAddBoard &&(
+                    <Addbutton remaining={workspace.boards.length} workspaceId={workspace.id}/>
+                )}
+                
                 
             </div>
             <ArchivedBoards boardsArchived={boardsArchived} nameWorkspace={workspace.name}/>

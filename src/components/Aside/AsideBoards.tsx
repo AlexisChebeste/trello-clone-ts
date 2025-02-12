@@ -5,7 +5,7 @@ import Sidebar from './Siderbar';
 import ModalBoard from '../modals/AddBoard/ModalBoard';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState} from '../../redux/store';
-import { fetchWorkspaceById } from '../../redux/states/workspacesSlices';
+import { fetchWorkspaceById, solicitInvitation } from '../../redux/states/workspacesSlices';
 import { useSelector } from 'react-redux';
 import { useBoards } from '../../hooks/useBoards';
 import AsideHeader from './HeaderSection/AsideHeader';
@@ -21,9 +21,12 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
    const dispatch = useDispatch<AppDispatch>()
    const {selectedWorkspace} = useSelector((store: RootState)=> store.workspaces)
    const {user} = useSelector((store: RootState) => store.auth);
+    const {selectedBoard} = useSelector((store: RootState) => store.boards);
 
     useEffect(() => {
-      dispatch(fetchWorkspaceById(idWorkspace));
+      if (!selectedWorkspace || selectedWorkspace.id !== idWorkspace) {
+        dispatch(fetchWorkspaceById(idWorkspace));
+      }
       dispatch(fetchUserProfile());
     }, [dispatch, idWorkspace]);
 
@@ -47,6 +50,13 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
     if (!selectedWorkspace) return null;
 
     const userInWorkspace = selectedWorkspace.members.some((u) => u.id === user?.id);
+
+    const handdleRequestInvitation = async () => {
+      if (selectedBoard?.idWorkspace) {
+        await dispatch(solicitInvitation(selectedBoard.idWorkspace));
+        dispatch(fetchWorkspaceById(selectedBoard.idWorkspace)); // Actualiza después de solicitar
+      }
+    };
 
     return(
       <Sidebar className={`backdrop-blur-md  ${className}`}>
@@ -91,7 +101,7 @@ export default function AsideBoards({idWorkspace, className}: AsideBoardsProps) 
           </div>
         </div>
         {!userInWorkspace && (
-          <SoliciteInvitation usersInvitations={selectedWorkspace.invitations} />
+          <SoliciteInvitation usersInvitations={selectedWorkspace.invitations} handleInvitation={handdleRequestInvitation} />
         )} 
           
             

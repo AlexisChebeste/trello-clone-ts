@@ -1,22 +1,22 @@
 import { Link } from "lucide-react";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
-import Members from "../../../../components/MembersPage/Members";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../redux/store";
-
+import MemberCard from "../../../../components/MembersPage/MemberCard";
 
 export default function MembersWorkspace({setIsModalOpen}: {setIsModalOpen: (value: boolean) => void}) {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
     const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
+
     if(!idWorkspace || !workspace) {
         return <div>Workspace not found</div>
     }
 
     return (
         <div className="flex-1">
-            <h3 className="text-slate-700 font-semibold text-xl">Miembros del espacio de trabajo ({workspace.boards?.length})</h3>
+            <h3 className="text-slate-700 font-semibold text-xl">Miembros del espacio de trabajo ({workspace.members?.length})</h3>
             <p className="text-slate-600 text-sm mt-2 mb-4">
                 Los miembros del Espacio de trabajo pueden ver todos los tableros visibles para el Espacio de trabajo, unirse a ellos y crear nuevos tableros en el Espacio de trabajo.
 
@@ -34,8 +34,19 @@ export default function MembersWorkspace({setIsModalOpen}: {setIsModalOpen: (val
                     
                 </div>
             </div>
-            <Members members={workspace.members} plan={workspace.plan} />
+            <div className="flex flex-col ">
+            
+                {workspace.members?.map((member, index) => (
+                    <MemberCard key={index} member={member} plan={workspace.plan}/>
+                ))}
+                {workspace.members?.length === 0 && 
+                    <div className="text-slate-600 text-sm p-8 border-y border-y-gray-300 text-center italic">
+                        No hay miembros en este espacio de trabajo
+                    </div>
+                }
+            </div>
             
         </div>
     )
 }
+

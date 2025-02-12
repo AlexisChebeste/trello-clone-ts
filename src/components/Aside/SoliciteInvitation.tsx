@@ -1,12 +1,14 @@
 import { Invitations } from "../../types";
-import {  AppDispatch, RootState } from "../../redux/store";
+import {  RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { solicitInvitation } from "../../redux/states/workspacesSlices";
+
+interface SoliciteInvitationProps {
+    usersInvitations: Invitations[]
+    handleInvitation: () => void
+}
 
 
-export default function SoliciteInvitation({usersInvitations}:{usersInvitations: Invitations[]}) {
-    const dispatch = useDispatch<AppDispatch>()
+export default function SoliciteInvitation({usersInvitations, handleInvitation}: SoliciteInvitationProps) {
     const {user} = useSelector((store : RootState) => store.auth)
     const {selectedBoard} = useSelector((store : RootState) => store.boards)
 
@@ -14,9 +16,7 @@ export default function SoliciteInvitation({usersInvitations}:{usersInvitations:
 
     if(selectedBoard?.idWorkspace === undefined) return null
 
-    const handdleRequestInvitation = async() => {
-        await dispatch(solicitInvitation(selectedBoard?.idWorkspace))
-    }
+    
 
 
     return(
@@ -32,7 +32,7 @@ export default function SoliciteInvitation({usersInvitations}:{usersInvitations:
                         Para ver más tableros y miembros de este Espacio de trabajo, es necesario que un administrador lo añada como miembro del Espacio de trabajo.
                     </p>
                     <button 
-                        onClick={handdleRequestInvitation} 
+                        onClick={handleInvitation} 
                         aria-label='Solicitar invitación'
                         aria-labelledby='Solicitar invitación'
                         className="w-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-sm py-2 mt-2"

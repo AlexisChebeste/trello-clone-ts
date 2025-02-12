@@ -7,7 +7,7 @@ import TrelloIcon from "./TrelloIcon";
 
 export default function Navbar() {
     const location = useLocation();
-    const isBoardPage = location.pathname.includes("b/");
+    const isBoardPage = location.pathname.includes("/b/");
 
     return(
         <header 

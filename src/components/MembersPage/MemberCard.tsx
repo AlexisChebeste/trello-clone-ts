@@ -1,6 +1,10 @@
 import { CircleHelp, X } from "lucide-react";
 import { IUser } from "../../types";
 import ButtonWorkspace from "../ButtonWorkspace";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
+import { removeMember } from "../../redux/states/workspacesSlices";
+import { useParams } from "react-router";
 
 interface MemberCardProps{
     member: IUser
@@ -8,7 +12,15 @@ interface MemberCardProps{
 }
 
 export default function MemberCard({member,plan}:MemberCardProps){
+    const dispatch = useDispatch<AppDispatch>();
+    const {idWorkspace} = useParams<{idWorkspace: string}>();
+    const {user} = useSelector((store: RootState) => store.auth);
 
+    if(!idWorkspace) return null;
+
+    const handleRemoveMember = async() => {
+        await dispatch(removeMember({id:idWorkspace, userId: member.id}));
+    }
 
     return(
         <div className="flex flex-col md:flex-row justify-between items-center gap-5 border-b border-b-slate-300 py-4">
@@ -26,8 +38,11 @@ export default function MemberCard({member,plan}:MemberCardProps){
                 <ButtonWorkspace className={`${plan === "Gratuito" && "opacity-40"}`} disabledButton={plan === "Gratuito"}>
                     Administrador <CircleHelp className="size-4"/>
                 </ButtonWorkspace>
-                <ButtonWorkspace>
-                    <X className="size-4"/> Dejar... 
+                <ButtonWorkspace 
+                    onClick={handleRemoveMember}
+                >
+                    <X className="size-4"/> 
+                    {member.id === user?.id ? "Dejar... " : "Quitar..." }
                 </ButtonWorkspace>
             </div>
             

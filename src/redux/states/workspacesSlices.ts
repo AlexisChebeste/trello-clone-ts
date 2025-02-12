@@ -122,6 +122,41 @@ export const rejectInvitation = createAsyncThunk<IWorkspace, { id: string, userI
   }
 )
 
+export const removeMember = createAsyncThunk<IWorkspace, { id: string, userId: string }, { rejectValue: string }>(
+  '/workspaces/removeMember',
+  async ({ id, userId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete<IWorkspace>(`/workspaces/${id}/members/${userId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar miembro');
+    }
+  }
+);
+
+export const addMember = createAsyncThunk<IWorkspace, { id: string, userId: string }, { rejectValue: string }>(
+  '/workspaces/addMember',
+  async ({ id, userId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post<IWorkspace>(`/workspaces/${id}/members`, { userId });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al agregar miembro');
+    }
+  }
+);
+
+export const removeInvitedGuest = createAsyncThunk<IWorkspace, { id: string, userId: string }, { rejectValue: string }>(
+  '/workspaces/removeInvitedGuest',
+  async ({ id, userId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete<IWorkspace>(`/workspaces/${id}/invited-guests/${userId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar invitado');
+    }
+  }
+);
 
 const workspaceSlice = createSlice({
   name: 'workspaces',
@@ -241,6 +276,42 @@ const workspaceSlice = createSlice({
       .addCase(rejectInvitation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error desconocido al rechazar invitación';
+      })
+      .addCase(removeMember.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeMember.fulfilled, (state, action: PayloadAction<IWorkspace>) => {
+        state.loading = false;
+        state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(removeMember.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al eliminar miembro';
+      })
+      .addCase(addMember.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addMember.fulfilled, (state, action: PayloadAction<IWorkspace>) => {
+        state.loading = false;
+        state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(addMember.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al agregar miembro';
+      })
+      .addCase(removeInvitedGuest.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeInvitedGuest.fulfilled, (state, action: PayloadAction<IWorkspace>) => {
+        state.loading = false;
+        state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(removeInvitedGuest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al eliminar invitado';
       })
   }
 });

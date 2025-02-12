@@ -1,23 +1,24 @@
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../redux/store";
 import { useEffect, useState } from "react";
 import { UserProfile } from "../../../../types";
 import axiosInstance from "../../../../api/axiosInstance";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import { X } from "lucide-react";
+import { addMember, removeInvitedGuest } from "../../../../redux/states/workspacesSlices";
 
 
 export default function InvitedWorkspace() {
     const {idWorkspace} = useParams<{idWorkspace: string}>();
+    const dispatch = useDispatch<AppDispatch>();
     const {workspaces} = useSelector((store: RootState) => store.workspaces);
     const workspace = workspaces.find((workspace) => workspace.id === idWorkspace);
     const [activityUsers, setActivityUsers] = useState<Record<string, UserProfile>>({});
     
-    if(!workspace){
+    if(!workspace || !idWorkspace){
         return <div>Workspace not found</div>
     }
-
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -42,6 +43,14 @@ export default function InvitedWorkspace() {
 
         fetchUsers();
     }, [workspace.invitedGuests]);
+
+    const handleAddMember = async (userId: string) => {
+        await dispatch(addMember({ id: idWorkspace, userId }));
+    }
+
+    const handleRemoveInvited = async (userId: string) => {
+        await dispatch(removeInvitedGuest({ id: idWorkspace, userId }));
+    }
 
     return (
         <div className="flex-1">
@@ -77,10 +86,16 @@ export default function InvitedWorkspace() {
                                     <ButtonWorkspace className=" px-4">
                                         Tableros ({member.boards.length})
                                     </ButtonWorkspace>
-                                    <ButtonWorkspace className=" px-4">
+                                    <ButtonWorkspace 
+                                        className=" px-4"
+                                        onClick={() => handleAddMember(member.user)}
+                                    >
                                         Añadir al espacio de trabajo
                                     </ButtonWorkspace>
-                                    <ButtonWorkspace className="gap-2">
+                                    <ButtonWorkspace 
+                                        className="gap-2"
+                                        onClick={() => handleRemoveInvited(member.user)}
+                                    >
                                         <X className="size-4"/>
                                         Quitar...
                                     </ButtonWorkspace>

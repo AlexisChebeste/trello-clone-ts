@@ -45,7 +45,7 @@ export default function SolicitedWorkspace() {
         };
 
         fetchUsers();
-    }, [ workspace.invitedGuests]);
+    }, []);
 
     const handleAccept = async (user: UserProfile) => {
         await dispatch(acceptInvitation({id: idWorkspace, userId: user.id}));

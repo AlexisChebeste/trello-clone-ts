@@ -13,7 +13,7 @@ export default function Layout({children, className, bgImage}: LayoutProps) {
         <div 
             className={`flex flex-col h-screen ${className}`} 
             style={
-                {backgroundImage: `url(/public/${bgImage})`}
+                {backgroundImage: `url(${bgImage})`}
             }
         >
             <Navbar />

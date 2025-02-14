@@ -18,7 +18,7 @@ export default function AsideHeader({idWorkspace, selectedWorkspace,userInWorksp
         <div>
             <div className='flex  gap-2 border-b border-slate-300/30 py-3 px-4 items-center w-full '>
                 <div className={`flex  justify-center items-center h-10 w-12  rounded-md  text-white font-bold text-xl relative`}>
-                    <img src={`/public${selectedWorkspace.logo}`} alt={`${selectedWorkspace.name} logo`}  className='size-full rounded-md'/>
+                    <img src={selectedWorkspace.logo} alt={`${selectedWorkspace.name} logo`}  className='size-full rounded-md'/>
                     <span className='absolute inset-0 flex items-center justify-center'>{selectedWorkspace.name[0].toUpperCase()}</span>
                 </div>
                 <div className="flex flex-col   w-full ">

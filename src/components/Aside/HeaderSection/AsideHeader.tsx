@@ -1,6 +1,7 @@
-import { Trello, UserRound } from "lucide-react";
+import { UserRound } from "lucide-react";
 import WorkspaceLink from "./WorkspaceLink";
 import { ModalAccount } from "./ModalAccount";
+import TrelloIcon from "../../Navbar/TrelloIcon";
 
 interface AsideHeaderProps {
     idWorkspace: string;
@@ -30,7 +31,7 @@ export default function AsideHeader({idWorkspace, selectedWorkspace,userInWorksp
                 <div className='flex flex-col   pt-3'>
                     <div className='flex w-full'>
                         <WorkspaceLink idWorkspace={idWorkspace} title='Tableros'>
-                        <Trello className="size-4"/>
+                        <TrelloIcon className="size-4"/>
                         </WorkspaceLink>
                     </div>
                     <div className='flex w-full'>

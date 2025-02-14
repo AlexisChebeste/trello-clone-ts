@@ -44,7 +44,7 @@ export default function MenuWorkspaces() {
                                 key={workspace.id}
                             >
                                 <div className={`w-10 h-10 rounded-md flex items-center justify-center text-white relative text-lg`} >
-                                    <img src={`/public${workspace.logo}`} alt={workspace.name} className="size-full rounded-md"/>
+                                    <img src={workspace.logo} alt={workspace.name} className="size-full rounded-md"/>
                                     <span className="absolute inset-0 flex items-center justify-center font-bold">{workspace.name[0].toUpperCase()}</span>
                                 </div>
                                 {workspace.name}

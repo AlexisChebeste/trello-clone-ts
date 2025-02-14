@@ -16,7 +16,7 @@ export default function MembersWorkspace({setIsModalOpen}: {setIsModalOpen: (val
 
     return (
         <div className="flex-1">
-            <h3 className="text-slate-700 font-semibold text-xl">Miembros del espacio de trabajo ({workspace.members?.length})</h3>
+            <h3 className="text-slate-700 font-semibold text-xl">Miembros del espacio de trabajo ({workspace.members.length})</h3>
             <p className="text-slate-600 text-sm mt-2 mb-4">
                 Los miembros del Espacio de trabajo pueden ver todos los tableros visibles para el Espacio de trabajo, unirse a ellos y crear nuevos tableros en el Espacio de trabajo.
 
@@ -36,10 +36,10 @@ export default function MembersWorkspace({setIsModalOpen}: {setIsModalOpen: (val
             </div>
             <div className="flex flex-col ">
             
-                {workspace.members?.map((member, index) => (
+                {workspace.members.map((member, index) => (
                     <MemberCard key={index} member={member} plan={workspace.plan}/>
                 ))}
-                {workspace.members?.length === 0 && 
+                {workspace.members.length === 0 && 
                     <div className="text-slate-600 text-sm p-8 border-y border-y-gray-300 text-center italic">
                         No hay miembros en este espacio de trabajo
                     </div>

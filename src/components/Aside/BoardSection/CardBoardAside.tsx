@@ -18,7 +18,7 @@ export default function CardBoardAside({board }: CardBoardAsideProps) {
                 aria-labelledby="Tablero"
             >
                 <img 
-                    src={`/public${board.color}`}
+                    src={board.color}
                     alt={`${board.name} logo`}
                     className='w-7 h-5 rounded-sm object-cover' 
                 />

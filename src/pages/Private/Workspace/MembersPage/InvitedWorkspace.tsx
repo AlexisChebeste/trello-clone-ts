@@ -6,7 +6,8 @@ import { UserProfile } from "../../../../types";
 import axiosInstance from "../../../../api/axiosInstance";
 import ButtonWorkspace from "../../../../components/ButtonWorkspace";
 import { X } from "lucide-react";
-import { addMember, removeInvitedGuest } from "../../../../redux/states/workspacesSlices";
+import { addMember, removeBoardInvitedGuest, removeInvitedGuest } from "../../../../redux/states/workspacesSlices";
+import ButtonViewBoards from "../../../../components/MembersPage/ButtonViewBoards";
 
 
 export default function InvitedWorkspace() {
@@ -52,6 +53,10 @@ export default function InvitedWorkspace() {
         await dispatch(removeInvitedGuest({ id: idWorkspace, userId }));
     }
 
+    const handleRemoveBoardMember = async (userId: string, boardId: string) => {
+        await dispatch(removeBoardInvitedGuest({ id: idWorkspace, userId, boardId }));
+    }
+
     return (
         <div className="flex-1">
             <h3 className="text-slate-700 font-semibold text-xl">Invitados ({workspace.invitedGuests?.length})</h3>
@@ -82,10 +87,14 @@ export default function InvitedWorkspace() {
                                         <span className="text-sm text-slate-500">{user.email} • Invitado del espacio de trabajo</span>
                                     </div>
                                 </div>
-                                <div className="flex flex-col sm:flex-row gap-2 items-center">
-                                    <ButtonWorkspace className=" px-4">
-                                        Tableros ({member.boards.length})
-                                    </ButtonWorkspace>
+                                <div className="flex  flex-col lg:flex-row gap-2 items-center">
+                                    <ButtonViewBoards 
+                                        boardsMember={member.boards} 
+                                        name={user.name} 
+                                        memberId={user.id} 
+                                        onClick={handleRemoveBoardMember}
+                                    />
+                                    
                                     <ButtonWorkspace 
                                         className=" px-4"
                                         onClick={() => handleAddMember(member.user)}

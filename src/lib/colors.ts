@@ -1,13 +1,13 @@
 export const gradients = {
-    gradientceleste: "/gradientes/gradientceleste.svg",
-    gradientazul: "/gradientes/gradientazul.svg",
-    gradientvioleta: "/gradientes/gradientvioleta.svg",
-    gradientfucsia: "/gradientes/gradientfucsia.svg",
-    gradientnaranja: "/gradientes/gradientnaranja.svg",
-    gradientrosa: "/gradientes/gradientrosa.svg",
-    gradientverde: "/gradientes/gradientverde.svg",
-    gradientgris: "/gradientes/gradientgris.svg",
-    gradientmarron: "/gradientes/gradientmarron.svg",
+    gradientceleste: "/gradientes/gradientCeleste.svg",
+    gradientazul: "/gradientes/gradientAzul.svg",
+    gradientvioleta: "/gradientes/gradientVioleta.svg",
+    gradientfucsia: "/gradientes/gradientFucsia.svg",
+    gradientnaranja: "/gradientes/gradientNaranja.svg",
+    gradientrosa: "/gradientes/gradientRosa.svg",
+    gradientverde: "/gradientes/gradientVerde.svg",
+    gradientgris: "/gradientes/gradientGris.svg",
+    gradientmarron: "/gradientes/gradientMarron.svg",
 }
 
 

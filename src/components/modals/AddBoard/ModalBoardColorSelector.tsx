@@ -20,7 +20,7 @@ export default function ModalBoardColorSelector({setColor,color, listColor}:Moda
                     aria-describedby="modal-description" 
                     className={` w-full h-12 rounded flex justify-center items-center relative`} key={idx}>
                     <img
-                        src={`/public${colorOption}`}
+                        src={colorOption}
                         className={`w-full h-full object-cover rounded cursor-pointer hover:bg-black/20 transition-colors flex  justify-center items-center ${
                         color === colorOption ? "bg-black/20" : ""
                         } `}

@@ -5,7 +5,7 @@ export interface IUser {
     lastname: string;
     avatar: string;
     workspaces: IWorkspace[];
-    boards: IBoard[];
+    boards: string[];
   }
   
   export interface IWorkspace {
@@ -30,7 +30,7 @@ export interface IUser {
 
   export interface InvitedGuests{
     user: string;
-    boards: IBoard[];
+    boards: string[];
   }
 
   export interface IBoard {

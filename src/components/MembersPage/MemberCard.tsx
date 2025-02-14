@@ -3,8 +3,9 @@ import { IUser } from "../../types";
 import ButtonWorkspace from "../ButtonWorkspace";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { removeMember } from "../../redux/states/workspacesSlices";
+import { deleteBoardMember, removeMember } from "../../redux/states/workspacesSlices";
 import { useParams } from "react-router";
+import ButtonViewBoards from "./ButtonViewBoards";
 
 interface MemberCardProps{
     member: IUser
@@ -16,10 +17,15 @@ export default function MemberCard({member,plan}:MemberCardProps){
     const {idWorkspace} = useParams<{idWorkspace: string}>();
     const {user} = useSelector((store: RootState) => store.auth);
 
+
     if(!idWorkspace) return null;
 
     const handleRemoveMember = async() => {
         await dispatch(removeMember({id:idWorkspace, userId: member.id}));
+    }
+
+    const handleRemoveBoard = async(userId: string, boardId: string ) => {
+        await dispatch(deleteBoardMember({id:idWorkspace, userId, boardId}));
     }
 
     return(
@@ -32,9 +38,12 @@ export default function MemberCard({member,plan}:MemberCardProps){
                 </div>
             </div>
             <div className="flex flex-wrap gap-2">
-                <ButtonWorkspace>
-                    Ver tableros ({member.boards?.length || 0})
-                </ButtonWorkspace>
+                <ButtonViewBoards 
+                    boardsMember={member.boards} 
+                    name={member.name} 
+                    memberId={member.id} 
+                    onClick={handleRemoveBoard}
+                />
                 <ButtonWorkspace className={`${plan === "Gratuito" && "opacity-40"}`} disabledButton={plan === "Gratuito"}>
                     Administrador <CircleHelp className="size-4"/>
                 </ButtonWorkspace>

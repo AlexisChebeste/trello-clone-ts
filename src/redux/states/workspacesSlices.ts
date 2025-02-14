@@ -158,6 +158,30 @@ export const removeInvitedGuest = createAsyncThunk<IWorkspace, { id: string, use
   }
 );
 
+export const removeBoardInvitedGuest = createAsyncThunk<IWorkspace, { id: string, userId: string, boardId: string }, { rejectValue: string }>(
+  '/workspaces/removeBoardInvitedGuest',
+  async ({ id, userId, boardId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete<IWorkspace>(`/workspaces/${id}/invited-guests/${userId}/boards/${boardId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar invitado');
+    }
+  }
+);
+
+export const deleteBoardMember = createAsyncThunk<IWorkspace, { id: string, userId: string, boardId: string }, { rejectValue: string }>(
+  '/workspaces/deleteBoardMember',
+  async ({ id, userId, boardId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.delete<IWorkspace>(`/workspaces/${id}/members/${userId}/boards/${boardId}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar miembro');
+    }
+  }
+)
+
 const workspaceSlice = createSlice({
   name: 'workspaces',
   initialState,
@@ -310,6 +334,18 @@ const workspaceSlice = createSlice({
         state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
       })
       .addCase(removeInvitedGuest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error desconocido al eliminar invitado';
+      })
+      .addCase(removeBoardInvitedGuest.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(removeBoardInvitedGuest.fulfilled, (state, action: PayloadAction<IWorkspace>) => {
+        state.loading = false;
+        state.workspaces = state.workspaces.map(w => w.id === action.payload.id ? action.payload : w);
+      })
+      .addCase(removeBoardInvitedGuest.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error desconocido al eliminar invitado';
       })
